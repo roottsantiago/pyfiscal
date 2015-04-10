@@ -4,6 +4,9 @@ import datetime
 nombre = "Tomas" 
 apellidoPaterno = "Santiago" 
 apellidoMatermo = "Gonzalez"
-fechaNacimiento = "16/11/1989"
+fechaNacimiento = "1989-11-16"
 sexo = "M"
 estadoNacimiento = "Hidalgo"
+
+fNac = datetime.datetime.strptime(fechaNacimiento, '%Y-%m-%d').date()
+print(fNac)
