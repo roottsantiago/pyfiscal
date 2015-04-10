@@ -9,4 +9,10 @@ class curp:
 	estadoNacimiento = "Hidalgo"
 
 	fNac = datetime.datetime.strptime(fechaNacimiento, '%Y-%m-%d').date()
-	print(fNac)
+	#print(fNac)
+
+	def calculaCurp(self):  
+		print("Hola")
+
+cp = curp()
+cp.calculaCurp()   
