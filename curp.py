@@ -11,8 +11,8 @@ class curp:
 		test = 'prueba'
 
 	def general(self):
-		nom = "Tomas "
-		apa = "Santiago "
+		nom = "Tomas"
+		apa = "Santiago"
 		ama = "Gonzalez"
 		rfc = ""
 
@@ -24,8 +24,13 @@ class curp:
 		pellidoPa = pellidoPa.strip()
 		pellidoMa = pellidoMa.strip()
 
-		utils.quiatarArticulors()
-		print(nombre,pellidoPa,pellidoMa)
+		pellidoPa = utils.quitaArticulo(pellidoPa)
+		pellidoMa = utils.quitaArticulo(pellidoMa)
+		nombre = utils.quitaNombre(nombre)
+
+		print(pellidoPa)
+		print(pellidoMa)
+		print(nombre)
 
 cp = curp()
 cp.calculaCurp()
