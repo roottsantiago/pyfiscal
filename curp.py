@@ -1,12 +1,8 @@
 
 import datetime
+from utils import *
 class curp:
-	nombre = "Tomas" 
-	apellidoPaterno = "Santiago" 
-	apellidoMatermo = "Gonzalez"
 	fechaNacimiento = "1989-11-16"
-	sexo = "M"
-	estadoNacimiento = "Hidalgo"
 
 	fNac = datetime.datetime.strptime(fechaNacimiento, '%Y-%m-%d').date()
 	#print(fNac)
@@ -28,6 +24,7 @@ class curp:
 		pellidoPa = pellidoPa.strip()
 		pellidoMa = pellidoMa.strip()
 
+		utils.quiatarArticulors()
 		print(nombre,pellidoPa,pellidoMa)
 
 cp = curp()
