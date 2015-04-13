@@ -10,11 +10,11 @@ class utils:
 
 	def quitarCHLL(palabra):
 		if palabra !="":
-        	if palabra[0:2] == "CH":
-        		palabra = "C" + palabra[2:len(palabra)-2]
-        	elif palabra[0:2] == "LL":
-         	 	palabra = "L" + palabra[2:len(palabra)-2]
-        return palabra
+			if palabra[0:2] == "CH":
+				palabra = "C" + palabra[2:len(palabra)-2]
+			elif palabra[0:2] == "LL":
+				palabra = "L" + palabra[2:len(palabra)-2]
+		return palabra
 
 	def getConsonate(palabra):
 		consonante = ""
@@ -37,7 +37,6 @@ class utils:
 		valor = palabra
 		if consonante1 != "":
 			valor = palabra[1:Len]
-		print(valor)
 
 		#Buscamos y agregamos al rfc la primera vocal del primer apellido
 		for item in valor:
@@ -61,3 +60,51 @@ class utils:
 				consonante = True
 				break
 		return consonante;
+
+	def esVocal(letra):
+		#Aunque para el caso del RFC cambié todas las letras a mayúsculas igual agregé las minúsculas.
+		if letra == 'A' or letra == 'E' or letra == 'I' or letra == 'O' or letra == 'U' or letra == 'a' or letra == 'e' or letra == 'i' or letra == 'o' or letra == 'u':
+			return True;
+		else:
+			return False
+
+	def calculaOrigenCurp(nombre, apellidoPaterno, apellidoMaterno):
+		rfc = "";
+		# No tiene Apellido Paterno
+		if apellidoPaterno == "" and apellidoMaterno != "":
+			#Agregamos el primer caracter del apellido paterno
+			rfc = "XX";
+			rfc += apellidoMaterno[0:2]
+
+		# No tiene Apellido Materno 
+		if apellidoMaterno == "" and apellidoPaterno != "":
+			#Agregamos el primer caracter del apellido paterno
+			rfc = apellidoPaterno[0:1]
+			z1 = len(apellidoPaterno) - 1;
+			apePaterno = apellidoPaterno[1:z1]
+			#Buscamos y agregamos al rfc la primera vocal del apellido
+			for item in apePaterno:
+				if utils.esVocal(item):
+					rfc += item
+					break
+
+			rfc += "X"
+			#Armar letras del nombre
+			rfc += nombre[0:1]
+
+		if apellidoPaterno != "" and apellidoMaterno != "":
+			#Agregamos el primer caracter del apellido paterno
+			rfc = apellidoPaterno[0:1]
+			z1 = len(apellidoPaterno) - 1
+			apePaterno = apellidoPaterno[1:z1]
+
+           #Buscamos y agregamos al rfc la primera vocal del primer apellido
+			for item in apePaterno:
+				if utils.esVocal(item):
+					rfc += item
+					break
+			rfc += apellidoMaterno[0:1]
+			 #Agregamos el primer caracter del primer nombre
+			rfc += nombre[0:1]
+
+		return rfc

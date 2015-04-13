@@ -29,24 +29,26 @@ class curp:
 		apellidoMaterno = utils.quitaArticulo(apellidoMaterno)
 		#Quitamos nombres Jose y Maria
 		nombre = utils.quitaNombre(nombre)
-
-		#print(apellidoPaterno)
-		#print(apellidoMaterno)
-		#print(nombre)
 		# Quita la CH y la LL
-       apellidoPaterno = utils.quitarCHLL(apellidoPaterno)
-       apellidoMaterno = utils.quitarCHLL(apellidoMaterno)
-       nombre = utils.quitarCHLL(nombre)
+		apellidoPaterno = utils.quitarCHLL(apellidoPaterno)
+		apellidoMaterno = utils.quitarCHLL(apellidoMaterno)
+		nombre = utils.quitarCHLL(nombre)
+		
 
+
+		origen = 'CURP'
+		if origen == "CURP":
+			rfc = utils.calculaOrigenCurp(nombre, apellidoPaterno, apellidoMaterno);
+			print(rfc)
 		# Obtener consonante apellido paterno
-		consonante = "";
-		if apellidoPaterno != "":
-			consonante = utils.getConsonate(apellidoPaterno)
-			if consonante != "":
-				consonante = "X";
-				rfc = rfc + consonante
-			else:
-				rfc = rfc + "X"
+		#consonante = "";
+		#if apellidoPaterno != "":
+		#	consonante = utils.getConsonate(apellidoPaterno)
+		#	if consonante != "":
+		#		consonante = "X";
+		#		rfc = rfc + consonante
+		#	else:
+		#		rfc = rfc + "X"
 
 
 cp = curp()
