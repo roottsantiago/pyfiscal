@@ -60,7 +60,7 @@ class utils:
 			if con == letra:
 				consonante = True
 				break
-		return consonante;
+		return consonante
 
 	def esVocal(letra):
 		#Aunque para el caso del RFC cambié todas las letras a mayúsculas igual agregé las minúsculas.
@@ -70,48 +70,48 @@ class utils:
 			return False
 
 	def calculaOrigenCurp(nombre, apellidoPaterno, apellidoMaterno):
-		rfc = "";
+		curp = "";
 		# No tiene Apellido Paterno
 		if apellidoPaterno == "" and apellidoMaterno != "":
 			#Agregamos el primer caracter del apellido paterno
-			rfc = "XX";
-			rfc += apellidoMaterno[0:2]
+			curp = "XX";
+			curp += apellidoMaterno[0:2]
 
 		# No tiene Apellido Materno 
 		if apellidoMaterno == "" and apellidoPaterno != "":
 			#Agregamos el primer caracter del apellido paterno
-			rfc = apellidoPaterno[0:1]
+			curp = apellidoPaterno[0:1]
 			z1 = len(apellidoPaterno) - 1;
 			apePaterno = apellidoPaterno[1:z1]
-			#Buscamos y agregamos al rfc la primera vocal del apellido
+			#Buscamos y agregamos al curp la primera vocal del apellido
 			for item in apePaterno:
 				if utils.esVocal(item):
-					rfc += item
+					curp += item
 					break
 
-			rfc += "X"
+			curp += "X"
 			#Armar letras del nombre
-			rfc += nombre[0:1]
+			curp += nombre[0:1]
 
 		if apellidoPaterno != "" and apellidoMaterno != "":
 			#Agregamos el primer caracter del apellido paterno
-			rfc = apellidoPaterno[0:1]
+			curp = apellidoPaterno[0:1]
 			z1 = len(apellidoPaterno) - 1
 			apePaterno = apellidoPaterno[1:z1]
 
-           #Buscamos y agregamos al rfc la primera vocal del primer apellido
+           #Buscamos y agregamos al curp la primera vocal del primer apellido
 			for item in apePaterno:
 				if utils.esVocal(item):
-					rfc += item
+					curp += item
 					break
-			rfc += apellidoMaterno[0:1]
+			curp += apellidoMaterno[0:1]
 			 #Agregamos el primer caracter del primer nombre
-			rfc += nombre[0:1]
+			curp += nombre[0:1]
 
-		return rfc
+		return curp
 
 
-	def verificarPalabras(rfc, origen):
+	def verificarPalabras(curp, origen):
 		lstPalabras = [ "BUEI", "BUEY", "CACA", "CACO", "CAGA", "CAGO", "CAKA", "CAKO", "COGE", "COGI", "COJA", "COJE", "COJI", "COJO", "COLA", "CULO", "FALO", "FETO",
 				"GETA", "GUEI", "GUEY","JETA", "JOTO", "KACA", "KACO", "KAGA", "KAGO", "KAKA", "KAKO", "KOGE", "KOGI", "KOJA", "KOJE", "KOJI", "KOJO", "KOLA", "KULO",
 				"LILO", "LOCA", "LOCO", "LOKA", "LOKO", "MAME", "MAMO", "MEAR", "MEAS", "MEON", "MIAR", "MION", "MOCO", "MOKO", "MULA", "MULO", "NACA", "NACO", "PEDA", 
@@ -121,16 +121,15 @@ class utils:
 		count = 0
 		for palabra in lstPalabras:
 			count += 1
-			if palabra == rfc:
+			if palabra == curp:
 				if origen == "RFC":
-					rfc = rfc[0:3] + "X"
+					curp = curp[0:3] + "X"
 				elif origen == "CURP":	
-					rfc = rfc[0:1] + "X" + rfc[2:2];
+					curp = curp[0:1] + "X" + curp[2:2];
 					break
+		return curp
 
-		return rfc
-
-	def fechaNacimiento(rfc, fechaNac):
+	def fechaNacimiento(curp, fechaNac):
 		# Convertir str a Date
 		fecha_nac = datetime.datetime.strptime(fechaNac, '%d-%m-%Y').date()
 		anio = fecha_nac.year
@@ -140,5 +139,5 @@ class utils:
 		str_anio = str(anio)
 		str_anio = str_anio[2:4]
 		# Agregar anio, mes y dia
-		rfc += str_anio + str(mes) + str(dia)
-		return rfc
+		curp += str_anio + str(mes) + str(dia)
+		return curp

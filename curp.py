@@ -10,9 +10,11 @@ class curp:
 		apa = "Santiago"
 		ama = "Gonzalez"
 		fechaNacimiento = "16-11-1989"
+		genero = "H"
+		lugar_nacimiento = "HG"
 
 		#RFC que se regresará
-		rfc = ""
+		curp = ""
 		#Cambiamos todo a mayúsculas
 		nombre = nom.upper()
 		apellidoPaterno = apa.upper()
@@ -31,16 +33,16 @@ class curp:
 		apellidoMaterno = utils.quitarCHLL(apellidoMaterno)
 		nombre = utils.quitarCHLL(nombre)
 		
-
-
 		origen = 'CURP'
 		if origen == "CURP":
-			rfc = utils.calculaOrigenCurp(nombre, apellidoPaterno, apellidoMaterno);
+			curp = utils.calculaOrigenCurp(nombre, apellidoPaterno, apellidoMaterno);
 		# Verificar el curp que no tenga palabras obsenas 
-		rfc = utils.verificarPalabras(rfc, origen)
+		curp = utils.verificarPalabras(curp, origen)
 		#Agregamos la fecha de Nacimiento
-		rfc = utils.fechaNacimiento(rfc, fechaNacimiento)
-		print(rfc)
+		curp = utils.fechaNacimiento(curp, fechaNacimiento)
+
+		curp += genero + lugar_nacimiento
+		print(curp)
 
 		# Obtener consonante apellido paterno
 		#consonante = "";
@@ -48,9 +50,9 @@ class curp:
 		#	consonante = utils.getConsonate(apellidoPaterno)
 		#	if consonante != "":
 		#		consonante = "X";
-		#		rfc = rfc + consonante
+		#		curp = curp + consonante
 		#	else:
-		#		rfc = rfc + "X"
+		#		curp = curp + "X"
 
 
 cp = curp()
