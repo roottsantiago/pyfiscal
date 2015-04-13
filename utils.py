@@ -1,3 +1,4 @@
+import datetime
 class utils:
 	
 	def quitaArticulo(param):
@@ -107,4 +108,37 @@ class utils:
 			 #Agregamos el primer caracter del primer nombre
 			rfc += nombre[0:1]
 
+		return rfc
+
+
+	def verificarPalabras(rfc, origen):
+		lstPalabras = [ "BUEI", "BUEY", "CACA", "CACO", "CAGA", "CAGO", "CAKA", "CAKO", "COGE", "COGI", "COJA", "COJE", "COJI", "COJO", "COLA", "CULO", "FALO", "FETO",
+				"GETA", "GUEI", "GUEY","JETA", "JOTO", "KACA", "KACO", "KAGA", "KAGO", "KAKA", "KAKO", "KOGE", "KOGI", "KOJA", "KOJE", "KOJI", "KOJO", "KOLA", "KULO",
+				"LILO", "LOCA", "LOCO", "LOKA", "LOKO", "MAME", "MAMO", "MEAR", "MEAS", "MEON", "MIAR", "MION", "MOCO", "MOKO", "MULA", "MULO", "NACA", "NACO", "PEDA", 
+				"PEDO", "PENE", "PIPI", "PITO", "POPO", "PUTA", "PUTO", "QULO", "RATA", "ROBA", "ROBE", "ROBO", "RUIN", "SENO", "TETA", "VUEI", "VUEY", "WUEI", "WUEY",
+			]
+
+		count = 0
+		for palabra in lstPalabras:
+			count += 1
+			if palabra == rfc:
+				if origen == "RFC":
+					rfc = rfc[0:3] + "X"
+				elif origen == "CURP":	
+					rfc = rfc[0:1] + "X" + rfc[2:2];
+					break
+
+		return rfc
+
+	def fechaNacimiento(rfc, fechaNac):
+		# Convertir str a Date
+		fecha_nac = datetime.datetime.strptime(fechaNac, '%d-%m-%Y').date()
+		anio = fecha_nac.year
+		mes = fecha_nac.month
+		dia = fecha_nac.day
+		# Quitar primeros 2 digitos del año
+		str_anio = str(anio)
+		str_anio = str_anio[2:4]
+		# Agregar anio, mes y dia
+		rfc += str_anio + str(mes) + str(dia)
 		return rfc

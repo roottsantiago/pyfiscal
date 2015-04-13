@@ -1,11 +1,6 @@
 
-import datetime
 from utils import *
 class curp:
-	fechaNacimiento = "1989-11-16"
-
-	fNac = datetime.datetime.strptime(fechaNacimiento, '%Y-%m-%d').date()
-	#print(fNac)
 
 	def calculaCurp(self):  
 		test = 'prueba'
@@ -14,6 +9,8 @@ class curp:
 		nom = "Tomas"
 		apa = "Santiago"
 		ama = "Gonzalez"
+		fechaNacimiento = "16-11-1989"
+
 		#RFC que se regresará
 		rfc = ""
 		#Cambiamos todo a mayúsculas
@@ -27,7 +24,7 @@ class curp:
 		#Quitamos los artículos de los apellidos
 		apellidoPaterno = utils.quitaArticulo(apellidoPaterno)
 		apellidoMaterno = utils.quitaArticulo(apellidoMaterno)
-		#Quitamos nombres Jose y Maria
+		# Quitamos nombres Jose y Maria
 		nombre = utils.quitaNombre(nombre)
 		# Quita la CH y la LL
 		apellidoPaterno = utils.quitarCHLL(apellidoPaterno)
@@ -39,7 +36,12 @@ class curp:
 		origen = 'CURP'
 		if origen == "CURP":
 			rfc = utils.calculaOrigenCurp(nombre, apellidoPaterno, apellidoMaterno);
-			print(rfc)
+		# Verificar el curp que no tenga palabras obsenas 
+		rfc = utils.verificarPalabras(rfc, origen)
+		#Agregamos la fecha de Nacimiento
+		rfc = utils.fechaNacimiento(rfc, fechaNacimiento)
+		print(rfc)
+
 		# Obtener consonante apellido paterno
 		#consonante = "";
 		#if apellidoPaterno != "":
