@@ -134,14 +134,16 @@ class utils:
 		fecha_nac = datetime.datetime.strptime(fechaNac, '%d-%m-%Y').date()
 		anio = fecha_nac.year
 		mes = fecha_nac.month
-		print(mes)
 		dia = fecha_nac.day
-		print(dia)
 		# Quitar primeros 2 digitos del año
 		str_anio = str(anio)
 		str_anio = str_anio[2:4]
+		# Rellena con ceros a la izquierda hasta alcanzar la longitud final indicada
+		str_mes = str(mes).zfill(2)
+		str_dia = str(dia).zfill(2)
+
 		# Agregar anio, mes y dia
-		curp += str_anio + str(mes) + str(dia)
+		curp += str_anio + str_mes + str_dia
 		return curp
 
 	def getAnioFechaNac(fechaNac):
