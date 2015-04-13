@@ -18,26 +18,30 @@ class curp:
 		rfc = ""
 		#Cambiamos todo a mayúsculas
 		nombre = nom.upper()
-		pellidoPa = apa.upper()
-		pellidoMa = ama.upper()
+		apellidoPaterno = apa.upper()
+		apellidoMaterno = ama.upper()
 		#Quitamos los espacios al principio y final del nombre y apellidos
 		nombre = nombre.strip()
-		pellidoPa = pellidoPa.strip()
-		pellidoMa = pellidoMa.strip()
+		apellidoPaterno = apellidoPaterno.strip()
+		apellidoMaterno = apellidoMaterno.strip()
 		#Quitamos los artículos de los apellidos
-		pellidoPa = utils.quitaArticulo(pellidoPa)
-		pellidoMa = utils.quitaArticulo(pellidoMa)
+		apellidoPaterno = utils.quitaArticulo(apellidoPaterno)
+		apellidoMaterno = utils.quitaArticulo(apellidoMaterno)
 		#Quitamos nombres Jose y Maria
 		nombre = utils.quitaNombre(nombre)
 
-		#print(pellidoPa)
-		#print(pellidoMa)
+		#print(apellidoPaterno)
+		#print(apellidoMaterno)
 		#print(nombre)
+		# Quita la CH y la LL
+       apellidoPaterno = utils.quitarCHLL(apellidoPaterno)
+       apellidoMaterno = utils.quitarCHLL(apellidoMaterno)
+       nombre = utils.quitarCHLL(nombre)
 
 		# Obtener consonante apellido paterno
 		consonante = "";
-		if pellidoPa != "":
-			consonante = utils.getConsonate(pellidoPa)
+		if apellidoPaterno != "":
+			consonante = utils.getConsonate(apellidoPaterno)
 			if consonante != "":
 				consonante = "X";
 				rfc = rfc + consonante

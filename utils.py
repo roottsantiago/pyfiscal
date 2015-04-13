@@ -8,6 +8,14 @@ class utils:
 		str_empty = ""
 		return param.replace("JOSE ", str_empty).replace("J ", str_empty).replace("J. ", str_empty).replace("MARIA ", str_empty).replace("MA. ", str_empty).replace("MA ", str_empty).replace("DE ", str_empty).replace(" DE ", str_empty).replace("DEL ", str_empty).replace(" DEL ", str_empty).replace("LA ", str_empty).replace(" LA ", str_empty).replace("LAS ", str_empty).replace(" LAS ", str_empty).replace("LOS ", str_empty).replace(" LOS ", str_empty).replace("MC ", str_empty).replace("MAC ", str_empty).replace("VON ", str_empty).replace("VAN ", str_empty).replace(" Y ", str_empty);
 
+	def quitarCHLL(palabra):
+		if palabra !="":
+        	if palabra[0:2] == "CH":
+        		palabra = "C" + palabra[2:len(palabra)-2]
+        	elif palabra[0:2] == "LL":
+         	 	palabra = "L" + palabra[2:len(palabra)-2]
+        return palabra
+
 	def getConsonate(palabra):
 		consonante = ""
 		Len = 0
@@ -42,7 +50,7 @@ class utils:
 				break
 		
 		return consonante
-		
+
 	def EsConsonante(letra):
 		consonante = False
 		array_con = ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z']
