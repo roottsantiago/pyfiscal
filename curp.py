@@ -6,12 +6,17 @@ class curp:
 		test = 'prueba'
 
 	def general(self):
-		nom = "Tomas"
-		apa = "Santiago"
-		ama = "Gonzalez"
-		fechaNacimiento = "16-11-1989"
+		nom = "Giovani"
+		apa = "Hidalgo"
+		ama = "Ostoa"
+		fechaNacimiento = "12-08-1988"
 		genero = "H"
 		lugar_nacimiento = "HG"
+
+		#El RFC de una persona física (individuo) se compone de 13 posiciones: cuatro para apellidos y nombre, 
+		#seis para fecha de nacimiento y tres para homoclave. Este es expedido por la Secretaría de Hacienda y Crédito Público.
+		#La CURP se compone de 18 posiciones: cuatro para apellidos y nombre, seis para fecha de nacimiento, una para sexo, 
+		#dos para entidad federativa de nacimiento, tres para consonantes de los apellidos y nombre, una para distinguir repeticiones y una para un dígito verificador.
 
 		#CURP que se regresará
 		curp = ""
@@ -85,6 +90,8 @@ class curp:
 		else:
 			curp = curp + "X"
 
+		anio = utils.getAnioFechaNac(fechaNacimiento)
+		curp = utils.digitoVerificador(curp, anio)
 		print(curp)
 
 cp = curp()

@@ -134,10 +134,123 @@ class utils:
 		fecha_nac = datetime.datetime.strptime(fechaNac, '%d-%m-%Y').date()
 		anio = fecha_nac.year
 		mes = fecha_nac.month
+		print(mes)
 		dia = fecha_nac.day
+		print(dia)
 		# Quitar primeros 2 digitos del año
 		str_anio = str(anio)
 		str_anio = str_anio[2:4]
 		# Agregar anio, mes y dia
 		curp += str_anio + str(mes) + str(dia)
 		return curp
+
+	def getAnioFechaNac(fechaNac):
+		fecha_nac = datetime.datetime.strptime(fechaNac, '%d-%m-%Y').date()
+		anio = fecha_nac.year
+		return anio
+
+	def digitoVerificador(curp, anio):
+		contador = 18
+		count = 0
+		valor = 0
+		sumaria = 0
+		homoclave = ""
+
+		while (count <= 15):
+			pstCom = curp[count:1]
+
+			if pstCom == "0":
+				valor = (0 * contador)
+			elif pstCom == "1":
+				valor = (1 * contador)
+			elif pstCom == "2":
+				valor = (2 * contador)
+			elif pstCom == "3":
+				valor = (3 * contador)
+			elif pstCom == "4":
+				valor = (4 * contador)
+			elif pstCom == "5":
+				valor = (5 * contador)
+			elif pstCom == "6":
+				valor = (6 * contador)
+			elif pstCom == "7":
+				valor = (7 * contador)
+			elif pstCom == "8":
+				valor = (8 * contador)
+			elif pstCom == "9":
+				valor = (9 * contador)
+			elif pstCom == "A":
+				valor = (10 * contador)
+			elif pstCom == "B":
+				valor = (11 * contador)
+			elif pstCom == "C":
+				valor = (12 * contador)
+			elif pstCom == "D":
+				valor = (13 * contador)
+			elif pstCom == "E":
+				valor = (14 * contador)
+			elif pstCom == "F":
+				valor = (15 * contador)
+			elif pstCom == "G":
+				valor = (16 * contador)
+			elif pstCom == "H":
+				valor = (17 * contador)
+			elif pstCom == "I":
+				valor = (18 * contador)
+			elif pstCom == "J":
+				valor = (19 * contador)
+			elif pstCom == "K":
+				valor = (20 * contador)
+			elif pstCom == "L":
+				valor = (21 * contador)
+			elif pstCom == "M":
+				valor = (22 * contador)
+			elif pstCom == "N":
+				valor = (23 * contador)
+			elif pstCom == "Ñ":
+				valor = (24 * contador)
+			elif pstCom == "O":
+				valor = (25 * contador)
+			elif pstCom == "P":
+				valor = (26 * contador)
+			elif pstCom == "Q":
+				valor = (27 * contador)
+			elif pstCom == "R":
+				valor = (28 * contador)
+			elif pstCom == "S":
+				valor = (29 * contador)
+			elif pstCom == "T":
+				valor = (30 * contador)
+			elif pstCom == "U":
+				valor = (31 * contador)
+			elif pstCom == "V":
+				valor = (32 * contador)
+			elif pstCom == "W":
+				valor = (33 * contador)
+			elif pstCom == "X":
+				valor = (34 * contador)
+			elif pstCom == "Y":
+				valor = (35 * contador)
+			elif pstCom == "Z":
+				valor = (36 * contador)
+
+			contador = contador - 1
+			count = count + 1
+			sumaria = sumaria + valor
+
+
+		# Sacar el residuo	
+		numVerificador = (sumaria % 10)
+		# Devuelve el valor absoluto en caso de que sea negativo
+		numVerificador = abs(numVerificador)
+		#En caso de que sea 10 el digito es 0
+		if numVerificador == 10:
+			numVerificador = 0
+		# Obtener homoclave
+		if anio < 2000:
+			homoclave = "0" + ""
+		elif anio >= 2000:
+		    homoclave = "A" + ""
+
+		curp = curp + homoclave + str(numVerificador)
+		return curp;
