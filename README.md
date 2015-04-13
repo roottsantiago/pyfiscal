@@ -1,4 +1,5 @@
-# generar-CURP-RFC
+# calculo de CURP y RFC
+
 Calculo de Curp y Rfc en python.
 
 *  CURP
