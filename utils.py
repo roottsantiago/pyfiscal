@@ -17,7 +17,7 @@ class utils:
 				palabra = "L" + palabra[2:len(palabra)-2]
 		return palabra
 
-	def getConsonate(palabra):
+	def getConsonateCurp(palabra):
 		consonante = ""
 		Len = 0
 		valor = ""
@@ -31,7 +31,7 @@ class utils:
 		letra = palabra[0:1]
 
 		for item in letra:
-			if utils.EsConsonante(item):
+			if utils.esConsonante(item):
 				consonante1 = item
 				break
 		
@@ -45,13 +45,13 @@ class utils:
 			if val == "Ñ":
 				consonante = "";
 				break
-			elif utils.EsConsonante(item):
+			elif utils.esConsonante(item):
 				consonante = item;
 				break
 		
 		return consonante
 
-	def EsConsonante(letra):
+	def esConsonante(letra):
 		consonante = False
 		array_con = ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z']
 		count = 0
