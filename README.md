@@ -1,14 +1,12 @@
-# calculo de CURP y RFC
-
-Calculo de Curp y Rfc en python.
+# Cálculo de Curp y Rfc en python.
 
 *  CURP
 La Clave Única de Registro de Población (CURP) es un código alfanumérico único de identidad de 18 caracteres, tanto para residentes como para ciudadanos mexicanos.
 Con 18 elementos representados por letras y números, que se generan a partir de los datos contenidos en tu documento probatorio de identidad (acta de nacimiento, carta de naturalización o documento migratorio), y que se refieren a:
-·  Tu primer y segundo apellidos, así como tu nombre.
-·  Tu fecha de nacimiento.
-·  Genero.
-·  Entidad Federativa o lugar de nacimiento.
+1. Tu primer y segundo apellidos, así como tu nombre.
+2. Tu fecha de nacimiento.
+3. Genero.
+4. Entidad Federativa o lugar de nacimiento.
 
 Detalle de CURP : cuatro para apellidos y nombre, seis para fecha de nacimiento, una para sexo, 
 dos para entidad federativa de nacimiento, tres para consonantes de los apellidos y nombre, una para distinguir repeticiones y una para un dígito verificador.
