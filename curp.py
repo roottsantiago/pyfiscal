@@ -81,12 +81,16 @@ class generarCURPRFC:
 		nombre = "Tomas"
 		ape_paterno = "Santiago"
 		ape_materno = "Gonzalez"
+		nombre_completo = ape_paterno +" "+ ape_materno +" "+ nombre
 		fecha_nacimiento = "16-11-1989"
 		genero = "H"
 		lugar_nacimiento = "HG"
 		origen = "CURP"
 		rfc = general.datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento, origen)
 		print("RFC  : "+rfc)
+
+		general.calculaHomoclaveRFC(rfc, nombre_completo, fecha_nacimiento)
+		
 
 cp = generarCURPRFC()
 cp.calculaCURP()

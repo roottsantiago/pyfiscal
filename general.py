@@ -1,4 +1,6 @@
 from utils import *
+from stringBuilder import*
+
 class general:
 
 	def datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento, origen):
@@ -36,3 +38,10 @@ class general:
 		# Agregamos la fecha de Nacimiento
 		generico = utils.fechaNacimiento(generico, fecha_nacimiento)
 		return generico
+
+	def calculaHomoclaveRFC(rfc, nombre_completo, fecha_nac):
+
+		sb = StringBuilder()
+		sb.Append("Hello\n")
+		sb.Append("World")
+		print(sb)
