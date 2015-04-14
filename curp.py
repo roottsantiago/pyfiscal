@@ -2,7 +2,7 @@ from general import *
 from utils import *
 class generarCURPRFC:
 
-	def calculaCurp(self):
+	def calculaCURP(self):
 		nombre = "Tomas"
 		ape_paterno = "Santiago"
 		ape_materno = "Gonzalez"
@@ -75,7 +75,19 @@ class generarCURPRFC:
 		anio = utils.getAnioFechaNac(fecha_nacimiento)
 		curp = utils.digitoVerificador(curp, anio)
 
-		print(curp)
+		print("CURP : "+curp)
+
+	def calcularRFC(self):
+		nombre = "Tomas"
+		ape_paterno = "Santiago"
+		ape_materno = "Gonzalez"
+		fecha_nacimiento = "16-11-1989"
+		genero = "H"
+		lugar_nacimiento = "HG"
+		origen = "CURP"
+		rfc = general.datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento, origen)
+		print("RFC  : "+rfc)
 
 cp = generarCURPRFC()
-cp.calculaCurp()  
+cp.calculaCURP()
+cp.calcularRFC()  
