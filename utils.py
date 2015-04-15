@@ -69,103 +69,6 @@ class Utils:
 		else:
 			return False
 
-	def calculaOrigenCurp(nombre, apellidoPaterno, apellidoMaterno):
-		curp = "";
-		# No tiene Apellido Paterno
-		if apellidoPaterno == "" and apellidoMaterno != "":
-			#Agregamos el primer caracter del apellido paterno
-			curp = "XX";
-			curp += apellidoMaterno[0:2]
-
-		# No tiene Apellido Materno 
-		if apellidoMaterno == "" and apellidoPaterno != "":
-			#Agregamos el primer caracter del apellido paterno
-			curp = apellidoPaterno[0:1]
-			z1 = len(apellidoPaterno) - 1;
-			apePaterno = apellidoPaterno[1:z1]
-			#Buscamos y agregamos al curp la primera vocal del apellido
-			for item in apePaterno:
-				if Utils.esVocal(item):
-					curp += item
-					break
-
-			curp += "X"
-			#Armar letras del nombre
-			curp += nombre[0:1]
-
-		if apellidoPaterno != "" and apellidoMaterno != "":
-			#Agregamos el primer caracter del apellido paterno
-			curp = apellidoPaterno[0:1]
-			z1 = len(apellidoPaterno) - 1
-			apePaterno = apellidoPaterno[1:z1]
-
-           #Buscamos y agregamos al curp la primera vocal del primer apellido
-			for item in apePaterno:
-				if Utils.esVocal(item):
-					curp += item
-					break
-			curp += apellidoMaterno[0:1]
-			 #Agregamos el primer caracter del primer nombre
-			curp += nombre[0:1]
-
-		return curp
-
-	def calculaOrigenRFc(nombre, ape_paterno, ape_materno):
-		#RFC que se regresará
-		rfc = ""
-
-		#No tiene apellido paterno
-		if ape_paterno == "" and ape_materno != "":
-			#Agregamos el primer caracter del apellido paterno
-			rfc = ape_materno[0:1]
-			z1 = len(ape_materno) - 1
-			ape_materno1 = ape_materno[1:z1]
-
-			for item in ape_materno1:
-				if Utils.esVocal(item):
-					rfc += item
-					break
-
-			# Obtene mos las siguientes dos letras del nombre
-			rfc += nombre[0:2]
-
-		# No tiene apellido Materno 
-		if (ape_materno == "" and ape_paterno != ""):
-			#Agregamos el primer caracter del apellido paterno
-			rfc = ape_paterno[0:1]
-			z1 = len(ape_paterno) - 1
-			ape_paterno1 = ape_paterno[1:z1]
-
-			#Buscamos y agregamos al rfc la primera vocal del apellido
-			for item in ape_paterno1:
-				if Utils.esVocal(item):
-					rfc += item
-					break
-
-			# Armar letras del nombre
-			rfc += nombre[0:1]
-			lsConstante = Utils.getConsonateCurp(nombre)
-			rfc += lsConstante
-
-		if ape_paterno != "" and ape_materno != "":
-			#Agregamos el primer caracter del apellido paterno
-			rfc = ape_paterno[0:1]
-			#Buscamos y agregamos al rfc la primera vocal del primer apellido
-			z1 = len(ape_paterno) - 1
-			ape_paterno1 = ape_paterno[1:z1]
-
-			for item in ape_paterno1:
-				if Utils.esVocal(item):
-					rfc += item
-					break
-			rfc += ape_materno[0:1]
-			#Agregamos el primer caracter del primer nombre
-			rfc += nombre[0:1]
-			lsConstante = Utils.getConsonateCurp(nombre)
-
-		return rfc
-
-
 	def verificarPalabras(curp, origen):
 		lstPalabras = [ "BUEI", "BUEY", "CACA", "CACO", "CAGA", "CAGO", "CAKA", "CAKO", "COGE", "COGI", "COJA", "COJE", "COJI", "COJO", "COLA", "CULO", "FALO", "FETO",
 				"GETA", "GUEI", "GUEY","JETA", "JOTO", "KACA", "KACO", "KAGA", "KAGO", "KAKA", "KAKO", "KOGE", "KOGI", "KOJA", "KOJE", "KOJI", "KOJO", "KOLA", "KULO",
@@ -201,7 +104,7 @@ class Utils:
 		curp += str_anio + str_mes + str_dia
 		return curp
 
-	def getAnioFechaNac(fechaNac):
+	def anioFecha(fechaNac):
 		fecha_nac = datetime.datetime.strptime(fechaNac, '%d-%m-%Y').date()
 		anio = fecha_nac.year
 		return anio
