@@ -42,6 +42,50 @@ class General:
 		generico = Utils.fechaNacimiento(generico, fecha_nacimiento)
 		return generico
 
+	def entidadFederativa(param):
+		estado = None	
+		dic_estados = { 
+			"":"",
+			"AGUASCALIENTES":"AS",
+			"BAJA CALIFORNIA":"BC",
+			"BAJA CALIFORNIA SUR":"BS",
+			"CAMPECHE":"CC",
+			"CHIAPAS":"CS",
+			"CHIHUAHUA":"CH",
+			"COAHUILA":"CL",
+			"COLIMA":"CM",
+			"DISTRITO FEDERAL":"DF",
+			"DURANGO":"DG",
+			"GUANAJUATO":"GT",
+			"GUERRERO":"GR",
+			"HIDALGO":"HG",
+			"JALISCO":"JC",
+			"MEXICO":"MC",
+			"MICHOACAN":"MN",
+			"MORELOS":"MS",
+			"NAYARIT":"NT",
+			"NUEVO LEON":"NL",
+			"OAXACA":"OC",
+			"PUEBLA":"PL",
+			"QUERETARO":"QT",
+			"QUINTANA ROO":"QR",
+			"SAN LUIS POTOSI":"SP",
+			"SINALOA":"SL",
+			"SONORA":"SR",
+			"TABASCO":"TC",
+			"TAMAULIPAS":"TS",
+			"TLAXCALA":"TL",
+			"VERACRUZ":"VZ",
+			"YUCATÁN":"YN",
+			"ZACATECAS":"ZS",
+			"NACIDO EXTRANJERO":"NE"
+		}
+		
+		for key, value in dic_estados.items():
+			if key == param:
+				estado = value
+		return estado
+
 	def digitoVerificador(curp, anio):
 		contador = 18
 		count = 0
@@ -54,77 +98,77 @@ class General:
 
 			if pstCom == "0":
 				valor = (0 * contador)
-			elif pstCom == "1":
+			if pstCom == "1":
 				valor = (1 * contador)
-			elif pstCom == "2":
+			if pstCom == "2":
 				valor = (2 * contador)
-			elif pstCom == "3":
+			if pstCom == "3":
 				valor = (3 * contador)
-			elif pstCom == "4":
+			if pstCom == "4":
 				valor = (4 * contador)
-			elif pstCom == "5":
+			if pstCom == "5":
 				valor = (5 * contador)
-			elif pstCom == "6":
+			if pstCom == "6":
 				valor = (6 * contador)
-			elif pstCom == "7":
+			if pstCom == "7":
 				valor = (7 * contador)
-			elif pstCom == "8":
+			if pstCom == "8":
 				valor = (8 * contador)
-			elif pstCom == "9":
+			if pstCom == "9":
 				valor = (9 * contador)
-			elif pstCom == "A":
+			if pstCom == "A":
 				valor = (10 * contador)
-			elif pstCom == "B":
+			if pstCom == "B":
 				valor = (11 * contador)
-			elif pstCom == "C":
+			if pstCom == "C":
 				valor = (12 * contador)
-			elif pstCom == "D":
+			if pstCom == "D":
 				valor = (13 * contador)
-			elif pstCom == "E":
+			if pstCom == "E":
 				valor = (14 * contador)
-			elif pstCom == "F":
+			if pstCom == "F":
 				valor = (15 * contador)
-			elif pstCom == "G":
+			if pstCom == "G":
 				valor = (16 * contador)
-			elif pstCom == "H":
+			if pstCom == "H":
 				valor = (17 * contador)
-			elif pstCom == "I":
+			if pstCom == "I":
 				valor = (18 * contador)
-			elif pstCom == "J":
+			if pstCom == "J":
 				valor = (19 * contador)
-			elif pstCom == "K":
+			if pstCom == "K":
 				valor = (20 * contador)
-			elif pstCom == "L":
+			if pstCom == "L":
 				valor = (21 * contador)
-			elif pstCom == "M":
+			if pstCom == "M":
 				valor = (22 * contador)
-			elif pstCom == "N":
+			if pstCom == "N":
 				valor = (23 * contador)
-			elif pstCom == "Ñ":
+			if pstCom == "Ñ":
 				valor = (24 * contador)
-			elif pstCom == "O":
+			if pstCom == "O":
 				valor = (25 * contador)
-			elif pstCom == "P":
+			if pstCom == "P":
 				valor = (26 * contador)
-			elif pstCom == "Q":
+			if pstCom == "Q":
 				valor = (27 * contador)
-			elif pstCom == "R":
+			if pstCom == "R":
 				valor = (28 * contador)
-			elif pstCom == "S":
+			if pstCom == "S":
 				valor = (29 * contador)
-			elif pstCom == "T":
+			if pstCom == "T":
 				valor = (30 * contador)
-			elif pstCom == "U":
+			if pstCom == "U":
 				valor = (31 * contador)
-			elif pstCom == "V":
+			if pstCom == "V":
 				valor = (32 * contador)
-			elif pstCom == "W":
+			if pstCom == "W":
 				valor = (33 * contador)
-			elif pstCom == "X":
+			if pstCom == "X":
 				valor = (34 * contador)
-			elif pstCom == "Y":
+			if pstCom == "Y":
 				valor = (35 * contador)
-			elif pstCom == "Z":
+			if pstCom == "Z":
 				valor = (36 * contador)
 
 			contador = contador - 1
@@ -133,9 +177,9 @@ class General:
 
 
 		# Sacar el residuo	
-		numVerificador = (sumaria % 10)
+		numVerificador = sumaria % 10
 		# Devuelve el valor absoluto en caso de que sea negativo
-		numVerificador = abs(numVerificador -10)
+		numVerificador = abs(10 - numVerificador)
 		#En caso de que sea 10 el digito es 0
 		if numVerificador == 10:
 			numVerificador = 0

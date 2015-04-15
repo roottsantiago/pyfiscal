@@ -2,12 +2,12 @@ from general import *
 from utils import *
 class GenerarCURPRFC:
 
-	def calculaCURP(self, nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, lugar_nacimiento, origen):
+	def calculaCURP(self, nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, entidad_federativa, origen):
 		# Obtine datos generales del CURP
 		curp = General.datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento, origen)
-
+		clave_estado = General.entidadFederativa(entidad_federativa)
 		# Agregamos el genero y lugar de nacimiento
-		curp += genero + lugar_nacimiento
+		curp += genero + clave_estado
 		# Cambiamos todo a mayúsculas
 		nombre = nombre.upper()
 		ape_paterno = ape_paterno.upper()
@@ -37,7 +37,7 @@ class GenerarCURPRFC:
 		curp = General.digitoVerificador(curp, anio)
 		print("CURP : "+curp)
 
-	def calcularRFC(self, nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, lugar_nacimiento):
+	def calcularRFC(self, nombre, ape_paterno, ape_materno, fecha_nacimiento, genero):
 		nombre_completo = ape_paterno +" "+ ape_materno +" "+ nombre
 		origen = "RFC"
 		rfc = General.datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento, origen)
@@ -51,10 +51,10 @@ ape_paterno = "SANTIAGO"
 ape_materno = "GONZALEZ"
 fecha_nacimiento = "16-11-1989"
 genero = "H"
-lugar_nacimiento = "HG"
+entidad_federativa = "HIDALGO"
 origen = "CURP"
 
 # Instancia de Clase
 cp = GenerarCURPRFC()
-cp.calculaCURP(nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, lugar_nacimiento, origen)
-cp.calcularRFC(nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, lugar_nacimiento)  
+cp.calculaCURP(nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, entidad_federativa, origen)
+cp.calcularRFC(nombre, ape_paterno, ape_materno, fecha_nacimiento, genero)  
