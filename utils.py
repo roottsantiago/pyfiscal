@@ -110,6 +110,61 @@ class utils:
 
 		return curp
 
+	def calculaOrigenRFc(nombre, ape_paterno, ape_materno):
+		#RFC que se regresará
+		rfc = ""
+
+		#No tiene apellido paterno
+		if ape_paterno == "" and ape_materno != "":
+			#Agregamos el primer caracter del apellido paterno
+			rfc = ape_materno[0:1]
+			z1 = len(ape_materno) - 1
+			ape_materno1 = ape_materno[1:z1]
+
+			for item in ape_materno1:
+				if utils.esVocal(item):
+					rfc += item
+					break
+
+			# Obtene mos las siguientes dos letras del nombre
+			rfc += nombre[0:2]
+
+		# No tiene apellido Materno 
+		if (ape_materno == "" and ape_paterno != ""):
+			#Agregamos el primer caracter del apellido paterno
+			rfc = ape_paterno[0:1]
+			z1 = len(ape_paterno) - 1
+			ape_paterno1 = ape_paterno[1:z1]
+
+			#Buscamos y agregamos al rfc la primera vocal del apellido
+			for item in ape_paterno1:
+				if utils.esVocal(item):
+					rfc += item
+					break
+
+			# Armar letras del nombre
+			rfc += nombre[0:1]
+			lsConstante = utils.getConsonateCurp(nombre)
+			rfc += lsConstante
+
+		if ape_paterno != "" and ape_materno != "":
+			#Agregamos el primer caracter del apellido paterno
+			rfc = ape_paterno[0:1]
+			#Buscamos y agregamos al rfc la primera vocal del primer apellido
+			z1 = len(ape_paterno) - 1
+			ape_paterno1 = ape_paterno[1:z1]
+
+			for item in ape_paterno1:
+				if utils.esVocal(item):
+					rfc += item
+					break
+			rfc += ape_materno[0:1]
+			#Agregamos el primer caracter del primer nombre
+			rfc += nombre[0:1]
+			lsConstante = utils.getConsonateCurp(nombre)
+
+		return rfc
+
 
 	def verificarPalabras(curp, origen):
 		lstPalabras = [ "BUEI", "BUEY", "CACA", "CACO", "CAGA", "CAGO", "CAKA", "CAKO", "COGE", "COGI", "COJA", "COJE", "COJI", "COJO", "COLA", "CULO", "FALO", "FETO",
