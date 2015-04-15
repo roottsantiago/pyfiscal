@@ -1,10 +1,10 @@
 from general import *
 from utils import *
-class generarCURPRFC:
+class GenerarCURPRFC:
 
 	def calculaCURP(self, nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, lugar_nacimiento, origen):
 		# Obtine datos generales del CURP
-		curp = general.datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento, origen)
+		curp = General.datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento, origen)
 
 		# Agregamos el genero y lugar de nacimiento
 		curp += genero + lugar_nacimiento
@@ -17,32 +17,32 @@ class generarCURPRFC:
 		ape_paterno = ape_paterno.strip()
 		ape_materno = ape_materno.strip()
 		# Quitamos los artículos de los apellidos
-		ape_paterno = utils.quitaArticulo(ape_paterno)
-		ape_materno = utils.quitaArticulo(ape_materno)
+		ape_paterno = Utils.quitaArticulo(ape_paterno)
+		ape_materno = Utils.quitaArticulo(ape_materno)
 		# Quitamos nombres Jose y Maria
-		nombre = utils.quitaNombre(nombre)
+		nombre = Utils.quitaNombre(nombre)
 		# Quita la CH y la LL
-		ape_paterno = utils.quitarCHLL(ape_paterno)
-		ape_materno = utils.quitarCHLL(ape_materno)
-		nombre = utils.quitarCHLL(nombre)
+		ape_paterno = Utils.quitarCHLL(ape_paterno)
+		ape_materno = Utils.quitarCHLL(ape_materno)
+		nombre = Utils.quitarCHLL(nombre)
 		# Obtener consonante Apellido Paterno
-		curp = general.getConsonante(curp, ape_paterno)
+		curp = General.getConsonante(curp, ape_paterno)
 		# Obtener consonante Apellido Materno
-		curp = general.getConsonante(curp, ape_materno)
+		curp = General.getConsonante(curp, ape_materno)
 		# Obtener consonante Nombre
-		curp = general.getConsonante(curp, nombre)
+		curp = General.getConsonante(curp, nombre)
 		# Obtiene Año de Nacimiento
-		anio = utils.getAnioFechaNac(fecha_nacimiento)
+		anio = Utils.getAnioFechaNac(fecha_nacimiento)
 		# Agregar homoclave y digito verificador
-		curp = utils.digitoVerificador(curp, anio)
+		curp = General.digitoVerificador(curp, anio)
 		print("CURP : "+curp)
 
 	def calcularRFC(self, nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, lugar_nacimiento):
 		nombre_completo = ape_paterno +" "+ ape_materno +" "+ nombre
 		origen = "RFC"
-		rfc = general.datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento, origen)
+		rfc = General.datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento, origen)
 		
-		rfc = general.calculaHomoclaveRFC(rfc, nombre_completo)
+		rfc = General.calculaHomoclaveRFC(rfc, nombre_completo)
 		print("RFC  : "+rfc)
 		
 # Parametros
@@ -55,6 +55,6 @@ lugar_nacimiento = "HG"
 origen = "CURP"
 
 # Instancia de Clase
-cp = generarCURPRFC()
+cp = GenerarCURPRFC()
 cp.calculaCURP(nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, lugar_nacimiento, origen)
 cp.calcularRFC(nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, lugar_nacimiento)  
