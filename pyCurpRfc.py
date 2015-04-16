@@ -67,10 +67,10 @@ class GenerarCURPRFC:
 		print("RFC  : "+rfc)
 		
 # Parametros
-nombre = "TOMAS"
-ape_paterno = "SANTIAGO"
-ape_materno = "GONZALEZ"
-fecha_nacimiento = "16-11-1989"
+nombre = "giovani"
+ape_paterno = "hidalgo"
+ape_materno = "ostoa"
+fecha_nacimiento = "12-08-1988"
 genero = "H"
 entidad_federativa = "HIDALGO"
 origen = "CURP"

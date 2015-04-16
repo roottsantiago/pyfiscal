@@ -166,8 +166,8 @@ class General:
 		sumaria = 0
 		homoclave = ""
 
-		while (count <= 15):
-			pstCom = curp[count:1]
+		for count in range(0,len(curp)):
+			pstCom = curp[count]
 
 			if pstCom == "0":
 				valor = (0 * contador)
@@ -245,10 +245,8 @@ class General:
 				valor = (36 * contador)
 
 			contador = contador - 1
-			count = count + 1
 			sumaria = sumaria + valor
-
-
+			
 		# Sacar el residuo	
 		numVerificador = sumaria % 10
 		# Devuelve el valor absoluto en caso de que sea negativo
