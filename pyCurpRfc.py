@@ -58,7 +58,7 @@ class GenerarCURPRFC:
 		apellido_materno = Utils.quitarCHLL(apellido_materno)
 		nombre = Utils.quitarCHLL(nombre)
 	
-		nombre_completo = ape_paterno +" "+ ape_materno +" "+ nombre
+		nombre_completo = 'SANTIAGO' +" "+ 'GONZALEZ' +" "+ 'TOMAS'
 		origen = "RFC"
 
 		rfc = General.datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento, origen)
@@ -67,10 +67,10 @@ class GenerarCURPRFC:
 		print("RFC  : "+rfc)
 		
 # Parametros
-nombre = "giovani"
-ape_paterno = "hidalgo"
-ape_materno = "ostoa"
-fecha_nacimiento = "12-08-1988"
+nombre = "tomas"
+ape_paterno = "santiago"
+ape_materno = "gonzalez"
+fecha_nacimiento = "16-11-1989"
 genero = "H"
 entidad_federativa = "HIDALGO"
 origen = "CURP"

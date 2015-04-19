@@ -20,18 +20,18 @@ class General:
 		return generico
 
 	def calculaOrigenCurp(nombre, apellidoPaterno, apellidoMaterno):
-		curp = "";
+		curp = ""
 		# No tiene Apellido Paterno
 		if apellidoPaterno == "" and apellidoMaterno != "":
 			#Agregamos el primer caracter del apellido paterno
-			curp = "XX";
+			curp = "XX"
 			curp += apellidoMaterno[0:2]
 
 		# No tiene Apellido Materno 
 		if apellidoMaterno == "" and apellidoPaterno != "":
 			#Agregamos el primer caracter del apellido paterno
 			curp = apellidoPaterno[0:1]
-			z1 = len(apellidoPaterno) - 1;
+			z1 = len(apellidoPaterno) - 1
 			apePaterno = apellidoPaterno[1:z1]
 			#Buscamos y agregamos al curp la primera vocal del apellido
 			for item in apePaterno:
@@ -264,63 +264,82 @@ class General:
 		return curp	
 
 	def calculaHomoclaveRFC(rfc, nombre_completo):
-
+		# Guardara el nombre en su correspondiente numérico
+		nombreEnNumero = ""
+		# La suma de la secuencia de números de nombreEnNumero
 		valorSuma = 0 
+
+		# Diccionarios para calcular la homoclave
+		dic1_rfc = {
+			" ":00 ,"&":10,"Ñ":10,"A":11,"B":12,
+			"C":13,"D":14,"E":15,"F":16,"G":17,
+			"H":18,"I":19,"J":21,"K":22,"L":23,
+			"M":24,"N":25,"O":26,"P":27,"Q":28,
+			"R":29,"S":32,"T":33,"U":34,"V":35,
+			"W":36,"X":37,"Y":38,"Z":39,"0":0,
+			"1":1,"2":2,"3":3,"4":4,"5":5,
+			"6":6,"7":7,"8":8,"9":9,
+		}
+
+		dic2_rfc = {
+			0:"1",1:"2",2:"3",3:"4",4:"5",
+			5:"6",6:"7",7:"8",8:"9",9:"A",
+			10:"B",11:"C",12:"D",13:"E",14:"F",
+			15:"G",16:"H",17:"I",18:"J",19:"K",
+			20:"L",21:"M",22:"N",23:"P",24:"Q",
+			25:"R",26:"S",27:"T",28:"U",29:"V",
+			30:"W",31:"X",32:"Y",
+		}
 		
-		dic1 = {" ":0 ,"&":10,"A":11,"B":12,"C":13,"D":14,"E":15,"F":16,"G":17,"H":18,"I":19,"J":21,"K":22,"L":23,"M":24,"N":25,"O":26,"P":27,"Q":28,"R":29,
-			"S":32,"T":33,"U":34,"V":35,"W":36,"X":37,"Y":38,"Z":39,"Ñ":40,"0":0,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,
+		dic3_rfc = {
+			"A":10,"B":11,"C":12,"D":13,"E":14,
+			"F":15,"G":16,"H":17,"I":18,"J":19,
+			"K":20,"L":21,"M":22,"N":23,"O":25,
+			"P":26,"Q":27,"R":28,"S":29,"T":30,
+			"U":31,"V":32,"W":33,"X":34,"Y":35,
+			"Z":36,"0":0,"1":1,"2":2,"3":3,
+			"4":4,"5":5,"6":6,"7":7,"8":8,
+			"9":9,"" :24," ":37,
 		}
-		dic2 = {0:"1",1:"2",2:"3",3:"4",4:"5",5:"6",6:"7",7:"8",8:"9",9:"A",0:"B",1:"C",2:"D",3:"E",4:"F",5:"G",6:"H",7:"I",8:"J",9:"K",0:"L",1:"M",2:"N",
-			3:"P",4:"Q",5:"R",6:"S",7:"T",8:"U",9:"V",0:"W",1:"X",2:"Y",3:"Z",
-		}
-		
-		dic3 = {"A":10,"B":11,"C":12,"D":13,"E":14,"F":15,"G":16,"H":17,"I":18,"J":19,"K":20,"L":21,"M":22,"N":23,"&":24,"O":25,"P":26,"Q":27,"R":28,"S":29,
-			"T":30,"U":31,"V":32,"W":33,"X":34,"Y":35,"Z":36," ":37,"Ñ":38,"0":0,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,
-		}
-	
-		list_num = [0]
-		for item in nombre_completo:
-			for key, value in dic1.items():
-				if item == key:
-					list_num.append(value)
-				else:
-					list_num.append(00)
+		# Agregamos un cero al inicio de la representación númerica del nombre
+		nombreEnNumero = "0"
 
-		count = 0
-		for num in list_num:
-			count = count+1
-			valorSuma += (num * 10) + (num + 1) * (num + count)
+		# Recorremos el nombre y vamos convirtiendo las letras en su valor numérico
+		for count in range(0,len(nombre_completo)):
+			c = nombre_completo[count] 
+			nombreEnNumero += Utils.rfcSet(str(dic1_rfc[c]),"00")
 
+		# La formula es:
+            # El caracter actual multiplicado por diez mas el valor del caracter siguiente y 
+            # lo anterior multiplicado por el valor del caracter siguiente
+		for count in range(0,len(nombreEnNumero)-1):
+			count2 = count+1
+			valorSuma += ((int(nombreEnNumero[count])*10) + int(nombreEnNumero[count2])) * int(nombreEnNumero[count2])
 
+		# Definicion default	
 		div = 0 
 		mod = 0
 		div = valorSuma % 1000
 		mod = div % 34
 		div = (div - mod) / 34
 
-		indice = 0
+		# Los dos primeros caracteres de la homoclave
 		hc = ""
-
-		while (indice <= 1):
-			for key, value in dic2.items():
-				if indice == key:
-					hc += value
-			indice = indice + 1
+		hc += Utils.rfcSet(dic2_rfc[int(div)],"Z")
+		hc += Utils.rfcSet(dic2_rfc[int(mod)],"Z")
 
 		#Agregamos al RFC los dos primeros caracteres de la homoclave
 		rfc += hc
 
+		# Aqui empieza el calculo del digito verificador basado en lo que tenemos del RFC
 		rfcAnumeroSuma = 0 
 		sumaParcial = 0
 
-		count = 0
-		for c in rfc:
-			count = count + 1
-			for key, value in dic3.items():
-				if c == key:
-					rfcAnumeroSuma = value
-					sumaParcial += (rfcAnumeroSuma * (14 - (count + 1)))
-
+		for count in range(0,len(rfc)):
+			c = rfc[count]
+			if dic3_rfc[c]:
+				rfcAnumeroSuma = dic3_rfc[c]
+				sumaParcial += (rfcAnumeroSuma * (14 - (count + 1)))
 
 		moduloVerificador = sumaParcial % 11
 		if (moduloVerificador == 0):
@@ -342,7 +361,7 @@ class General:
 			if consonante != "":
 				curp = curp + consonante
 			else:
-				constante = "X";
+				constante = "X"
 				curp = curp + constante
 		else:
 			curp = curp + "X"

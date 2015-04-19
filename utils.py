@@ -108,3 +108,9 @@ class Utils:
 		fecha_nac = datetime.datetime.strptime(fechaNac, '%d-%m-%Y').date()
 		anio = fecha_nac.year
 		return anio
+
+	def rfcSet(a, b):
+		if a == b:
+			return b
+		else :
+			return a
