@@ -3,17 +3,14 @@ from stringBuilder import*
 
 class General:
 
-	def datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento, origen):
+	def datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento):
 		generico = ""
-
-		if origen == "CURP":
-			generico = General.calculaOrigenCurp(nombre, ape_paterno, ape_materno)
-		elif origen == "RFC":
-			generico = General.calculaOrigenRFc(nombre, ape_paterno, ape_materno)
-
+		
+		# Regresa Curp y RFC
+		generico = General.calculaOrigenCurp(nombre, ape_paterno, ape_materno)
 
 		# Verificar los datos que no tenga palabras obsenas 
-		generico = Utils.verificarPalabras(generico, origen)
+		generico = Utils.verificarPalabras(generico)
 
 		# Agregamos la fecha de Nacimiento
 		generico = Utils.fechaNacimiento(generico, fecha_nacimiento)
@@ -57,63 +54,8 @@ class General:
 			curp += apellidoMaterno[0:1]
 			 #Agregamos el primer caracter del primer nombre
 			curp += nombre[0:1]
-
+			
 		return curp
-
-	def calculaOrigenRFc(nombre, ape_paterno, ape_materno):
-		#RFC que se regresará
-		rfc = ""
-
-		#No tiene apellido paterno
-		if ape_paterno == "" and ape_materno != "":
-			#Agregamos el primer caracter del apellido paterno
-			rfc = ape_materno[0:1]
-			z1 = len(ape_materno) - 1
-			ape_materno1 = ape_materno[1:z1]
-
-			for item in ape_materno1:
-				if Utils.esVocal(item):
-					rfc += item
-					break
-
-			# Obtene mos las siguientes dos letras del nombre
-			rfc += nombre[0:2]
-
-		# No tiene apellido Materno 
-		if (ape_materno == "" and ape_paterno != ""):
-			#Agregamos el primer caracter del apellido paterno
-			rfc = ape_paterno[0:1]
-			z1 = len(ape_paterno) - 1
-			ape_paterno1 = ape_paterno[1:z1]
-
-			#Buscamos y agregamos al rfc la primera vocal del apellido
-			for item in ape_paterno1:
-				if Utils.esVocal(item):
-					rfc += item
-					break
-
-			# Armar letras del nombre
-			rfc += nombre[0:1]
-			lsConstante = Utils.getConsonateCurp(nombre)
-			rfc += lsConstante
-
-		if ape_paterno != "" and ape_materno != "":
-			#Agregamos el primer caracter del apellido paterno
-			rfc = ape_paterno[0:1]
-			#Buscamos y agregamos al rfc la primera vocal del primer apellido
-			z1 = len(ape_paterno) - 1
-			ape_paterno1 = ape_paterno[1:z1]
-
-			for item in ape_paterno1:
-				if Utils.esVocal(item):
-					rfc += item
-					break
-			rfc += ape_materno[0:1]
-			#Agregamos el primer caracter del primer nombre
-			rfc += nombre[0:1]
-			lsConstante = Utils.getConsonateCurp(nombre)
-
-		return rfc
 
 	def entidadFederativa(param):
 		estado = None	
