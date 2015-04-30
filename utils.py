@@ -69,7 +69,7 @@ class Utils:
 		else:
 			return False
 
-	def verificarPalabras(curp, origen):
+	def verificarPalabras(curp):
 		lstPalabras = [ "BUEI", "BUEY", "CACA", "CACO", "CAGA", "CAGO", "CAKA", "CAKO", "COGE", "COGI", "COJA", "COJE", "COJI", "COJO", "COLA", "CULO", "FALO", "FETO",
 				"GETA", "GUEI", "GUEY","JETA", "JOTO", "KACA", "KACO", "KAGA", "KAGO", "KAKA", "KAKO", "KOGE", "KOGI", "KOJA", "KOJE", "KOJI", "KOJO", "KOLA", "KULO",
 				"LILO", "LOCA", "LOCO", "LOKA", "LOKO", "MAME", "MAMO", "MEAR", "MEAS", "MEON", "MIAR", "MION", "MOCO", "MOKO", "MULA", "MULO", "NACA", "NACO", "PEDA", 
@@ -80,11 +80,8 @@ class Utils:
 		for palabra in lstPalabras:
 			count += 1
 			if palabra == curp:
-				if origen == "RFC":
-					curp = curp[0:3] + "X"
-				elif origen == "CURP":	
-					curp = curp[0:1] + "X" + curp[2:2];
-					break
+				curp = curp[0:1] + "X" + curp[2:2];
+				break
 		return curp
 
 	def fechaNacimiento(curp, fechaNac):
