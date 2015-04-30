@@ -2,7 +2,7 @@ from general import *
 from utils import *
 class GenerarCURPRFC:
 
-	def calculaCURP(self, nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, entidad_federativa, origen):
+	def calculaCURP(self, nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, entidad_federativa):
 		
 		# Cambiamos todo a mayúsculas
 		nombre = nombre.upper()
@@ -24,7 +24,7 @@ class GenerarCURPRFC:
 		nombre = Utils.quitarCHLL(nombre)
 
 		# Obtine datos generales del CURP
-		curp = General.datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento, origen)
+		curp = General.datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento)
 		clave_estado = General.entidadFederativa(entidad_federativa)
 		# Agregamos el genero y lugar de nacimiento
 		curp += genero + clave_estado
@@ -62,7 +62,7 @@ class GenerarCURPRFC:
 		nombre_completo = 'SANTIAGO' +" "+ 'GONZALEZ' +" "+ 'TOMAS'
 		origen = "RFC"
 
-		rfc = General.datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento, origen)
+		rfc = General.datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento)
 		
 		rfc = General.calculaHomoclaveRFC(rfc, nombre_completo)
 		print("RFC  : "+rfc)
@@ -74,9 +74,9 @@ ape_materno = "gonzalez"
 fecha_nacimiento = "16-11-1989"
 genero = "H"
 entidad_federativa = "hidalgo"
-origen = "CURP"
 
 # Instancia de Clase
 cp = GenerarCURPRFC()
-cp.calculaCURP(nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, entidad_federativa, origen)
-cp.calcularRFC(nombre, ape_paterno, ape_materno, fecha_nacimiento, genero)  
+cp.calculaCURP(nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, entidad_federativa)
+cp.calcularRFC(nombre, ape_paterno, ape_materno, fecha_nacimiento, genero)
+  
