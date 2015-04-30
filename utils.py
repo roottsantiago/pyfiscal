@@ -1,4 +1,6 @@
 import datetime
+
+
 class Utils:
 	
 	def quitaArticulo(param):

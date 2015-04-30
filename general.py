@@ -1,6 +1,7 @@
 from utils import *
 from stringBuilder import*
 
+
 class General:
 
 	def datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento):
@@ -18,6 +19,7 @@ class General:
 
 	def calculaOrigenCurp(nombre, apellidoPaterno, apellidoMaterno):
 		curp = ""
+		
 		# No tiene Apellido Paterno
 		if apellidoPaterno == "" and apellidoMaterno != "":
 			#Agregamos el primer caracter del apellido paterno
@@ -54,7 +56,7 @@ class General:
 			curp += apellidoMaterno[0:1]
 			 #Agregamos el primer caracter del primer nombre
 			curp += nombre[0:1]
-			
+
 		return curp
 
 	def entidadFederativa(param):
@@ -294,7 +296,6 @@ class General:
 				rfc += str(sumaParcial)
 
 		return rfc
-
 
 	def consonante(curp, param):
 		consonante = ""
