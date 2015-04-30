@@ -8,6 +8,7 @@ class GenerarCURPRFC:
 		nombre = nombre.upper()
 		ape_paterno = ape_paterno.upper()
 		ape_materno = ape_materno.upper()
+		entidad_federativa = entidad_federativa.upper();
 		# Quitamos los espacios al principio y final del nombre y apellidos
 		nombre = nombre.strip()
 		ape_paterno = ape_paterno.strip()
@@ -72,7 +73,7 @@ ape_paterno = "santiago"
 ape_materno = "gonzalez"
 fecha_nacimiento = "16-11-1989"
 genero = "H"
-entidad_federativa = "HIDALGO"
+entidad_federativa = "hidalgo"
 origen = "CURP"
 
 # Instancia de Clase
