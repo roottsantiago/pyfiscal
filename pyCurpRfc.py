@@ -2,7 +2,7 @@ from general import *
 from utils import *
 
 
-class GenerarCURPRFC:
+class Calcule(object):
 
 	def calculaCURP(self, nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, entidad_federativa):	
 		# Cambiamos todo a mayúsculas
@@ -92,7 +92,7 @@ entidad_federativa = "hidalgo"
 
 
 # Instancia de Clase
-cp = GenerarCURPRFC()
+cp = Calcule()
 cp.calculaCURP(nombre, ape_paterno, ape_materno, fecha_nacimiento, genero, entidad_federativa)
 cp.calcularRFC(nombre, ape_paterno, ape_materno, fecha_nacimiento, genero)
 
