@@ -21,21 +21,14 @@ class Calcule(object):
 
 	def CURP(self):	
 
-		# Cambiamos todo a mayúsculas
-		self._nombres = self._nombres.upper()
-		self._apellido_paterno = self._apellido_paterno.upper()
-		self._apellido_materno = self._apellido_materno.upper()
-		self._lugar_nacimiento = self._lugar_nacimiento.upper()
-
-		# Quitamos los espacios al principio y final del nombre y apellidos
-		self._nombres = self._nombres.strip()
-		self._apellido_paterno = self._apellido_paterno.strip()
-		self._apellido_materno = self._apellido_materno.strip()
-
+		# Cambia todo a mayúsculas y quita espacios.
+		self._nombres = General.upper(self._nombres)
+		self._apellido_paterno = General.upper(self._apellido_paterno)
+		self._apellido_materno = General.upper(self._apellido_materno)
+		self._lugar_nacimiento = General.upper(self._lugar_nacimiento)
 		# Quitamos los artículos de los apellidos
 		self._apellido_paterno = Utils.quitaArticulo(self._apellido_paterno)
 		self._apellido_materno = Utils.quitaArticulo(self._apellido_materno)
-
 		# Quitamos nombres Jose y Maria
 		self._nombres = Utils.quitaNombre(self._nombres)
 

@@ -339,5 +339,9 @@ class General:
 
 		return curp
 
-	def string_upper():
-		pass
+	def upper(texto):
+		palabra = None
+		palabra = texto.upper()
+		palabra	= palabra.strip()
+
+		return palabra
