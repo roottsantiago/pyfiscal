@@ -1,8 +1,9 @@
 from base import *
+from basefinal import BaseGenerator
 from utils import *
 
 
-class Calcule(object):
+class Calcule(BaseGenerator):
 
 	_nombres = None
 	_apellido_paterno = None
