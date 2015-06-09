@@ -338,3 +338,6 @@ class General:
 			curp = curp + "X"
 
 		return curp
+
+	def string_upper():
+		pass
