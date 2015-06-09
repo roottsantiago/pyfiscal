@@ -100,10 +100,10 @@ class General:
 		for key, value in estados.items():
 			if key == param:
 				estado = value
-				
+
 		return estado
 
-	def digitoVerificador(curp, anio):
+	def digito_verificador(curp, anio):
 		contador = 18
 		count = 0
 		valor = 0
@@ -205,6 +205,7 @@ class General:
 			homoclave = "A" + ""
 
 		curp = curp + homoclave + str(numVerificador)
+		
 		return curp	
 
 	def calculaHomoclaveRFC(rfc, nombre_completo):

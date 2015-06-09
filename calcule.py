@@ -64,7 +64,7 @@ class Calcule(object):
 		anio = Utils.anioFecha(self._fecha_nacimiento)
 
 		# Agregar homoclave y digito verificador
-		curp = General.digitoVerificador(curp, anio)
+		curp = General.digito_verificador(curp, anio)
 
 		return curp
 
