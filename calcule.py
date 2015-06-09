@@ -9,7 +9,7 @@ class Calcule(object):
 	_apellido_materno = None
 	_fecha_nacimiento = None
 	_genero = None
-	_entidad_federativa = None 
+	_lugar_nacimiento = None 
 
 	def __init__(self):
 		self._nombres = self.nombres
@@ -17,7 +17,7 @@ class Calcule(object):
 		self._apellido_materno = self.apellido_materno
 		self._fecha_nacimiento = self.fecha_nacimiento
 		self._genero = self.genero
-		self._entidad_federativa = self.entidad_federativa
+		self._lugar_nacimiento = self.lugar_nacimiento
 
 	def CURP(self):	
 
@@ -25,7 +25,7 @@ class Calcule(object):
 		self._nombres = self._nombres.upper()
 		self._apellido_paterno = self._apellido_paterno.upper()
 		self._apellido_materno = self._apellido_materno.upper()
-		self._entidad_federativa = self._entidad_federativa.upper()
+		self._lugar_nacimiento = self._lugar_nacimiento.upper()
 
 		# Quitamos los espacios al principio y final del nombre y apellidos
 		self._nombres = self._nombres.strip()
@@ -46,7 +46,7 @@ class Calcule(object):
 
 		# Obtine datos generales del CURP
 		curp = General.datosGenerales(self._nombres, self._apellido_paterno, self._apellido_materno, self.fecha_nacimiento)
-		clave_estado = General.entidadFederativa(self._entidad_federativa)
+		clave_estado = General.entidad_federativa(self._lugar_nacimiento)
 
 		# Agregamos el genero y lugar de nacimiento
 		curp += self._genero + clave_estado
