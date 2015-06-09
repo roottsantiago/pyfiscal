@@ -12,7 +12,7 @@ class General:
 		# Regresa Curp y RFC
 		dato_fiscal = General.inicial_nombres(nombre, ape_paterno, ape_materno)
 		# Verificar los datos que no tenga palabras obsenas 
-		dato_fiscal = Utils.verificarPalabras(dato_fiscal)
+		dato_fiscal = General.verifica_palabra(dato_fiscal)
 		# Agregamos la fecha de Nacimiento
 		dato_fiscal = General.fecha_nacimiento(dato_fiscal, fecha_nacimiento)
 
@@ -58,6 +58,26 @@ class General:
 			iniciales += nombre[0:1]
 
 		return iniciales
+
+	def verifica_palabra(curp):
+		palabras = [ 
+			"BUEI", "BUEY", "CACA", "CACO", "CAGA", "CAGO", "CAKA", "CAKO", "COGE",
+			"COGI", "COJA", "COJE", "COJI", "COJO", "COLA", "CULO", "FALO", "FETO",
+			"GETA", "GUEI", "GUEY", "JETA", "JOTO", "KACA", "KACO", "KAGA", "KAGO", 
+			"KAKA", "KAKO", "KOGE", "KOGI", "KOJA", "KOJE", "KOJI", "KOJO", "KOLA", 
+			"KULO", "LILO", "LOCA", "LOCO", "LOKA", "LOKO", "MAME", "MAMO", "MEAR", 
+			"MEAS", "MEON", "MIAR", "MION", "MOCO", "MOKO", "MULA", "MULO", "NACA", 
+			"NACO", "PEDA", "PEDO", "PENE", "PIPI", "PITO", "POPO", "PUTA", "PUTO", 
+			"QULO", "RATA", "ROBA", "ROBE", "ROBO", "RUIN", "SENO", "TETA", "VUEI", 
+			"VUEY", "WUEI", "WUEY",
+		]
+
+		for palabra in palabras:
+			if palabra == curp:
+				curp = curp[0:1] + "X" + curp[2:2]
+				break
+
+		return curp
 
 	def fecha_nacimiento(curp, fecha_nac):
 		# Convertir str a Date
