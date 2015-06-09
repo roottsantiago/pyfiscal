@@ -96,6 +96,6 @@ class Calcule(object):
 
 		rfc = General.datosGenerales(self._nombres, self._apellido_paterno, self._apellido_materno, self._fecha_nacimiento)
 
-		rfc = General.calculaHomoclaveRFC(rfc, nombre_completo)
+		rfc = General.calcula_homoclave(rfc, nombre_completo)
 
 		return rfc
