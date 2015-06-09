@@ -9,7 +9,7 @@ class General:
 	def datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento):
 		
 		# Regresa Curp y RFC
-		dato_fiscal = General.calculaOrigenCurp(nombre, ape_paterno, ape_materno)
+		dato_fiscal = General.inicial_nombres(nombre, ape_paterno, ape_materno)
 		# Verificar los datos que no tenga palabras obsenas 
 		dato_fiscal = Utils.verificarPalabras(dato_fiscal)
 		# Agregamos la fecha de Nacimiento
@@ -17,7 +17,7 @@ class General:
 
 		return dato_fiscal
 
-	def calculaOrigenCurp(nombre, apellidoPaterno, apellidoMaterno):
+	def inicial_nombres(nombre, apellidoPaterno, apellidoMaterno):
 		curp = ""
 		
 		# No tiene Apellido Paterno
