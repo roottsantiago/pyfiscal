@@ -1,7 +1,7 @@
 import datetime
 
 
-class Utils:
+class Utils(object):
 	
 	def quitaArticulo(param):
 		str_empty = ""
@@ -81,3 +81,10 @@ class Utils:
 			return b
 		else :
 			return a
+
+	def upper(self, texto):
+		palabra = None
+		palabra = texto.upper()
+		palabra	= palabra.strip()
+
+		return palabra

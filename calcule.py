@@ -20,6 +20,11 @@ class Calcule(BaseGenerator):
 		self._genero = self.genero
 		self._lugar_nacimiento = self.lugar_nacimiento
 
+		self.forma_rfc(
+			nombres=self._nombres, paterno=self._apellido_paterno, 
+			materno=self._apellido_materno, nacimiento=self._lugar_nacimiento
+		)
+
 	def CURP(self):	
 
 		# Cambia todo a mayúsculas y quita espacios.
