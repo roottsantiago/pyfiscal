@@ -14,7 +14,7 @@ class General:
 		dato_fiscal = Utils.verificarPalabras(dato_fiscal)
 		# Agregamos la fecha de Nacimiento
 		dato_fiscal = Utils.fechaNacimiento(dato_fiscal, fecha_nacimiento)
-		
+
 		return dato_fiscal
 
 	def calculaOrigenCurp(nombre, apellidoPaterno, apellidoMaterno):
@@ -59,11 +59,10 @@ class General:
 
 		return curp
 
-	def entidadFederativa(param):
+	def entidad_federativa(param):
 		estado = None	
-		dic_estados = { 
-			"":"",
-			"AGUASCALIENTES":"AS",
+		estados = { 
+			"":"", "AGUASCALIENTES":"AS",
 			"BAJA CALIFORNIA":"BC",
 			"BAJA CALIFORNIA SUR":"BS",
 			"CAMPECHE":"CC",
@@ -95,12 +94,13 @@ class General:
 			"VERACRUZ":"VZ",
 			"YUCATÁN":"YN",
 			"ZACATECAS":"ZS",
-			"NACIDO EXTRANJERO":"NE"
+			"NACIDO EXTRANJERO":"NE",
 		}
 
-		for key, value in dic_estados.items():
+		for key, value in estados.items():
 			if key == param:
 				estado = value
+				
 		return estado
 
 	def digitoVerificador(curp, anio):
