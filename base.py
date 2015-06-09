@@ -5,6 +5,7 @@ from stringBuilder import*
 class General:
 
 	dato_fiscal = None
+	iniciales = None
 
 	def datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento):
 		
@@ -18,46 +19,45 @@ class General:
 		return dato_fiscal
 
 	def inicial_nombres(nombre, apellidoPaterno, apellidoMaterno):
-		curp = ""
-		
+
 		# No tiene Apellido Paterno
 		if apellidoPaterno == "" and apellidoMaterno != "":
 			#Agregamos el primer caracter del apellido paterno
-			curp = "XX"
-			curp += apellidoMaterno[0:2]
+			iniciales = "XX"
+			iniciales += apellidoMaterno[0:2]
 
 		# No tiene Apellido Materno 
 		if apellidoMaterno == "" and apellidoPaterno != "":
 			#Agregamos el primer caracter del apellido paterno
-			curp = apellidoPaterno[0:1]
+			iniciales = apellidoPaterno[0:1]
 			z1 = len(apellidoPaterno) - 1
 			apePaterno = apellidoPaterno[1:z1]
 			#Buscamos y agregamos al curp la primera vocal del apellido
 			for item in apePaterno:
 				if Utils.esVocal(item):
-					curp += item
+					iniciales += item
 					break
 
-			curp += "X"
-			#Armar letras del nombre
-			curp += nombre[0:1]
+			iniciales += "X"
+			#Ainicialesrmar letras del nombre
+			iniciales += nombre[0:1]
 
 		if apellidoPaterno != "" and apellidoMaterno != "":
 			#Agregamos el primer caracter del apellido paterno
-			curp = apellidoPaterno[0:1]
+			iniciales = apellidoPaterno[0:1]
 			z1 = len(apellidoPaterno) - 1
 			apePaterno = apellidoPaterno[1:z1]
 
 			#Buscamos y agregamos al curp la primera vocal del primer apellido
 			for item in apePaterno:
 				if Utils.esVocal(item):
-					curp += item
+					iniciales += item
 					break
-			curp += apellidoMaterno[0:1]
-			 #Agregamos el primer caracter del primer nombre
-			curp += nombre[0:1]
+			iniciales += apellidoMaterno[0:1]
+			 # Agregamos el primer caracter del primer nombre
+			iniciales += nombre[0:1]
 
-		return curp
+		return iniciales
 
 	def entidad_federativa(param):
 		estado = None	
