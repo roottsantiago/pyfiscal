@@ -39,9 +39,9 @@ class Calcule(BaseGenerator):
 		self._nombres = Utils().quita_nombre(self._nombres)
 
 		# Quita la CH y la LL
-		self._apellido_paterno = Utils.quitarCHLL(self._apellido_paterno)
-		self._apellido_materno = Utils.quitarCHLL(self._apellido_materno)
-		self._nombres = Utils.quitarCHLL(self._nombres)
+		self._apellido_paterno = Utils().quita_CH_LL(self._apellido_paterno)
+		self._apellido_materno = Utils().quita_CH_LL(self._apellido_materno)
+		self._nombres = Utils().quita_CH_LL(self._nombres)
 
 		# Obtine datos generales del CURP
 		curp = General.datosGenerales(self._nombres, self._apellido_paterno, self._apellido_materno, self.fecha_nacimiento)
@@ -87,9 +87,9 @@ class Calcule(BaseGenerator):
 		self._nombres = Utils().quita_nombre(self._nombres)
 
 		# Quita la CH y la LL
-		self._apellido_paterno = Utils.quitarCHLL(self._apellido_paterno)
-		self._apellido_materno = Utils.quitarCHLL(self._apellido_materno)
-		self._nombres = Utils.quitarCHLL(self._nombres)
+		self._apellido_paterno = Utils().quita_CH_LL(self._apellido_paterno)
+		self._apellido_materno = Utils().quita_CH_LL(self._apellido_materno)
+		self._nombres = Utils().quita_CH_LL(self._nombres)
 
 		nombre_completo = self._apellido_paterno +" "+ self._apellido_materno +" "+ self._nombres
 
