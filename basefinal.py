@@ -11,4 +11,7 @@ class BaseGenerator(object):
 		paterno = Utils().upper(paterno)
 		materno = Utils().upper(materno)
 		nacimiento = Utils().upper(nacimiento)
-		print(nombres, paterno, materno, nacimiento)
+
+		paterno = Utils().quita_articulo(paterno)
+		materno = Utils().quita_articulo(materno)
+		
