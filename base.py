@@ -4,18 +4,18 @@ from stringBuilder import*
 
 class General:
 
+	dato_fiscal = None
+
 	def datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento):
-		generico = ""
 		
 		# Regresa Curp y RFC
-		generico = General.calculaOrigenCurp(nombre, ape_paterno, ape_materno)
-
+		dato_fiscal = General.calculaOrigenCurp(nombre, ape_paterno, ape_materno)
 		# Verificar los datos que no tenga palabras obsenas 
-		generico = Utils.verificarPalabras(generico)
-
+		dato_fiscal = Utils.verificarPalabras(dato_fiscal)
 		# Agregamos la fecha de Nacimiento
-		generico = Utils.fechaNacimiento(generico, fecha_nacimiento)
-		return generico
+		dato_fiscal = Utils.fechaNacimiento(dato_fiscal, fecha_nacimiento)
+		
+		return dato_fiscal
 
 	def calculaOrigenCurp(nombre, apellidoPaterno, apellidoMaterno):
 		curp = ""
