@@ -36,7 +36,7 @@ class Calcule(BaseGenerator):
 		self._apellido_paterno = Utils().quita_articulo(self._apellido_paterno)
 		self._apellido_materno = Utils().quita_articulo(self._apellido_materno)
 		# Quitamos nombres Jose y Maria
-		self._nombres = Utils.quitaNombre(self._nombres)
+		self._nombres = Utils().quita_nombre(self._nombres)
 
 		# Quita la CH y la LL
 		self._apellido_paterno = Utils.quitarCHLL(self._apellido_paterno)
@@ -84,7 +84,7 @@ class Calcule(BaseGenerator):
 		self._apellido_materno = Utils().quita_articulo(self._apellido_materno)
 
 		# Quitamos nombres Jose y Maria
-		self._nombres = Utils.quitaNombre(self._nombres)
+		self._nombres = Utils().quita_nombre(self._nombres)
 
 		# Quita la CH y la LL
 		self._apellido_paterno = Utils.quitarCHLL(self._apellido_paterno)
