@@ -8,7 +8,7 @@ class GenerateRFC(Calcule):
 	apellido_materno = "gonzalez"
 	fecha_nacimiento = "16-11-1989"
 	genero = "H"
-	entidad_federativa = ""
+	lugar_nacimiento = ""
 
 class GenerateCURP(Calcule):
 
@@ -17,7 +17,7 @@ class GenerateCURP(Calcule):
 	apellido_materno = "gonzalez"
 	fecha_nacimiento = "16-11-1989"
 	genero = "H"
-	entidad_federativa = "hidalgo"
+	lugar_nacimiento = "hidalgo"
 
 
 curp = GenerateCURP().CURP()
