@@ -71,11 +71,6 @@ class Utils(object):
 		else:
 			return False
 			
-	def anioFecha(fechaNac):
-		fecha_nac = datetime.datetime.strptime(fechaNac, '%d-%m-%Y').date()
-		anio = fecha_nac.year
-		return anio
-
 	def upper(self, texto):
 		palabra = None
 		palabra = texto.upper()
