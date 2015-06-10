@@ -19,7 +19,7 @@ class Utils(object):
 				palabra = "L" + palabra[2:len(palabra)-2]
 		return palabra
 
-	def getConsonateCurp(palabra):
+	def getConsonateCurp(self, palabra):
 		consonante = ""
 		Len = 0
 		valor = ""
@@ -88,3 +88,14 @@ class Utils(object):
 		palabra	= palabra.strip()
 
 		return palabra
+
+	def consonante(self, param):
+		consonante = "X"
+		consonante = self.getConsonateCurp(param)
+		return consonante
+
+	def anio_fecha(self, fecha):
+		fecha = datetime.datetime.strptime(fecha, '%d-%m-%Y').date()
+		anio = fecha.year
+
+		return anio
