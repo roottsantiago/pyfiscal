@@ -9,7 +9,7 @@ class CalculeRFC(BaseGenerator):
 		self._rfc = self._origen
 		self._nombrecompleto = "%s %s %s" % (self._paterno, self._materno, self._nombres)
 		# Cálcula y agrega homoclave al RFC
-		self._homoclave = self.homoclave(self._rfc, self._nombrecompleto)
+		self._homoclave = self.homoclave_rfc(self._rfc, self._nombrecompleto)
 		self._rfc += self._homoclave
 		# Cálcula y agrega digito verificador al RFC
 		self._digito = self.numero_verificador(self._rfc)
@@ -17,7 +17,7 @@ class CalculeRFC(BaseGenerator):
 
 		return self._rfc
 
-	def homoclave(self, rfc, nombrecompleto):
+	def homoclave_rfc(self, rfc, nombrecompleto):
 		nombre_numero = "0"
 		suma_valor = 0 
 		div = 0 
