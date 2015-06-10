@@ -19,8 +19,7 @@ class Utils(object):
 				palabra = "L" + palabra[2:len(palabra)-2]
 		return palabra
 
-	def getConsonateCurp(self, palabra):
-		consonante = ""
+	def consonate_curp(self, palabra):
 		Len = 0
 		valor = ""
 		Len = len(palabra)
@@ -29,11 +28,10 @@ class Utils(object):
 		if Len < 0:
 			Len = 1
 		# Identificar si la palabra empieza con una consonante
-		consonante1 = "";
 		letra = palabra[0:1]
 
 		for item in letra:
-			if Utils.esConsonante(item):
+			if self.es_consonante(item):
 				consonante1 = item
 				break
 		
@@ -47,19 +45,21 @@ class Utils(object):
 			if val == "Ñ":
 				consonante = "";
 				break
-			elif Utils.esConsonante(item):
+			elif self.es_consonante(item):
 				consonante = item;
 				break
 		
 		return consonante
 
-	def esConsonante(letra):
+	def es_consonante(self, letra):
 		consonante = False
-		array_con = ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z']
-		count = 0
-		for con in array_con:
-			count += 1
-			if con == letra:
+		consonantes = [
+			'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S',
+			'T', 'V', 'W', 'X', 'Y', 'Z'
+		]
+
+		for item in consonantes:
+			if item == letra:
 				consonante = True
 				break
 		return consonante

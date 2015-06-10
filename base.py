@@ -167,7 +167,7 @@ class BaseGenerator(object):
 
 	def consonante(self, param):
 		consonante = "X"
-		consonante = Utils().getConsonateCurp(param)
+		consonante = Utils().consonate_curp(param)
 		return consonante
 
 	def anio_fecha(self, fecha):
