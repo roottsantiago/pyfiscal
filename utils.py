@@ -11,13 +11,16 @@ class Utils(object):
 		str_empty = ""
 		return param.replace("JOSE ", str_empty).replace("J ", str_empty).replace("J. ", str_empty).replace("MARIA ", str_empty).replace("MA. ", str_empty).replace("MA ", str_empty).replace("DE ", str_empty).replace(" DE ", str_empty).replace("DEL ", str_empty).replace(" DEL ", str_empty).replace("LA ", str_empty).replace(" LA ", str_empty).replace("LAS ", str_empty).replace(" LAS ", str_empty).replace("LOS ", str_empty).replace(" LOS ", str_empty).replace("MC ", str_empty).replace("MAC ", str_empty).replace("VON ", str_empty).replace("VAN ", str_empty).replace(" Y ", str_empty);
 
-	def quita_CH_LL(self, palabra):
-		if palabra !="":
-			if palabra[0:2] == "CH":
-				palabra = "C" + palabra[2:len(palabra)-2]
-			elif palabra[0:2] == "LL":
-				palabra = "L" + palabra[2:len(palabra)-2]
-		return palabra
+	def quita_CH_LL(self, texto):
+		letras = texto[0:2]
+		concatenar = texto[2:len(texto)]
+		
+		if letras == "CH":
+			texto = "C%s" % concatenar
+		elif letras == "LL":
+			texto = "L%s" % concatenar
+
+		return texto
 
 	def consonate_curp(self, palabra):
 		Len = 0
