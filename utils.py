@@ -64,12 +64,15 @@ class Utils(object):
 				break
 		return consonante
 
-	def esVocal(letra):
-		#Aunque para el caso del RFC cambié todas las letras a mayúsculas igual agregé las minúsculas.
-		if letra == 'A' or letra == 'E' or letra == 'I' or letra == 'O' or letra == 'U' or letra == 'a' or letra == 'e' or letra == 'i' or letra == 'o' or letra == 'u':
-			return True;
-		else:
-			return False
+	def vocal(self, param):
+		vocales = ("A", "E", "I", "O", "U", "Á", "É", "Í", "Ó", "Ú")
+		
+		for vocal in vocales:
+			vocal = param
+			return True
+			break
+			
+		return False
 			
 	def upper(self, texto):
 		palabra = None
