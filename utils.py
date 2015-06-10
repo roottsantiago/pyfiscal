@@ -51,18 +51,18 @@ class Utils(object):
 		
 		return consonante
 
-	def es_consonante(self, letra):
-		consonante = False
-		consonantes = [
+	def es_consonante(self, param):
+		consonantes = (
 			'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S',
 			'T', 'V', 'W', 'X', 'Y', 'Z'
-		]
+		)
 
-		for item in consonantes:
-			if item == letra:
-				consonante = True
+		for consonante in consonantes:
+			if consonante == param:
+				return True
 				break
-		return consonante
+
+		return False
 
 	def vocal(self, param):
 		vocales = ("A", "E", "I", "O", "U", "Á", "É", "Í", "Ó", "Ú")
@@ -75,7 +75,6 @@ class Utils(object):
 		return False
 			
 	def upper(self, texto):
-		palabra = None
 		palabra = texto.upper()
 		palabra	= palabra.strip()
 
