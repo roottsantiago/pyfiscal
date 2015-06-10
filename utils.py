@@ -83,12 +83,7 @@ class Utils(object):
 
 		return palabra
 
-	def consonante(self, param):
-		consonante = "X"
-		consonante = self.getConsonateCurp(param)
-		return consonante
-
-	def anio_fecha(self, fecha):
+	def anio(self, fecha):
 		fecha = datetime.datetime.strptime(fecha, '%d-%m-%Y').date()
 		anio = fecha.year
 
