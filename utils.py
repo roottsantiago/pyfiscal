@@ -4,17 +4,36 @@ import datetime
 class Utils(object):
 	
 	def quita_articulo(self, param):
-		str_empty = ""
-		return param.replace("DE ", str_empty).replace("DEL ", str_empty).replace("LA ", str_empty).replace("LOS ", str_empty).replace("LAS ", str_empty).replace("Y ", str_empty).replace("MC ", str_empty).replace("MAC ", str_empty).replace("VON ", str_empty).replace("VAN ", str_empty)
+		remplazar = ''
+		buscar = (
+			'DE ', 'DEL ', 'LA ', 'LOS ', 'LAS ','Y ', 'MC ', 'MAC ', 'VON ',
+			'VAN '
+		)
+
+		reemplazado = param
+		for articulo in buscar:
+			reemplazado = reemplazado.replace(articulo, remplazar)
+
+		return reemplazado
 
 	def quita_nombre(self, param):
-		str_empty = ""
-		return param.replace("JOSE ", str_empty).replace("J ", str_empty).replace("J. ", str_empty).replace("MARIA ", str_empty).replace("MA. ", str_empty).replace("MA ", str_empty).replace("DE ", str_empty).replace(" DE ", str_empty).replace("DEL ", str_empty).replace(" DEL ", str_empty).replace("LA ", str_empty).replace(" LA ", str_empty).replace("LAS ", str_empty).replace(" LAS ", str_empty).replace("LOS ", str_empty).replace(" LOS ", str_empty).replace("MC ", str_empty).replace("MAC ", str_empty).replace("VON ", str_empty).replace("VAN ", str_empty).replace(" Y ", str_empty);
+		remplazar = ''
+		buscar = (
+			'JOSE ', 'J ', 'MARIA ', 'MA. ', 'DE ', ' DE ', 'DEL ', ' DEL ', 'LA ',
+			' LA ', 'LAS ', ' LAS ', 'LOS ', ' LOS ', 'MC ', 'MC ', 'MAC ', 'VON ',
+			'VAN ', ' Y '
+		)
+
+		reemplazado = param
+		for articulo in buscar:
+			reemplazado = reemplazado.replace(articulo, remplazar)
+
+		return reemplazado
 
 	def quita_CH_LL(self, texto):
 		letras = texto[0:2]
 		concatenar = texto[2:len(texto)]
-		
+
 		if letras == "CH":
 			texto = "C%s" % concatenar
 		elif letras == "LL":
