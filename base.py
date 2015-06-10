@@ -1,65 +1,134 @@
-from utils import *
-from stringBuilder import*
+import datetime
+from utils import Utils
 
+class BaseGenerator(object):
+	
+	_nombres = None 
+	_paterno = None
+	_materno = None
+	_fecha = None 
+	_genero = None
+	_estado = None 
+	_nombrecompleto = None
+	_origen = None
+	_curp = None
+	_rfc = None
+	_data = []
 
-class General:
+	def __init__(self):
+		self._nombres = self.nombres
+		self._paterno = self.paterno
+		self._materno = self.materno
+		self._fecha = self.fecha 
+		self._genero = self.genero
+		self._estado = self.estado
 
-	dato_fiscal = None
-	iniciales = None
+		self.parse_params()
+		self.generico()
 
-	def datosGenerales(nombre, ape_paterno, ape_materno, fecha_nacimiento):
+	def parse_params(self):
+
+		self._nombres = Utils().upper(self._nombres)
+		self._paterno = Utils().upper(self._paterno)
+		self._materno = Utils().upper(self._materno)
+		self._estado = Utils().upper(self._estado)
+
+		self._nombres = Utils().quita_nombre(self._nombres)
+		self._paterno = Utils().quita_articulo(self._paterno)
+		self._materno = Utils().quita_articulo(self._materno)
 		
-		# Regresa Curp y RFC
-		dato_fiscal = General.inicial_nombres(nombre, ape_paterno, ape_materno)
-		# Verificar los datos que no tenga palabras obsenas 
-		dato_fiscal = General.verifica_palabra(dato_fiscal)
-		# Agregamos la fecha de Nacimiento
-		dato_fiscal = General.fecha_nacimiento(dato_fiscal, fecha_nacimiento)
+		self._nombres = Utils().quita_CH_LL(self._nombres)
+		self._paterno = Utils().quita_CH_LL(self._paterno)
+		self._materno = Utils().quita_CH_LL(self._materno)
 
-		return dato_fiscal
+		self._nombrecompleto = self._paterno +" "+ self._materno +" "+ self._nombres
 
-	def inicial_nombres(nombre, apellidoPaterno, apellidoMaterno):
+	def generico(self):
+		# Regresa iniciales del nombre y verifica palabras 
+		self._origen = self.iniciales_nombre(self._nombres, self._paterno, self._materno)
+		self._origen = self.verifica_palabra(self._origen)
+		# Agrega fecha de nacimineto
+		fecha_nacimiento = self.parse_fecha(self._fecha)
+		self._origen += fecha_nacimiento
 
-		# No tiene Apellido Paterno
-		if apellidoPaterno == "" and apellidoMaterno != "":
-			#Agregamos el primer caracter del apellido paterno
+		return self._origen
+		
+	def genera_curp(self):
+		self._curp = self._origen
+
+		self._curp += self._genero
+
+		clave_estado = self.entidad_federativa(self._estado)
+		self._curp += clave_estado
+
+		con_paterno = Utils().consonante(self._paterno)
+		self._curp += con_paterno
+
+		con_materno = Utils().consonante(self._materno)
+		self._curp += con_materno
+
+		con_nombres = Utils().consonante(self._nombres)
+		self._curp += con_nombres
+
+		anio = Utils().anio_fecha(self._fecha)
+		homoclave = self.homoclave_curp(anio)
+		self._curp += homoclave
+
+		digito = self.digito_verificador(self._curp)
+		self._curp += digito
+
+		self._data.append(self._curp)
+
+		return self._data
+
+	def genera_rfc(self):
+		self._rfc = self._origen
+
+		self._rfc = self.homoclave_rfc(self._rfc, self._nombrecompleto)
+
+		self._data.append(self._rfc)
+
+		return self._data
+
+	def iniciales_nombre(self, nombres, paterno, materno):
+
+		# No tiene apellido paterno
+		if paterno == "" and materno != "":
 			iniciales = "XX"
-			iniciales += apellidoMaterno[0:2]
+			iniciales += materno[0:2]
 
-		# No tiene Apellido Materno 
-		if apellidoMaterno == "" and apellidoPaterno != "":
-			#Agregamos el primer caracter del apellido paterno
-			iniciales = apellidoPaterno[0:1]
-			z1 = len(apellidoPaterno) - 1
-			apePaterno = apellidoPaterno[1:z1]
+		# No tiene apellido materno 
+		if materno == "" and paterno != "":
+			iniciales = paterno[0:1]
+			z1 = len(paterno) - 1
+			paterno = paterno[1:z1]
+
 			#Buscamos y agregamos al curp la primera vocal del apellido
-			for item in apePaterno:
+			for item in paterno:
 				if Utils.esVocal(item):
 					iniciales += item
 					break
 
 			iniciales += "X"
-			#Ainicialesrmar letras del nombre
-			iniciales += nombre[0:1]
+			iniciales += nombres[0:1]
 
-		if apellidoPaterno != "" and apellidoMaterno != "":
-			#Agregamos el primer caracter del apellido paterno
-			iniciales = apellidoPaterno[0:1]
-			z1 = len(apellidoPaterno) - 1
-			apePaterno = apellidoPaterno[1:z1]
+		if paterno != "" and materno != "":
+			iniciales = paterno[0:1]
+			z1 = len(paterno) - 1
+			paterno = paterno[1:z1]
 
-			#Buscamos y agregamos al curp la primera vocal del primer apellido
-			for item in apePaterno:
+			for item in paterno:
 				if Utils.esVocal(item):
 					iniciales += item
 					break
-			iniciales += apellidoMaterno[0:1]
-			 # Agregamos el primer caracter del primer nombre
-			iniciales += nombre[0:1]
+
+			iniciales += materno[0:1]
+			iniciales += nombres[0:1]
 
 		return iniciales
 
-	def verifica_palabra(curp):
+	def verifica_palabra(self, rfc):
+
 		palabras = [ 
 			"BUEI", "BUEY", "CACA", "CACO", "CAGA", "CAGO", "CAKA", "CAKO", "COGE",
 			"COGI", "COJA", "COJE", "COJI", "COJO", "COLA", "CULO", "FALO", "FETO",
@@ -73,30 +142,27 @@ class General:
 		]
 
 		for palabra in palabras:
-			if palabra == curp:
-				curp = curp[0:1] + "X" + curp[2:2]
+			if palabra == rfc:
+				rfc = "XXXX"
 				break
 
-		return curp
+		return rfc
 
-	def fecha_nacimiento(curp, fecha_nac):
-		# Convertir str a Date
-		fecha_nac = datetime.datetime.strptime(fecha_nac, '%d-%m-%Y').date()
-		anio = fecha_nac.year
-		mes = fecha_nac.month
-		dia = fecha_nac.day
-		# Quitar primeros 2 digitos del año
-		str_anio = str(anio)
-		str_anio = str_anio[2:4]
-		# Rellena con ceros a la izquierda hasta alcanzar la longitud final indicada
-		str_mes = str(mes).zfill(2)
-		str_dia = str(dia).zfill(2)
-		# Agregar anio, mes y dia
-		curp += str_anio + str_mes + str_dia
+	def parse_fecha(self, fecha):
+		fecha_nac = ""
+		fecha = datetime.datetime.strptime(fecha, '%d-%m-%Y').date()
+		anio = str(fecha.year)
+		anio = anio[2:4]
+		# Rellena con ceros a la izquierda
+		mes = str(fecha.month).zfill(2)
+		dia = str(fecha.day).zfill(2)
 
-		return curp
+		fecha_nac += anio+mes+dia 
 
-	def entidad_federativa(param):
+		return fecha_nac
+
+
+	def entidad_federativa(self, param):
 		estado = None	
 		estados = { 
 			"":"", "AGUASCALIENTES":"AS",
@@ -137,15 +203,14 @@ class General:
 		for key, value in estados.items():
 			if key == param:
 				estado = value
-
+		
 		return estado
 
-	def digito_verificador(curp, anio):
+	def digito_verificador(self, curp):
 		contador = 18
 		count = 0
 		valor = 0
 		sumaria = 0
-		homoclave = ""
 
 		for count in range(0,len(curp)):
 			pstCom = curp[count]
@@ -229,23 +294,26 @@ class General:
 			sumaria = sumaria + valor
 			
 		# Sacar el residuo	
-		numVerificador = sumaria % 10
+		num_ver = sumaria % 10
 		# Devuelve el valor absoluto en caso de que sea negativo
-		numVerificador = abs(10 - numVerificador)
+		num_ver = abs(10 - num_ver)
 		#En caso de que sea 10 el digito es 0
-		if numVerificador == 10:
-			numVerificador = 0
-		# Obtener homoclave
+		if num_ver == 10:
+			num_ver = 0
+
+		return str(num_ver)	
+
+	def homoclave_curp(self, anio):
+		homoclave = ""
+
 		if anio < 2000:
-			homoclave = "0" + ""
+			homoclave = "0"
 		elif anio >= 2000:
-			homoclave = "A" + ""
+			homoclave = "A"
 
-		curp = curp + homoclave + str(numVerificador)
+		return homoclave
 
-		return curp	
-
-	def calcula_homoclave(rfc, nombre_completo):
+	def homoclave_rfc(self, rfc, nombre_completo):
 		# Guardara el nombre en su correspondiente numérico
 		nombre_numero = ""
 		# La suma de la secuencia de números de nombre_numero
@@ -325,23 +393,7 @@ class General:
 
 		return rfc
 
-	def consonante(curp, param):
-		consonante = ""
-		if param != "":
-			consonante = Utils.getConsonateCurp(param)
-			if consonante != "":
-				curp = curp + consonante
-			else:
-				constante = "X"
-				curp = curp + constante
-		else:
-			curp = curp + "X"
 
-		return curp
-
-	def upper(texto):
-		palabra = None
-		palabra = texto.upper()
-		palabra	= palabra.strip()
-
-		return palabra
+	@property
+	def data(self):
+		return self._data
