@@ -76,12 +76,6 @@ class Utils(object):
 		anio = fecha_nac.year
 		return anio
 
-	def rfcSet(a, b):
-		if a == b:
-			return b
-		else :
-			return a
-
 	def upper(self, texto):
 		palabra = None
 		palabra = texto.upper()
