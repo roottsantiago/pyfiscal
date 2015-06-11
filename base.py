@@ -8,13 +8,15 @@ class BaseGenerator(object):
 	def genera(self):
 		raise NotImplementedError("No implemetado.")
 
-	def parse(self, nombres, paterno, materno, estado=''):
+	def parse(self, nombres, paterno, materno, estado=None):
 		
+		if estado != None:
+			self.estado = Utils().upper(estado)
+			
 		self.nombres = Utils().upper(nombres)
 		self.paterno = Utils().upper(paterno)
 		self.materno = Utils().upper(materno)
-		self.estado = Utils().upper(estado)
-
+		
 		self.nombres = Utils().quita_nombre(self.nombres)
 		self.paterno = Utils().quita_articulo(self.paterno)
 		self.materno = Utils().quita_articulo(self.materno)
