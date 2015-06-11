@@ -185,86 +185,23 @@ class CalculeCURP(BaseGenerator):
 		valor = 0
 		sumaria = 0
 
+		verificadores = {
+			'0':0, '1':1, '2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9,
+			'A':10, 'B':11, 'C':12, 'D':13, 'E':14, 'F':15, 'G':16, 'H':17, 'I':18,
+			'J':19, 'K':20, 'L':21, 'M':22, 'N':23, 'Ñ':24, 'O':25, 'P':26, 'Q':27,
+			'R':28, 'S':29, 'T':30, 'U':31, 'V':32, 'W':33, 'X':34, 'Y':35, 'Z':36
+		}
+
 		for count in range(0,len(curp)):
 			posicion = curp[count]
 
-			if posicion == "0":
-				valor = (0 * contador)
-			if posicion == "1":
-				valor = (1 * contador)
-			if posicion == "2":
-				valor = (2 * contador)
-			if posicion == "3":
-				valor = (3 * contador)
-			if posicion == "4":
-				valor = (4 * contador)
-			if posicion == "5":
-				valor = (5 * contador)
-			if posicion == "6":
-				valor = (6 * contador)
-			if posicion == "7":
-				valor = (7 * contador)
-			if posicion == "8":
-				valor = (8 * contador)
-			if posicion == "9":
-				valor = (9 * contador)
-			if posicion == "A":
-				valor = (10 * contador)
-			if posicion == "B":
-				valor = (11 * contador)
-			if posicion == "C":
-				valor = (12 * contador)
-			if posicion == "D":
-				valor = (13 * contador)
-			if posicion == "E":
-				valor = (14 * contador)
-			if posicion == "F":
-				valor = (15 * contador)
-			if posicion == "G":
-				valor = (16 * contador)
-			if posicion == "H":
-				valor = (17 * contador)
-			if posicion == "I":
-				valor = (18 * contador)
-			if posicion == "J":
-				valor = (19 * contador)
-			if posicion == "K":
-				valor = (20 * contador)
-			if posicion == "L":
-				valor = (21 * contador)
-			if posicion == "M":
-				valor = (22 * contador)
-			if posicion == "N":
-				valor = (23 * contador)
-			if posicion == "Ñ":
-				valor = (24 * contador)
-			if posicion == "O":
-				valor = (25 * contador)
-			if posicion == "P":
-				valor = (26 * contador)
-			if posicion == "Q":
-				valor = (27 * contador)
-			if posicion == "R":
-				valor = (28 * contador)
-			if posicion == "S":
-				valor = (29 * contador)
-			if posicion == "T":
-				valor = (30 * contador)
-			if posicion == "U":
-				valor = (31 * contador)
-			if posicion == "V":
-				valor = (32 * contador)
-			if posicion == "W":
-				valor = (33 * contador)
-			if posicion == "X":
-				valor = (34 * contador)
-			if posicion == "Y":
-				valor = (35 * contador)
-			if posicion == "Z":
-				valor = (36 * contador)
+			for key,value in verificadores.items():
+				if posicion == key:
+					valor = (value * contador)
 
 			contador = contador - 1
 			sumaria = sumaria + valor
+
 		# Sacar el residuo	
 		num_ver = sumaria % 10
 		# Devuelve el valor absoluto en caso de que sea negativo
