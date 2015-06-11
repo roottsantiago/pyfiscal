@@ -3,7 +3,7 @@ from base import BaseGenerator
 
 class CalculeRFC(BaseGenerator):
 	
-	key_value = 'curp'
+	key_value = 'rfc'
 	DATOS_REQUERIDOS = ( 'nombres','paterno', 'materno','fecha')
 
 	def __init__(self, **kargs):
@@ -119,7 +119,7 @@ class CalculeRFC(BaseGenerator):
 
 class CalculeCURP(BaseGenerator):
 
-	key_value = 'rfc'
+	key_value = 'curp'
 	DATOS_REQUERIDOS = ('nombres','paterno', 'materno','fecha', 'genero', 'estado')
 
 	def __init__(self, **kargs):
