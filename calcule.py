@@ -13,7 +13,7 @@ class CalculeRFC(BaseGenerator):
 		self.materno = kargs['materno']
 		self.fecha = kargs['fecha']
 
-		self.parse_params(
+		self.parse(
 			nombres=self.nombres, paterno=self.paterno, materno=self.materno
 		)
 
@@ -131,7 +131,7 @@ class CalculeCURP(BaseGenerator):
 		self.genero = kargs['genero']
 		self.estado = kargs['estado']
 
-		self.parse_params(
+		self.parse(
 			nombres=self.nombres, paterno=self.paterno, materno=self.materno,
 			estado=self.estado
 		)

@@ -8,7 +8,7 @@ class BaseGenerator(object):
 	def genera(self):
 		raise NotImplementedError("No implemetado.")
 
-	def parse_params(self, nombres, paterno, materno, estado=''):
+	def parse(self, nombres, paterno, materno, estado=''):
 		
 		self.nombres = Utils().upper(nombres)
 		self.paterno = Utils().upper(paterno)
