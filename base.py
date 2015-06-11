@@ -9,16 +9,11 @@ class BaseGenerator(object):
 		raise NotImplementedError("No implemetado.")
 
 	def parse_params(self, nombres, paterno, materno, estado=''):
-
-		self.nombres = nombres
-		self.paterno = paterno
-		self.materno = materno
-		self.estado = estado
-
-		self.nombres = Utils().upper(self.nombres)
-		self.paterno = Utils().upper(self.paterno)
-		self.materno = Utils().upper(self.materno)
-		self.estado = Utils().upper(self.estado)
+		
+		self.nombres = Utils().upper(nombres)
+		self.paterno = Utils().upper(paterno)
+		self.materno = Utils().upper(materno)
+		self.estado = Utils().upper(estado)
 
 		self.nombres = Utils().quita_nombre(self.nombres)
 		self.paterno = Utils().quita_articulo(self.paterno)
