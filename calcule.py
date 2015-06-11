@@ -5,6 +5,7 @@ class CalculeRFC(BaseGenerator):
 	
 	key_value = 'rfc'
 	DATOS_REQUERIDOS = ( 'nombres','paterno', 'materno','fecha')
+	_dato_parcial = None
 
 	def __init__(self, **kargs):
 
@@ -16,8 +17,8 @@ class CalculeRFC(BaseGenerator):
 		self.parse(
 			nombres=self.nombres, paterno=self.paterno, materno=self.materno
 		)
-
-		self.generico(
+		
+		self._dato_parcial = self.base_dato_fiscal(
 			nombres=self.nombres, paterno=self.paterno, materno=self.materno,
 			fecha=self.fecha
 		)
@@ -25,8 +26,8 @@ class CalculeRFC(BaseGenerator):
 	def genera(self):
 		nombrecompleto = "%s %s %s" % (self.paterno, self.materno, self.nombres)
 		# Cálcula y agrega homoclave al RFC
-		rfc = self._origen_rfc
-		homoclave = self.homoclave_rfc(self._origen_rfc, nombrecompleto)
+		rfc = self._dato_parcial
+		homoclave = self.homoclave_rfc(self._dato_parcial, nombrecompleto)
 		rfc += homoclave
 		# Cálcula y agrega digito verificador al RFC
 		digito = self.numero_verificador(rfc)
@@ -121,6 +122,7 @@ class CalculeCURP(BaseGenerator):
 
 	key_value = 'curp'
 	DATOS_REQUERIDOS = ('nombres','paterno', 'materno','fecha', 'genero', 'estado')
+	_dato_parcial = None
 
 	def __init__(self, **kargs):
 
@@ -136,14 +138,13 @@ class CalculeCURP(BaseGenerator):
 			estado=self.estado
 		)
 		
-		self.generico(
+		self._dato_parcial = self.base_dato_fiscal(
 			nombres=self.nombres, paterno=self.paterno, materno=self.materno,
 			fecha=self.fecha
 		)
 
 	def genera(self):
-
-		curp = self._origen_rfc
+		curp = self._dato_parcial
 
 		curp += self.genero
 

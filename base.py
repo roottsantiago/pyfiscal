@@ -3,8 +3,6 @@ from utils import Utils
 
 class BaseGenerator(object):
 
-	_origen_rfc = None
-
 	def genera(self):
 		raise NotImplementedError("No implemetado.")
 
@@ -12,7 +10,7 @@ class BaseGenerator(object):
 		
 		if estado != None:
 			self.estado = Utils().upper(estado)
-			
+
 		self.nombres = Utils().upper(nombres)
 		self.paterno = Utils().upper(paterno)
 		self.materno = Utils().upper(materno)
@@ -25,15 +23,15 @@ class BaseGenerator(object):
 		self.paterno = Utils().quita_CH_LL(self.paterno)
 		self.materno = Utils().quita_CH_LL(self.materno)
 
-	def generico(self, nombres, paterno, materno, fecha):
+	def base_dato_fiscal(self, nombres, paterno, materno, fecha):
 		# Regresa iniciales del nombre y verifica palabras 
-		self._origen_rfc = self.iniciales_nombre(nombres, paterno, materno)
-		self._origen_rfc = self.verifica_palabra(self._origen_rfc)
+		dato_fiscal = self.iniciales_nombre(nombres, paterno, materno)
+		dato_fiscal = self.verifica_palabra(dato_fiscal)
 		# Agrega fecha de nacimineto
 		fecha_nacimiento = self.parse_fecha(fecha)
-		self._origen_rfc += fecha_nacimiento
+		dato_fiscal += fecha_nacimiento
 
-		return self._origen_rfc
+		return dato_fiscal
 		
 	def iniciales_nombre(self, nombres, paterno, materno):
 
