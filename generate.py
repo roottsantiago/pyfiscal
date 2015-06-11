@@ -1,22 +1,21 @@
 from calcule import CalculeRFC, CalculeCURP, CalculeGeneric
 
-
-class GenerateDataFiscal(CalculeRFC, CalculeCURP, CalculeGeneric):
-	nombres = "Tomas"
-	paterno = "Santiago"
-	materno = "Gonzalez"
-	fecha = "16-11-1989"
-	genero = "H"
-	estado = "hidalgo"
+class GenerateDataFiscal(CalculeGeneric):
+	generadores = (CalculeCURP, CalculeRFC)
 
 
 
 
-rfc = GenerateDataFiscal().rfc
-print(rfc)
 
-curp = GenerateDataFiscal().curp
-print(curp)
+datos = {
+	'fecha': '16-11-1989',
+	'nombres': 'Tomas',
+	'paterno': 'Santiago',
+	'materno': 'Gonzalez',
+	'genero': 'H',
+	'estado': 'HIDALGO',
+}
 
-datos = GenerateDataFiscal().data
-print(datos)
+
+todo = GenerateDataFiscal(**datos).data
+print(todo)

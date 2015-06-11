@@ -2,24 +2,37 @@ from base import BaseGenerator
 
 
 class CalculeRFC(BaseGenerator):
+	
+	key_value = 'curp'
+	DATOS_REQUERIDOS = ( 'nombres','paterno', 'materno','fecha')
 
-	_nombres = None 
-	_paterno = None
-	_materno = None
-	_fecha = None 
-	_nombrecompleto = None
+	def __init__(self, **kargs):
 
-	def genera_rfc(self):
-		self._rfc = self._origen
-		self._nombrecompleto = "%s %s %s" % (self._paterno, self._materno, self._nombres)
+		self.nombres = kargs['nombres']
+		self.paterno = kargs['paterno']
+		self.materno = kargs['materno']
+		self.fecha = kargs['fecha']
+
+		self.parse_params(
+			nombres=self.nombres, paterno=self.paterno, materno=self.materno
+		)
+
+		self.generico(
+			nombres=self.nombres, paterno=self.paterno, materno=self.materno,
+			fecha=self.fecha
+		)
+
+	def genera(self):
+		nombrecompleto = "%s %s %s" % (self.paterno, self.materno, self.nombres)
 		# Cálcula y agrega homoclave al RFC
-		self._homoclave = self.homoclave_rfc(self._rfc, self._nombrecompleto)
-		self._rfc += self._homoclave
+		rfc = self._origen_rfc
+		homoclave = self.homoclave_rfc(self._origen_rfc, nombrecompleto)
+		rfc += homoclave
 		# Cálcula y agrega digito verificador al RFC
-		self._digito = self.numero_verificador(self._rfc)
-		self._rfc += self._digito
+		digito = self.numero_verificador(rfc)
+		rfc += digito
 
-		return self._rfc
+		return rfc
 
 	def homoclave_rfc(self, rfc, nombrecompleto):
 		nombre_numero = "0"
@@ -100,45 +113,61 @@ class CalculeRFC(BaseGenerator):
 
 
 	@property
-	def rfc(self):
-		return self._rfc
+	def data(self):
+		return self.genera()
 
 
 class CalculeCURP(BaseGenerator):
 
-	_nombres = None 
-	_paterno = None
-	_materno = None
-	_fecha = None 
-	_genero = None
-	_estado = None 
-	
-	def genera_curp(self):
-		self._curp = self._origen
+	key_value = 'rfc'
+	DATOS_REQUERIDOS = ('nombres','paterno', 'materno','fecha', 'genero', 'estado')
 
-		self._curp += self._genero
+	def __init__(self, **kargs):
 
-		clave_estado = self.entidad_federativa(self._estado)
-		self._curp += clave_estado
+		self.nombres = kargs['nombres']
+		self.paterno = kargs['paterno']
+		self.materno = kargs['materno']
+		self.fecha = kargs['fecha']
+		self.genero = kargs['genero']
+		self.estado = kargs['estado']
 
-		con_paterno = self.consonante(self._paterno)
-		self._curp += con_paterno
+		self.parse_params(
+			nombres=self.nombres, paterno=self.paterno, materno=self.materno,
+			estado=self.estado
+		)
+		
+		self.generico(
+			nombres=self.nombres, paterno=self.paterno, materno=self.materno,
+			fecha=self.fecha
+		)
 
-		con_materno = self.consonante(self._materno)
-		self._curp += con_materno
+	def genera(self):
 
-		con_nombres = self.consonante(self._nombres)
-		self._curp += con_nombres
+		curp = self._origen_rfc
 
-		anio = self.anio_fecha(self._fecha)
+		curp += self.genero
+
+		clave_estado = self.entidad_federativa(self.estado)
+		curp += clave_estado
+
+		con_paterno = self.consonante(self.paterno)
+		curp += con_paterno
+
+		con_materno = self.consonante(self.materno)
+		curp += con_materno
+
+		con_nombres = self.consonante(self.nombres)
+		curp += con_nombres
+
+		anio = self.anio_fecha(self.fecha)
 		homoclave = self.homoclave_curp(anio)
 
-		self._curp += homoclave
+		curp += homoclave
 
-		digito = self.digito_verificador(self._curp)
-		self._curp += digito
+		digito = self.digito_verificador(curp)
+		curp += digito
 
-		return self._curp
+		return curp
 	
 	def homoclave_curp(self, anio):
 		homoclave = ""
@@ -246,21 +275,26 @@ class CalculeCURP(BaseGenerator):
 		return str(num_ver)	
 
 	@property
-	def curp(self):
-		return self._curp
+	def data(self):
+		return self.genera()
 
 
-class CalculeGeneric(BaseGenerator): 
-
-	def __init__(self):
-
-		super(CalculeGeneric, self).__init__()
-
-		self.genera_curp()
-		self.genera_rfc()
+class CalculeGeneric(object): 
+	
+	_data = {}
+	def __init__(self, **_datos):
+		self._datos =_datos
 
 	@property
 	def data(self):
+		for cls in self.generadores:
+			
+			
+			requeridos = cls.DATOS_REQUERIDOS
 
-		value = super(CalculeGeneric, self).data
-		return value
+			kargs = {key: self._datos[key] for key in requeridos}
+			gen = cls(**kargs)
+			gen.genera()
+			self._data[gen.key_value] = gen.data
+
+		return self._data

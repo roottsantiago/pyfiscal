@@ -3,46 +3,40 @@ from utils import Utils
 
 class BaseGenerator(object):
 
-	_origen = None
-	_curp = None
-	_rfc = None
-	_data = []
+	_origen_rfc = None
 
-	def __init__(self):
-		self._nombres = self.nombres
-		self._paterno = self.paterno
-		self._materno = self.materno
-		self._fecha = self.fecha 
-		self._genero = self.genero
-		self._estado = self.estado
+	def genera(self):
+		raise NotImplementedError("No implemetado.")
 
-		self.parse_params()
-		self.generico()
+	def parse_params(self, nombres, paterno, materno, estado=''):
 
-	def parse_params(self):
+		self.nombres = nombres
+		self.paterno = paterno
+		self.materno = materno
+		self.estado = estado
 
-		self._nombres = Utils().upper(self._nombres)
-		self._paterno = Utils().upper(self._paterno)
-		self._materno = Utils().upper(self._materno)
-		self._estado = Utils().upper(self._estado)
+		self.nombres = Utils().upper(self.nombres)
+		self.paterno = Utils().upper(self.paterno)
+		self.materno = Utils().upper(self.materno)
+		self.estado = Utils().upper(self.estado)
 
-		self._nombres = Utils().quita_nombre(self._nombres)
-		self._paterno = Utils().quita_articulo(self._paterno)
-		self._materno = Utils().quita_articulo(self._materno)
+		self.nombres = Utils().quita_nombre(self.nombres)
+		self.paterno = Utils().quita_articulo(self.paterno)
+		self.materno = Utils().quita_articulo(self.materno)
 		
-		self._nombres = Utils().quita_CH_LL(self._nombres)
-		self._paterno = Utils().quita_CH_LL(self._paterno)
-		self._materno = Utils().quita_CH_LL(self._materno)
+		self.nombres = Utils().quita_CH_LL(self.nombres)
+		self.paterno = Utils().quita_CH_LL(self.paterno)
+		self.materno = Utils().quita_CH_LL(self.materno)
 
-	def generico(self):
+	def generico(self, nombres, paterno, materno, fecha):
 		# Regresa iniciales del nombre y verifica palabras 
-		self._origen = self.iniciales_nombre(self._nombres, self._paterno, self._materno)
-		self._origen = self.verifica_palabra(self._origen)
+		self._origen_rfc = self.iniciales_nombre(nombres, paterno, materno)
+		self._origen_rfc = self.verifica_palabra(self._origen_rfc)
 		# Agrega fecha de nacimineto
-		fecha_nacimiento = self.parse_fecha(self._fecha)
-		self._origen += fecha_nacimiento
+		fecha_nacimiento = self.parse_fecha(fecha)
+		self._origen_rfc += fecha_nacimiento
 
-		return self._origen
+		return self._origen_rfc
 		
 	def iniciales_nombre(self, nombres, paterno, materno):
 
@@ -144,9 +138,3 @@ class BaseGenerator(object):
 	def anio_fecha(self, fecha):
 		anio = Utils().anio(fecha)
 		return anio
-
-	@property
-	def data(self):
-		self._data.append(self._curp)
-		self._data.append(self._rfc)
-		return self._data
