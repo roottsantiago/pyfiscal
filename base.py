@@ -65,7 +65,7 @@ class BaseGenerator(object):
 
 			#Buscamos y agregamos al curp la primera vocal del apellido
 			for item in paterno:
-				if Utils.esVocal(item):
+				if Utils().vocal(item):
 					iniciales += item
 					break
 
@@ -74,11 +74,11 @@ class BaseGenerator(object):
 
 		if paterno != "" and materno != "":
 			iniciales = paterno[0:1]
-			z1 = len(paterno) - 1
+			z1 = len(paterno)-1
 			paterno = paterno[1:z1]
 
 			for item in paterno:
-				if Utils.esVocal(item):
+				if Utils().vocal(item):
 					iniciales += item
 					break
 
