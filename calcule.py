@@ -3,6 +3,10 @@ from base import BaseGenerator
 
 class CalculeRFC(BaseGenerator):
 
+	_nombres = None 
+	_paterno = None
+	_materno = None
+	_fecha = None 
 	_nombrecompleto = None
 
 	def genera_rfc(self):
@@ -102,6 +106,13 @@ class CalculeRFC(BaseGenerator):
 
 class CalculeCURP(BaseGenerator):
 
+	_nombres = None 
+	_paterno = None
+	_materno = None
+	_fecha = None 
+	_genero = None
+	_estado = None 
+	
 	def genera_curp(self):
 		self._curp = self._origen
 
@@ -237,6 +248,7 @@ class CalculeCURP(BaseGenerator):
 	@property
 	def curp(self):
 		return self._curp
+
 
 class CalculeGeneric(BaseGenerator): 
 
