@@ -38,39 +38,28 @@ class Utils(object):
 			texto = "L%s" % concatenar
 		return texto
 
-	def consonate_curp(self, palabra):
-		Len = 0
+	def busca_consonante(self, palabra):
 		valor = ''
-		Len = len(palabra)
-		Len = Len - 1;
+		consonante = ''
+		longitud = 0
+		# Validar si no es null
+		if palabra is not None:
+			longitud = len(palabra)
+			longitud = longitud-1
+			valor = palabra[1:longitud]
+		else:
+			valor = 'X'
 
-		if Len < 0:
-			Len = 1
-
-		# Identificar si la palabra empieza con una consonante
-		letra = palabra[0:1]
-		for item in letra:
-			if self.es_consonante(item):
-				consonante1 = item
+		for letra in valor:
+			if letra == "Ñ":
+				consonante = 'X'
 				break
-		
-		valor = palabra
-		if consonante1 != '':
-			valor = palabra[1:Len]
-
-		#Buscamos y agregamos al rfc la primera vocal del primer apellido
-		for item in valor:
-			val = item
-			if val == "Ñ":
-				consonante = ''
+			elif self.consonante(letra):
+				consonante = letra
 				break
-			elif self.es_consonante(item):
-				consonante = item
-				break
-		
 		return consonante
 
-	def es_consonante(self, param):
+	def consonante(self, param):
 		consonantes = (
 			'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S',
 			'T', 'V', 'W', 'X', 'Y', 'Z'
@@ -81,6 +70,16 @@ class Utils(object):
 				return True
 				break
 		return False
+
+	def busca_vocal(self, paterno):
+		size = len(paterno)-1
+		paterno = paterno[1:size]
+
+		for letra in paterno:
+			if self.vocal(letra):
+				vocal = letra
+				break
+		return vocal
 
 	def vocal(self, param):
 		vocales = ("A", "E", "I", "O", "U", "Á", "É", "Í", "Ó", "Ú")
