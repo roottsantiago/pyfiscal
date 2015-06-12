@@ -6,22 +6,25 @@ class BaseGenerator(object):
 	def genera(self):
 		raise NotImplementedError("No implemetado.")
 
-	def parse(self, nombres, paterno, materno='', estado=None):
-		
+	def parse(self, nombres, paterno, materno=None, estado=None):
+
 		if estado != None:
 			self.estado = Utils().upper(estado)
 
+		if materno is not None:
+			self.materno = Utils().upper(materno)
+			self.materno = Utils().quita_articulo(self.materno)
+			self.materno = Utils().quita_CH_LL(self.materno)
+
 		self.nombres = Utils().upper(nombres)
 		self.paterno = Utils().upper(paterno)
-		self.materno = Utils().upper(materno)
-		
+	
 		self.nombres = Utils().quita_nombre(self.nombres)
 		self.paterno = Utils().quita_articulo(self.paterno)
-		self.materno = Utils().quita_articulo(self.materno)
-		
+
 		self.nombres = Utils().quita_CH_LL(self.nombres)
 		self.paterno = Utils().quita_CH_LL(self.paterno)
-		self.materno = Utils().quita_CH_LL(self.materno)
+		
 
 	def base_dato_fiscal(self, nombres, paterno, materno, fecha):
 		# Regresa iniciales del nombre y verifica palabras 
@@ -35,46 +38,18 @@ class BaseGenerator(object):
 		
 	def iniciales_nombre(self, nombres, paterno, materno):
 		iniciales = ''
-
-		# No tiene apellido paterno
-		if paterno == None:
-			
-			iniciales += "XX"
-			iniciales += materno[0:1]
-			iniciales += nombres[0:1]
-
-		# No tiene apellido materno 
-		if materno =='':
-
-			iniciales = paterno[0:1]
-
-			size = len(paterno)-1
-			paterno = paterno[1:size]
-			#Buscamos la primera vocal del apellido
-			for item in paterno:
-				if Utils().vocal(item):
-					vocal = item
-					break
-
-			iniciales += vocal
+		# Inicial del apellido paterno
+		iniciales = paterno[0:1]
+		# Busca la primera vocal del apellido paterno
+		vocal = Utils().busca_vocal(paterno)
+		# Agrega vocal
+		iniciales += vocal 
+		# inicial del apellido materno y nombre
+		if materno is None:
 			iniciales += 'X'
-			iniciales += nombres[0:1]
-
-		if paterno != None and materno != None:
-			iniciales = paterno[0:1]
-			
-			size = len(paterno)-1
-			paterno = paterno[1:size]
-
-			for item in paterno:
-				if Utils().vocal(item):
-					vocal = item
-					break
-
-			# Iniciales	
-			iniciales += vocal 
+		else:
 			iniciales += materno[0:1]
-			iniciales += nombres[0:1]
+		iniciales += nombres[0:1]
 
 		return iniciales
 
@@ -133,9 +108,8 @@ class BaseGenerator(object):
 		
 		return estado
 
-	def consonante(self, param):
-		consonante = "X"
-		consonante = Utils().consonate_curp(param)
+	def consonante_curp(self, param):
+		consonante = Utils().busca_consonante(param)
 		return consonante
 
 	def anio_fecha(self, fecha):
