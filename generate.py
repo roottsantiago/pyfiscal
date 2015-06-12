@@ -4,9 +4,6 @@ class GenerateDataFiscal(CalculeGeneric):
 	generadores = (CalculeCURP, CalculeRFC)
 
 
-
-
-
 datos = {
 	'fecha': '16-11-1989',
 	'nombres': 'Tomas',
@@ -15,7 +12,6 @@ datos = {
 	'genero': 'H',
 	'estado': 'HIDALGO',
 }
-
 
 todo = GenerateDataFiscal(**datos).data
 print(todo)

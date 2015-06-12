@@ -6,7 +6,7 @@ class BaseGenerator(object):
 	def genera(self):
 		raise NotImplementedError("No implemetado.")
 
-	def parse(self, nombres, paterno, materno, estado=None):
+	def parse(self, nombres, paterno, materno='', estado=None):
 		
 		if estado != None:
 			self.estado = Utils().upper(estado)
@@ -34,37 +34,45 @@ class BaseGenerator(object):
 		return dato_fiscal
 		
 	def iniciales_nombre(self, nombres, paterno, materno):
+		iniciales = ''
 
 		# No tiene apellido paterno
-		if paterno == "" and materno != "":
-			iniciales = "XX"
-			iniciales += materno[0:2]
-
-		# No tiene apellido materno 
-		if materno == "" and paterno != "":
-			iniciales = paterno[0:1]
-			z1 = len(paterno) - 1
-			paterno = paterno[1:z1]
-
-			#Buscamos y agregamos al curp la primera vocal del apellido
-			for item in paterno:
-				if Utils().vocal(item):
-					iniciales += item
-					break
-
-			iniciales += "X"
+		if paterno == None:
+			
+			iniciales += "XX"
+			iniciales += materno[0:1]
 			iniciales += nombres[0:1]
 
-		if paterno != "" and materno != "":
+		# No tiene apellido materno 
+		if materno =='':
+
 			iniciales = paterno[0:1]
-			z1 = len(paterno)-1
-			paterno = paterno[1:z1]
+
+			size = len(paterno)-1
+			paterno = paterno[1:size]
+			#Buscamos la primera vocal del apellido
+			for item in paterno:
+				if Utils().vocal(item):
+					vocal = item
+					break
+
+			iniciales += vocal
+			iniciales += 'X'
+			iniciales += nombres[0:1]
+
+		if paterno != None and materno != None:
+			iniciales = paterno[0:1]
+			
+			size = len(paterno)-1
+			paterno = paterno[1:size]
 
 			for item in paterno:
 				if Utils().vocal(item):
-					iniciales += item
+					vocal = item
 					break
 
+			# Iniciales	
+			iniciales += vocal 
 			iniciales += materno[0:1]
 			iniciales += nombres[0:1]
 

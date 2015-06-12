@@ -42,33 +42,34 @@ class Utils(object):
 		return texto
 
 	def consonate_curp(self, palabra):
+
 		Len = 0
-		valor = ""
+		valor = ''
 		Len = len(palabra)
 		Len = Len - 1;
 
 		if Len < 0:
 			Len = 1
+
 		# Identificar si la palabra empieza con una consonante
 		letra = palabra[0:1]
-
 		for item in letra:
 			if self.es_consonante(item):
 				consonante1 = item
 				break
 		
 		valor = palabra
-		if consonante1 != "":
+		if consonante1 != '':
 			valor = palabra[1:Len]
 
 		#Buscamos y agregamos al rfc la primera vocal del primer apellido
 		for item in valor:
 			val = item
 			if val == "Ñ":
-				consonante = "";
+				consonante = ''
 				break
 			elif self.es_consonante(item):
-				consonante = item;
+				consonante = item
 				break
 		
 		return consonante
