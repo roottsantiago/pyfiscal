@@ -9,11 +9,10 @@ class Utils(object):
 			'DE ', 'DEL ', 'LA ', 'LOS ', 'LAS ','Y ', 'MC ', 'MAC ', 'VON ',
 			'VAN '
 		)
-
+		
 		reemplazado = param
 		for articulo in buscar:
 			reemplazado = reemplazado.replace(articulo, remplazar)
-
 		return reemplazado
 
 	def quita_nombre(self, param):
@@ -23,26 +22,23 @@ class Utils(object):
 			' LA ', 'LAS ', ' LAS ', 'LOS ', ' LOS ', 'MC ', 'MC ', 'MAC ', 'VON ',
 			'VAN ', ' Y '
 		)
-
+		
 		reemplazado = param
 		for articulo in buscar:
 			reemplazado = reemplazado.replace(articulo, remplazar)
-
 		return reemplazado
 
 	def quita_CH_LL(self, texto):
 		letras = texto[0:2]
 		concatenar = texto[2:len(texto)]
-
+		
 		if letras == "CH":
 			texto = "C%s" % concatenar
 		elif letras == "LL":
 			texto = "L%s" % concatenar
-
 		return texto
 
 	def consonate_curp(self, palabra):
-
 		Len = 0
 		valor = ''
 		Len = len(palabra)
@@ -84,27 +80,23 @@ class Utils(object):
 			if consonante == param:
 				return True
 				break
-
 		return False
 
 	def vocal(self, param):
 		vocales = ("A", "E", "I", "O", "U", "Á", "É", "Í", "Ó", "Ú")
-		
+
 		for vocal in vocales:
 			vocal = param
 			return True
 			break
-			
 		return False
 			
 	def upper(self, texto):
 		palabra = texto.upper()
 		palabra	= palabra.strip()
-
 		return palabra
 
 	def anio(self, fecha):
 		fecha = datetime.datetime.strptime(fecha, '%d-%m-%Y').date()
 		anio = fecha.year
-
 		return anio
