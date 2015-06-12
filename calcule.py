@@ -24,7 +24,11 @@ class CalculeRFC(BaseGenerator):
 		)
 
 	def genera(self):
-		nombrecompleto = "%s %s %s" % (self.paterno, self.materno, self.nombres)
+		if self.materno is not None:
+			nombrecompleto = "%s %s %s" % (self.paterno, self.materno, self.nombres)
+		else:
+			nombrecompleto = "%s %s" % (self.paterno, self.nombres)
+
 		# Cálcula y agrega homoclave al RFC
 		rfc = self._dato_parcial
 		homoclave = self.homoclave_rfc(self._dato_parcial, nombrecompleto)
@@ -107,6 +111,7 @@ class CalculeRFC(BaseGenerator):
 		return  digito
 
 	def rfc_set(self, a, b):
+
 		if a == b:
 			return b
 		else :
@@ -151,13 +156,11 @@ class CalculeCURP(BaseGenerator):
 		clave_estado = self.entidad_federativa(self.estado)
 		curp += clave_estado
 
-		con_paterno = self.consonante(self.paterno)
+		con_paterno = self.consonante_curp(self.paterno)
 		curp += con_paterno
-
-		con_materno = self.consonante(self.materno)
+		con_materno = self.consonante_curp(self.materno)
 		curp += con_materno
-
-		con_nombres = self.consonante(self.nombres)
+		con_nombres = self.consonante_curp(self.nombres)
 		curp += con_nombres
 
 		anio = self.anio_fecha(self.fecha)
