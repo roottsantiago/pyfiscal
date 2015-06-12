@@ -76,7 +76,6 @@ class CalculeRFC(BaseGenerator):
 		homoclave = ""
 		homoclave += self.rfc_set(rfc2[int(div)],"Z")
 		homoclave += self.rfc_set(rfc2[int(mod)],"Z")
-
 		return homoclave
 
 	def numero_verificador(self, rfc):
@@ -111,7 +110,6 @@ class CalculeRFC(BaseGenerator):
 		return  digito
 
 	def rfc_set(self, a, b):
-
 		if a == b:
 			return b
 		else :
@@ -150,27 +148,26 @@ class CalculeCURP(BaseGenerator):
 
 	def genera(self):
 		curp = self._dato_parcial
-
+		# Agregar genero de la persona
 		curp += self.genero
-
+		# Agregar clave de la entidad
 		clave_estado = self.entidad_federativa(self.estado)
 		curp += clave_estado
-
+		# Agrgar consonantes
 		con_paterno = self.consonante_curp(self.paterno)
 		curp += con_paterno
 		con_materno = self.consonante_curp(self.materno)
 		curp += con_materno
 		con_nombres = self.consonante_curp(self.nombres)
 		curp += con_nombres
-
+		# Agregar año al curp
 		anio = self.anio_fecha(self.fecha)
 		homoclave = self.homoclave_curp(anio)
-
+		# Agregar homoclave 
 		curp += homoclave
-
+		# Agrgar digito verificador
 		digito = self.digito_verificador(curp)
 		curp += digito
-
 		return curp
 	
 	def homoclave_curp(self, anio):
@@ -212,7 +209,6 @@ class CalculeCURP(BaseGenerator):
 		# En caso de que sea 10 el digito es 0
 		if num_ver == 10:
 			num_ver = 0
-
 		return str(num_ver)	
 
 	@property
