@@ -73,8 +73,6 @@ class CalculeRFC(BaseGenerator):
 		for count in range(0, len(nombrecompleto)):
 			letra = self.remover_accentos(nombrecompleto[count])
 
-			print letra
-
 			nombre_numero += self.rfc_set(str(rfc1[letra]),"00")
 		# La formula es:
             # El caracter actual multiplicado por diez mas el valor del caracter
