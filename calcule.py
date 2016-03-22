@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-
 from base import BaseGenerator
+
+import unicodedata
 
 
 class CalculeRFC(BaseGenerator):
@@ -27,9 +28,10 @@ class CalculeRFC(BaseGenerator):
 
 	def genera(self):
 		if self.materno is not None:
-			nombrecompleto = "%s %s %s" % (self.paterno, self.materno, self.nombres)
+			nombrecompleto = u"%s %s %s" % (self.paterno, self.materno, self.nombres)
 		else:
-			nombrecompleto = "%s %s" % (self.paterno, self.nombres)
+			nombrecompleto = u"%s %s" % (self.paterno, self.nombres)
+
 
 		# Cálcula y agrega homoclave al RFC
 		rfc = self._dato_parcial
@@ -40,6 +42,12 @@ class CalculeRFC(BaseGenerator):
 		rfc += digito
 
 		return rfc
+
+	def remover_accentos(self, s):
+		if type(s) is str:
+			s = u"%s" % s
+
+		return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
 
 	def homoclave_rfc(self, rfc, nombrecompleto):
 		nombre_numero = "0"
@@ -62,8 +70,11 @@ class CalculeRFC(BaseGenerator):
 		}
 
 		# Recorrer el nombre y convertir las letras en su valor numérico.
-		for count in range(0,len(nombrecompleto)):
-			letra = nombrecompleto[count] 
+		for count in range(0, len(nombrecompleto)):
+			letra = self.remover_accentos(nombrecompleto[count])
+
+			print letra
+
 			nombre_numero += self.rfc_set(str(rfc1[letra]),"00")
 		# La formula es:
             # El caracter actual multiplicado por diez mas el valor del caracter
@@ -114,7 +125,7 @@ class CalculeRFC(BaseGenerator):
 	def rfc_set(self, a, b):
 		if a == b:
 			return b
-		else :
+		else:
 			return a
 
 
