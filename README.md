@@ -29,24 +29,15 @@ Esta homoclave la designará el SAT, revisando la petición a través de papel o
 
 # Ejemplo
 
-from calcule import CalculeRFC, CalculeCURP, CalculeGeneric
+from calcule import CalculeRFC, CalculeCURP
 
-class GenerateDataFiscal(CalculeGeneric):
-	generadores = (CalculeCURP, CalculeRFC)
-
-
-
-datos = {
-	'fecha': 'value', 'nombres': 'value', 'paterno': 'value',
-	'materno': None, 'genero': 'value', 'estado': 'value'
-}
-
-#Solo cálcula RFC.
+Solo cálcula RFC.
 rfc = CalculeRFC(nombres='@param', paterno='@param', materno='@param', fecha='@param').data
-print(rfc)
-#Solo cálcula CURP.
+
+Solo cálcula CURP.
+
 curp = CalculeCURP(**datos).data
-print(curp)
-#Calcula RFC y CURP.
-todo = GenerateDataFiscal(**datos).data
-print(todo)
+
+
+
+
