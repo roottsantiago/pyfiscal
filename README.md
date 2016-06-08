@@ -26,3 +26,18 @@ El Registro Federal de Contribuyentes es una clave que se usa en México para di
 * Los últimos dígitos (XXX) se le conoce como homoclave, esta la designa el SAT, dependiendo de algunos factores que realiza el SAT por medio de sistemas numéricos o alfanuméricos.
 
 Esta homoclave la designará el SAT, revisando la petición a través de papel oficial ya designado.
+
+# Ejemplo
+
+from calcule import CalculeRFC, CalculeCURP
+
+Solo cálcula RFC.
+rfc = CalculeRFC(nombres='@param', paterno='@param', materno='@param', fecha='@param').data
+
+Solo cálcula CURP.
+
+curp = CalculeCURP(**datos).data
+
+
+
+
