@@ -124,7 +124,12 @@ class Utils(object):
 		palabra	= palabra.strip()
 		return palabra
 
-	def anio(self, fecha):
-		fecha = datetime.datetime.strptime(fecha, '%d-%m-%Y').date()
-		anio = fecha.year
-		return anio
+	def get_anio(self, fecha):
+		"""
+		Obtiene año de fecha de nacimiento.
+		"""
+		try:
+			fecha = datetime.datetime.strptime(fecha, '%d-%m-%Y').date()
+			return fecha.year
+		except Exception as e:
+			raise str(e)

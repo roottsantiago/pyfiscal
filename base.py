@@ -123,7 +123,7 @@ class BaseGenerator(object):
 		return consonante
 
 	def anio_fecha(self, fecha):
-		anio = Utils().anio(fecha)
+		anio = Utils().get_anio(fecha)
 		return anio
 
 import datetime
@@ -241,5 +241,5 @@ class BaseGenerator(object):
 		return consonante
 
 	def anio_fecha(self, fecha):
-		anio = Utils().anio(fecha)
+		anio = Utils().get_anio(fecha)
 		return anio
