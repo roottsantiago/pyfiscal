@@ -5,17 +5,26 @@ import datetime
 
 class Utils(object):
 	
-	def quita_articulo(self, param):
-		remplazar = ''
-		buscar = (
-			'DE ', 'DEL ', 'LA ', 'LOS ', 'LAS ','Y ', 'MC ', 'MAC ', 'VON ',
+	def quita_articulo(self, articulo):
+		"""
+		Quitar articulo.
+		"""
+		articulos = (
+			'DE ',
+			'DEL ',
+			'LA ',
+			'LOS ',
+			'LAS ',
+			'Y ',
+			'MC ',
+			'MAC ',
+			'VON ',
 			'VAN '
 		)
 		
-		reemplazado = param
-		for articulo in buscar:
-			reemplazado = reemplazado.replace(articulo, remplazar)
-		return reemplazado
+		for item in articulos:
+			data = articulo.replace(item, '')
+		return data
 
 	def quita_nombre(self, param):
 		remplazar = ''
