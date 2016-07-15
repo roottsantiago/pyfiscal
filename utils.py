@@ -120,9 +120,11 @@ class Utils(object):
 		return False
 			
 	def upper(self, texto):
+		"""
+		Convertir palabra de mayusculas.
+		"""
 		palabra = texto.upper()
-		palabra	= palabra.strip()
-		return palabra
+		return palabra.strip()
 
 	def get_anio(self, fecha):
 		"""
