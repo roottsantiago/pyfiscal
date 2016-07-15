@@ -26,18 +26,36 @@ class Utils(object):
 			data = articulo.replace(item, '')
 		return data
 
-	def quita_nombre(self, param):
-		remplazar = ''
-		buscar = (
-			'JOSE ', 'J ', 'MARIA ', 'MA. ', 'DE ', ' DE ', 'DEL ', ' DEL ', 'LA ',
-			' LA ', 'LAS ', ' LAS ', 'LOS ', ' LOS ', 'MC ', 'MC ', 'MAC ', 'VON ',
-			'VAN ', ' Y '
+	def quita_nombre(self, nombre):
+		"""
+		Quitar nombres definidos en la tupla.
+		"""
+		nombres = (
+			'JOSE ',
+			'J ',
+			'MARIA ',
+			'MA. ',
+			'DE ',
+			' DE ',
+			'DEL ',
+			' DEL ',
+			'LA ',
+			' LA ',
+			'LAS ',
+			' LAS ',
+			'LOS ',
+			' LOS ',
+			'MC ',
+			'MC ',
+			'MAC ',
+			'VON ',
+			'VAN ',
+			' Y '
 		)
 		
-		reemplazado = param
-		for articulo in buscar:
-			reemplazado = reemplazado.replace(articulo, remplazar)
-		return reemplazado
+		for item in nombres:
+			data = nombre.replace(item, '')
+		return data
 
 	def quita_CH_LL(self, texto):
 		letras = texto[0:2]
