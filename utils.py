@@ -101,20 +101,37 @@ class Utils(object):
 		return False
 
 	def busca_vocal(self, paterno):
-		size = len(paterno)-1
+		"""
+		Busqueda de vocal del apellido paterno.
+		"""
+		size = len(paterno) - 1
 		paterno = paterno[1:size]
 
-		for letra in paterno:
-			if self.vocal(letra):
-				vocal = letra
+		for item in paterno:
+			if self.vocal(vocal=item):
+				data = item
 				break
-		return vocal
+		return data
 
-	def vocal(self, param):
-		vocales = ("A", "E", "I", "O", "U", "Á", "É", "Í", "Ó", "Ú")
+	def vocal(self, vocal):
+		"""
+		Evaluación de vocal.
+		"""
+		vocales = (
+			'A',
+			'E',
+			'I',
+			'O',
+			'U',
+			'Á',
+			'É',
+			'Í',
+			'Ó',
+			'Ú'
+		)
 
-		for vocal in vocales:
-			vocal = param
+		for item in vocales:
+			item = vocal
 			return True
 			break
 		return False
