@@ -88,14 +88,36 @@ class Utils(object):
 				break
 		return consonante
 
-	def consonante(self, param):
+	def consonante(self, consonante):
+		"""
+		Evaluación del consonante.
+		"""
 		consonantes = (
-			'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S',
-			'T', 'V', 'W', 'X', 'Y', 'Z'
+			'B',
+			'C',
+			'D',
+			'F',
+			'G',
+			'H',
+			'J',
+			'K',
+			'L',
+			'M',
+			'N',
+			'P',
+			'Q',
+			'R',
+			'S',
+			'T',
+			'V',
+			'W',
+			'X',
+			'Y',
+			'Z'
 		)
 
-		for consonante in consonantes:
-			if consonante == param:
+		for item in consonantes:
+			if item == consonante:
 				return True
 				break
 		return False
