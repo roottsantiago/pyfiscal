@@ -29,15 +29,21 @@ Esta homoclave la designará el SAT, revisando la petición a través de papel o
 
 # Ejemplo
 
-from calcule import CalculeRFC, CalculeCURP
+from calcule import CalculeRFC, CalculeCURP, CalculeGeneric
 
-Solo cálcula RFC.
+Cálcula RFC.
+
 rfc = CalculeRFC(nombres='@param', paterno='@param', materno='@param', fecha='@param').data
 
-Solo cálcula CURP.
+Cálcula CURP.
 
-curp = CalculeCURP(**datos).data
-
-
-
-
+kargs  = {
+	'fecha': '@param',
+	'nombres': '@param',
+	'paterno': '@param',
+	'materno': '@param',
+	'genero': '@param',
+	'estado': '@param'
+}
+curp = CalculeCURP(**kargs).data
+ 
