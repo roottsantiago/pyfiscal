@@ -45,5 +45,12 @@ kargs  = {
 	'genero': '@param',
 	'estado': '@param'
 }
+
 curp = CalculeCURP(**kargs).data
  
+Cálcula RFC y CURP.
+
+class GenerateDataFiscal(CalculeGeneric):
+	generadores = (CalculeCURP, CalculeRFC)
+
+data = GenerateDataFiscal(**kargs).data
