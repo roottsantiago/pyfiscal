@@ -5,7 +5,7 @@ import datetime
 
 class Utils(object):
 	
-	def quita_articulo(self, article):
+	def remove_article(self, article):
 		"Remove article."
 		articles = (
 			'DE ', 'DEL ', 'LA ', 'LOS ', 'LAS ', 'Y ', 'MC ', 'MAC ', 'VON ', 'VAN '
@@ -15,7 +15,7 @@ class Utils(object):
 			data = article.replace(item, '')
 		return data
 
-	def quita_nombre(self, name):
+	def remove_names(self, name):
 		"Remove defined names in the tuple."
 		names = ('JOSE ','J ', 'MARIA ', 'MA. ', 'DE ', ' DE ', 'DEL ', ' DEL ', 'LA ', ' LA ',
 				 'LAS ', ' LAS ', 'LOS ', ' LOS ', 'MC ', 'MC ', 'MAC ', 'VON ', 'VAN ', ' Y ')
@@ -24,17 +24,17 @@ class Utils(object):
 			data = name.replace(item, '')
 		return data
 
-	def quita_CH_LL(self, text):
-		letters = text[0:2]
-		data = text[2:len(text)]
+	def remove_precisions(self, word):
+		letters = word[0:2]
+		data = word[2:len(word)]
 		
 		if letters == "CH":
-			text = "C%s" % data
+			word = "C%s" % data
 		elif letters == "LL":
-			text = "L%s" % data
-		return text
+			word = "L%s" % data
+		return word
 
-	def busca_consonante(self, word):
+	def search_consonant(self, word):
 		data = 'X'
 		consonant = ''
 		length = 0
@@ -48,12 +48,12 @@ class Utils(object):
 			if item == "Ñ":
 				consonant = 'X'
 				break
-			elif self.consonante(item):
+			elif self.get_consonant(item):
 				consonant = item
 				break
 		return consonant
 
-	def consonante(self, consonant):
+	def get_consonant(self, consonant):
 		"Get consonant."
 		consonants = ('B', 'C', 'D','F', 'G', 'H', 'J', 'K', 'L', 'M', 'N',
 					  'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z')
@@ -64,18 +64,18 @@ class Utils(object):
 				break
 		return False
 
-	def busca_vocal(self, last_name):
+	def search_vowel(self, last_name):
 		"Search for paternal surname vowel."
 		size = len(last_name) - 1
 		last_name = last_name[1:size]
 
 		for vocal in last_name:
-			if self.vocal(vocal=vocal):
+			if self.get_vocal(vocal=vocal):
 				data = vocal
 				break
 		return data
 
-	def vocal(self, vocal):
+	def get_vocal(self, vocal):
 		"Get vocal."
 		vowels = ('A', 'E', 'I', 'O', 'U', 'Á', 'É', 'Í', 'Ó', 'Ú')
 

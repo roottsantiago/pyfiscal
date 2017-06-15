@@ -21,7 +21,7 @@ class CalculeRFC(BaseGenerator):
 			materno=self.materno
 		)
 		
-		self.partial_data = self.base_dato_fiscal(
+		self.partial_data = self.data_fiscal(
 			nombres=self.nombres,
 			paterno=self.paterno, 
 			materno=self.materno,
@@ -152,7 +152,7 @@ class CalculeCURP(BaseGenerator):
 			estado=self.estado
 		)
 		
-		self.partial_data = self.base_dato_fiscal(
+		self.partial_data = self.data_fiscal(
 			nombres=self.nombres, paterno=self.paterno, materno=self.materno,
 			fecha=self.fecha
 		)
@@ -172,7 +172,7 @@ class CalculeCURP(BaseGenerator):
 		con_nombres = self.consonante_curp(self.nombres)
 		curp += con_nombres
 		# Agregar año al curp
-		anio = self.anio_fecha(self.fecha)
+		anio = self.get_year(self.fecha)
 		homoclave = self.homoclave_curp(anio)
 		# Agregar homoclave 
 		curp += homoclave
