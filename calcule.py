@@ -5,24 +5,26 @@ import unicodedata
 
 
 class CalculeRFC(BaseGenerator):
-	
 	key_value = 'rfc'
-	DATOS_REQUERIDOS = ( 'nombres','paterno', 'materno','fecha')
-	_dato_parcial = None
+	DATA_REQUIRED = ( 'nombres', 'paterno', 'materno', 'fecha')
+	partial_data = None
 
 	def __init__(self, **kargs):
-
 		self.nombres = kargs['nombres']
 		self.paterno = kargs['paterno']
 		self.materno = kargs['materno']
 		self.fecha = kargs['fecha']
 
 		self.parse(
-			nombres=self.nombres, paterno=self.paterno, materno=self.materno
+			nombres=self.nombres,
+			paterno=self.paterno, 
+			materno=self.materno
 		)
 		
-		self._dato_parcial = self.base_dato_fiscal(
-			nombres=self.nombres, paterno=self.paterno, materno=self.materno,
+		self.partial_data = self.base_dato_fiscal(
+			nombres=self.nombres,
+			paterno=self.paterno, 
+			materno=self.materno,
 			fecha=self.fecha
 		)
 
@@ -32,10 +34,9 @@ class CalculeRFC(BaseGenerator):
 		else:
 			nombrecompleto = u"%s %s" % (self.paterno, self.nombres)
 
-
 		# Cálcula y agrega homoclave al RFC
-		rfc = self._dato_parcial
-		homoclave = self.homoclave_rfc(self._dato_parcial, nombrecompleto)
+		rfc = self.partial_data
+		homoclave = self.homoclave_rfc(self.partial_data, nombrecompleto)
 		rfc += homoclave
 		# Cálcula y agrega digito verificador al RFC
 		digito = self.numero_verificador(rfc)
@@ -46,7 +47,6 @@ class CalculeRFC(BaseGenerator):
 	def remover_accentos(self, s):
 		if type(s) is str:
 			s = u"%s" % s
-
 		return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
 
 	def homoclave_rfc(self, rfc, nombrecompleto):
@@ -135,8 +135,8 @@ class CalculeRFC(BaseGenerator):
 class CalculeCURP(BaseGenerator):
 
 	key_value = 'curp'
-	DATOS_REQUERIDOS = ('nombres','paterno', 'materno','fecha', 'genero', 'estado')
-	_dato_parcial = None
+	DATA_REQUIRED = ('nombres', 'paterno', 'materno', 'fecha', 'genero', 'estado')
+	partial_data = None
 
 	def __init__(self, **kargs):
 
@@ -152,13 +152,13 @@ class CalculeCURP(BaseGenerator):
 			estado=self.estado
 		)
 		
-		self._dato_parcial = self.base_dato_fiscal(
+		self.partial_data = self.base_dato_fiscal(
 			nombres=self.nombres, paterno=self.paterno, materno=self.materno,
 			fecha=self.fecha
 		)
 
 	def genera(self):
-		curp = self._dato_parcial
+		curp = self.partial_data
 		# Agregar genero de la persona
 		curp += self.genero
 		# Agregar clave de la entidad
@@ -228,19 +228,17 @@ class CalculeCURP(BaseGenerator):
 
 
 class CalculeGeneric(object): 
-	
 	_data = {}
-	def __init__(self, **_datos):
-		self._datos =_datos
+
+	def __init__(self, **kwargs):
+		self._datos = kwargs
 
 	@property
 	def data(self):
-		for cls in self.generadores:
-			
-			
-			requeridos = cls.DATOS_REQUERIDOS
+		for cls in self.generadores:		
+			data = cls.DATA_REQUIRED
 
-			kargs = {key: self._datos[key] for key in requeridos}
+			kargs = {key: self._datos[key] for key in data}
 			gen = cls(**kargs)
 			gen.genera()
 			self._data[gen.key_value] = gen.data
