@@ -127,7 +127,7 @@ class CalculeRFC(BaseGenerator):
 
 
 class CalculeCURP(BaseGenerator):
-	""" Calculer CURP"""
+	""" Calcule CURP"""
 	key_value = 'curp'
 	partial_data = None
 	DATA_REQUIRED = (
@@ -149,8 +149,8 @@ class CalculeCURP(BaseGenerator):
 		self.city = kwargs.get('city', None)
 		self.state_code = kwargs.get('state_code', None)
 
-		self.parse(complete_name=self.complete_name, last_name=self.last_name, mother_last_name=self.mother_last_name,
-				   city=self.city, state_code=self.state_code)
+		self.parse(complete_name=self.complete_name, last_name=self.last_name,
+				   mother_last_name=self.mother_last_name, city=self.city, state_code=self.state_code)
 
 		self.partial_data = self.data_fiscal(
 			complete_name=self.complete_name, last_name=self.last_name,
@@ -158,66 +158,48 @@ class CalculeCURP(BaseGenerator):
 
 	def genera(self):
 		curp = self.partial_data
-		# Agregar gender de la persona
-		curp += self.gender
-		# Agregar clave de la entidad
-		clave_estado = self.entidad_federativa(self.city)
-		curp += clave_estado
-		# Agrgar consonantes
-		con_paterno = self.consonante_curp(self.last_name)
-		curp += con_paterno
-		con_materno = self.consonante_curp(self.mother_last_name)
-		curp += con_materno
-		con_nombres = self.consonante_curp(self.complete_name)
-		curp += con_nombres
-		# Agregar año al curp
-		anio = self.get_year(self.birth_date)
-		homoclave = self.homoclave_curp(anio)
-		# Agregar homoclave 
-		curp += homoclave
-		# Agrgar digito verificador
-		digito = self.digito_verificador(curp)
-		curp += digito
+		statecode = self.entidad_federativa(self.city)
+		lastname = self.consonante_curp(self.last_name)
+		mslastname = self.consonante_curp(self.mother_last_name)
+		name = self.consonante_curp(self.complete_name)
+		year = self.get_year(self.birth_date)
+		hc = self.homoclave(year)
+
+		curp += '%s%s%s%s%s%s' % (self.gender, statecode, lastname,
+			mslastname, name, hc)
+		curp += self.check_digit(curp)
 		return curp
 	
-	def homoclave_curp(self, anio):
-		homoclave = ""
-		if anio < 2000:
-			homoclave = "0"
-		elif anio >= 2000:
-			homoclave = "A"
+	def homoclave(self, year):
+		hc = ''
+		if year < 2000:
+			hc = '0'
+		elif year >= 2000:
+			hc = 'A'
+		return hc
 
-		return homoclave
-
-	def digito_verificador(self, curp):
-		contador = 18
-		count = 0
-		valor = 0
-		sumaria = 0
-
-		verificadores = {
+	def check_digit(self, curp):
+		value = 0
+		summary = 0
+		checkers = {
 			'0':0, '1':1, '2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9,
 			'A':10, 'B':11, 'C':12, 'D':13, 'E':14, 'F':15, 'G':16, 'H':17, 'I':18,
 			'J':19, 'K':20, 'L':21, 'M':22, 'N':23, 'Ñ':24, 'O':25, 'P':26, 'Q':27,
 			'R':28, 'S':29, 'T':30, 'U':31, 'V':32, 'W':33, 'X':34, 'Y':35, 'Z':36
 		}
 
+		count = 0
+		count2 = 18
 		for count in range(0,len(curp)):
 			posicion = curp[count]
-
-			for key,value in verificadores.items():
-				if posicion == key:
-					valor = (value * contador)
-
-			contador = contador - 1
-			sumaria = sumaria + valor
-
-		# Sacar el residuo	
-		num_ver = sumaria % 10
-		# Devuelve el valor absoluto en caso de que sea negativo
-		num_ver = abs(10 - num_ver)
-		# En caso de que sea 10 el digito es 0
-		if num_ver == 10:
+			for k, v in checkers.items():
+				if posicion == k:
+					value = (v * count2)
+			count2 = count2 - 1
+			summary = summary + value
+		num_ver = summary % 10 # Residue
+		num_ver = abs(10 - num_ver)	#Returns the absolute value in case it is negative.
+		if num_ver == 10: 
 			num_ver = 0
 		return str(num_ver)	
 
