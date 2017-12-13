@@ -7,20 +7,17 @@ util = Utils()
 
 
 class BaseGenerator(object):
-
+	"""class Base"""
 	def generate(self):
 		raise NotImplementedError('No implement.')
 
 	def parse(self, nombres, paterno, materno=None, estado=None):
-
-		if estado != None:
+		if estado is not None:
 			self.estado = util.upper(estado)
-
 		if materno is not None:
 			self.materno = util.upper(materno)
 			self.materno = util.remove_article(self.materno)
 			self.materno = util.remove_precisions(self.materno)
-
 		self.nombres = util.upper(nombres)
 		self.nombres = util.remove_names(self.nombres)
 		self.nombres = util.remove_precisions(self.nombres)
@@ -53,16 +50,15 @@ class BaseGenerator(object):
 		return iniciales
 
 	def verify_words(self, rfc):
-
 		for item in WORDS:
 			if item == rfc:
-				rfc = "XXXX"
+				rfc = 'XXXX'
 				break
 
 		return rfc
 
 	def parse_date(self, fecha):
-		fecha_nac = ""
+		fecha_nac = ''
 		fecha_type = type(fecha)
 
 		if fecha is None:
@@ -80,10 +76,8 @@ class BaseGenerator(object):
 
 		return fecha_nac
 
-
 	def entidad_federativa(self, ent_fed):
 		data = None	
-
 		for key, value in ENT_FED.items():
 			if key == ent_fed:
 				data = value
@@ -91,8 +85,7 @@ class BaseGenerator(object):
 		return data
 
 	def consonante_curp(self, word):
-		consonante = util.search_consonant(word)
-		return consonante
+		return util.search_consonant(word)
 
 	def get_year(self, str_date):
 		return util.get_year(str_date)
