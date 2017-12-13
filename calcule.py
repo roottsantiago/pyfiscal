@@ -137,7 +137,7 @@ class CalculeCURP(BaseGenerator):
 	key_value = 'curp'
 	partial_data = None
 	DATA_REQUIRED = (
-		'nombres', 'paterno', 'materno', 'fecha', 'genero', 'city', 'state_code'
+		'nombres', 'paterno', 'materno', 'fecha', 'gender', 'city', 'state_code'
 	)
 	
 	def __init__(self, **kargs):
@@ -145,7 +145,7 @@ class CalculeCURP(BaseGenerator):
 		self.paterno = kargs.get('paterno')
 		self.materno = kargs.get('materno', None)
 		self.fecha = kargs.get('fecha')
-		self.genero = kargs.get('genero')
+		self.gender = kargs.get('gender')
 		self.city = kargs.get('city', None)
 		self.state_code = kargs.get('state_code', None)
 
@@ -158,8 +158,8 @@ class CalculeCURP(BaseGenerator):
 
 	def genera(self):
 		curp = self.partial_data
-		# Agregar genero de la persona
-		curp += self.genero
+		# Agregar gender de la persona
+		curp += self.gender
 		# Agregar clave de la entidad
 		clave_estado = self.entidad_federativa(self.city)
 		curp += clave_estado
