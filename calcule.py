@@ -133,28 +133,28 @@ class CalculeRFC(BaseGenerator):
 
 
 class CalculeCURP(BaseGenerator):
-
+	""" Calculer CURP"""
 	key_value = 'curp'
-	DATA_REQUIRED = ('nombres', 'paterno', 'materno', 'fecha', 'genero', 'city')
 	partial_data = None
-
+	DATA_REQUIRED = (
+		'nombres', 'paterno', 'materno', 'fecha', 'genero', 'city', 'state_code'
+	)
+	
 	def __init__(self, **kargs):
-		self.nombres = kargs['nombres']
-		self.paterno = kargs['paterno']
-		self.materno = kargs['materno']
-		self.fecha = kargs['fecha']
-		self.genero = kargs['genero']
-		self.city = kargs['city']
+		self.nombres = kargs.get('nombres')
+		self.paterno = kargs.get('paterno')
+		self.materno = kargs.get('materno', None)
+		self.fecha = kargs.get('fecha')
+		self.genero = kargs.get('genero')
+		self.city = kargs.get('city', None)
+		self.state_code = kargs.get('state_code', None)
 
-		self.parse(
-			nombres=self.nombres, paterno=self.paterno, materno=self.materno,
-			city=self.city
-		)
-		
+		self.parse(nombres=self.nombres, paterno=self.paterno, materno=self.materno,
+				   city=self.city, state_code=self.state_code)
+
 		self.partial_data = self.data_fiscal(
-			nombres=self.nombres, paterno=self.paterno, materno=self.materno,
-			fecha=self.fecha
-		)
+			nombres=self.nombres, paterno=self.paterno,
+			materno=self.materno, fecha=self.fecha)
 
 	def genera(self):
 		curp = self.partial_data

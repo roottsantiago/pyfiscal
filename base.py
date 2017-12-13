@@ -11,9 +11,11 @@ class BaseGenerator(object):
 	def generate(self):
 		raise NotImplementedError('No implement.')
 
-	def parse(self, nombres, paterno, materno=None, city=None):
+	def parse(self, nombres, paterno, materno=None, city=None, state_code=None):
 		if city is not None:
 			self.city = util.upper(city)
+		if state_code is not None:
+			self.state_code = util.upper(state_code)
 		if materno is not None:
 			self.materno = util.upper(materno)
 			self.materno = util.remove_article(self.materno)
