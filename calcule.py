@@ -24,76 +24,72 @@ class CalculeRFC(BaseGenerator):
 
 	def genera(self):
 		if self.mother_last_name is not None:
-			nombrecompleto = u"%s %s %s" % (self.last_name, self.mother_last_name, self.complete_name)
+			complete_name = u"%s %s %s" % (self.last_name, self.mother_last_name, self.complete_name)
 		else:
-			nombrecompleto = u"%s %s" % (self.last_name, self.complete_name)
+			complete_name = u"%s %s" % (self.last_name, self.complete_name)
 
-		# Cálcula y agrega homoclave al RFC
 		rfc = self.partial_data
-		homoclave = self.homoclave_rfc(self.partial_data, nombrecompleto)
-		rfc += homoclave
-		# Cálcula y agrega digito verificador al RFC
-		digito = self.numero_verificador(rfc)
-		rfc += digito
-
+		hc = self.homoclave(self.partial_data, complete_name)
+		rfc += '%s' % hc
+		rfc += self.verification_number(rfc)
 		return rfc
 
-	def remover_accentos(self, s):
+	def remove_accents(self, s):
 		if type(s) is str:
 			s = u"%s" % s
 		return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
 
-	def homoclave_rfc(self, rfc, nombrecompleto):
-		nombre_numero = "0"
-		suma_valor = 0 
+	def homoclave(self, rfc, complete_name):
+		nombre_numero = '0'
+		summary = 0 
 		div = 0 
 		mod = 0
 
 		rfc1 = {
-			" ":00, "&":10, "Ñ":10, "A":11, "B":12, "C":13, "D":14, "E":15, "F":16,
-			"G":17, "H":18, "I":19, "J":21, "K":22, "L":23, "M":24, "N":25, "O":26,
-			"P":27, "Q":28, "R":29, "S":32, "T":33, "U":34, "V":35, "W":36, "X":37,
-			"Y":38, "Z":39, "0":0, "1":1, "2":2, "3":3, "4":4, "5":5, "6":6, "7":7,
-			"8":8,"9":9,
+			' ':00, '&':10, 'Ñ':10, 'A':11, 'B':12, 'C':13, 'D':14, 'E':15, 'F':16,
+			'G':17, 'H':18, 'I':19, 'J':21, 'K':22, 'L':23, 'M':24, 'N':25, 'O':26,
+			'P':27, 'Q':28, 'R':29, 'S':32, 'T':33, 'U':34, 'V':35, 'W':36, 'X':37,
+			'Y':38, 'Z':39, '0':0, '1':1, '2':2, '3':3, '4':4, '5':5, '6':6, '7':7,
+			'8':8,'9':9,
 		}
 		rfc2 = {
-			0:"1", 1:"2", 2:"3", 3:"4", 4:"5", 5:"6", 6:"7", 7:"8", 8:"9", 9:"A", 10:"B",
-			11:"C", 12:"D", 13:"E", 14:"F", 15:"G", 16:"H", 17:"I", 18:"J", 19:"K",
-			20:"L", 21:"M", 22:"N", 23:"P", 24:"Q", 25:"R", 26:"S", 27:"T", 28:"U",
-			29:"V", 30:"W", 31:"X", 32:"Y",
+			0:'1', 1:'2', 2:'3', 3:'4', 4:'5', 5:'6', 6:'7', 7:'8', 8:'9', 9:'A', 10:'B',
+			11:'C', 12:'D', 13:'E', 14:'F', 15:'G', 16:'H', 17:'I', 18:'J', 19:'K',
+			20:'L', 21:'M', 22:'N', 23:'P', 24:'Q', 25:'R', 26:'S', 27:'T', 28:'U',
+			29:'V', 30:'W', 31:'X', 32:'Y',
 		}
 
 		# Recorrer el nombre y convertir las letras en su valor numérico.
-		for count in range(0, len(nombrecompleto)):
-			letra = self.remover_accentos(nombrecompleto[count])
+		for count in range(0, len(complete_name)):
+			letra = self.remove_accents(complete_name[count])
 
-			nombre_numero += self.rfc_set(str(rfc1[letra]),"00")
+			nombre_numero += self.rfc_set(str(rfc1[letra]),'00')
 		# La formula es:
             # El caracter actual multiplicado por diez mas el valor del caracter
             # siguiente y lo anterior multiplicado por el valor del caracter siguiente.
 		for count in range(0,len(nombre_numero)-1):
 			count2 = count+1
-			suma_valor += ((int(nombre_numero[count])*10) + int(nombre_numero[count2])) * int(nombre_numero[count2])
+			summary += ((int(nombre_numero[count])*10) + int(nombre_numero[count2])) * int(nombre_numero[count2])
 		
-		div = suma_valor % 1000
+		div = summary % 1000
 		mod = div % 34
 		div = (div-mod)/34
-		homoclave = ""
-		homoclave += self.rfc_set(rfc2[int(div)],"Z")
-		homoclave += self.rfc_set(rfc2[int(mod)],"Z")
+		homoclave = ''
+		homoclave += self.rfc_set(rfc2[int(div)], 'Z')
+		homoclave += self.rfc_set(rfc2[int(mod)], 'Z')
 		return homoclave
 
-	def numero_verificador(self, rfc):
+	def verification_number(self, rfc):
 		suma_numero = 0 
 		suma_parcial = 0
 		digito = None 
 
 		rfc3 = {
-			"A":10, "B":11, "C":12, "D":13, "E":14, "F":15, "G":16, "H":17, "I":18,
-			"J":19, "K":20, "L":21, "M":22, "N":23, "O":25, "P":26, "Q":27, "R":28,
-			"S":29, "T":30, "U":31, "V":32, "W":33, "X":34, "Y":35, "Z":36, "0":0,
-			"1":1, "2":2, "3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9, "":24,
-			" ":37,
+			'A':10, 'B':11, 'C':12, 'D':13, 'E':14, 'F':15, 'G':16, 'H':17, 'I':18,
+			'J':19, 'K':20, 'L':21, 'M':22, 'N':23, 'O':25, 'P':26, 'Q':27, 'R':28,
+			'S':29, 'T':30, 'U':31, 'V':32, 'W':33, 'X':34, 'Y':35, 'Z':36, '0':0,
+			'1':1, '2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, '':24,
+			' ':37,
 		}
 
 		for count in range(0,len(rfc)):
@@ -106,9 +102,9 @@ class CalculeRFC(BaseGenerator):
 		digito_parcial = (11-modulo)
 		
 		if modulo == 0:
-			digito = "0"
+			digito = '0'
 		if digito_parcial == 10:
-			digito = "A"
+			digito = 'A'
 		else:
 			digito = str(digito_parcial)
 
@@ -119,7 +115,6 @@ class CalculeRFC(BaseGenerator):
 			return b
 		else:
 			return a
-
 
 	@property
 	def data(self):
@@ -218,10 +213,9 @@ class CalculeGeneric(object):
 	def data(self):
 		for cls in self.generadores:		
 			data = cls.DATA_REQUIRED
-
 			kargs = {key: self._datos[key] for key in data}
 			gen = cls(**kargs)
 			gen.genera()
 			self._data[gen.key_value] = gen.data
-
+			
 		return self._data
