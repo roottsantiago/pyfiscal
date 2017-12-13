@@ -137,14 +137,14 @@ class CalculeCURP(BaseGenerator):
 	key_value = 'curp'
 	partial_data = None
 	DATA_REQUIRED = (
-		'nombres', 'paterno', 'materno', 'fecha', 'gender', 'city', 'state_code'
+		'nombres', 'paterno', 'materno', 'birth_date', 'gender', 'city', 'state_code'
 	)
 	
 	def __init__(self, **kargs):
 		self.nombres = kargs.get('nombres')
 		self.paterno = kargs.get('paterno')
 		self.materno = kargs.get('materno', None)
-		self.fecha = kargs.get('fecha')
+		self.birth_date = kargs.get('birth_date')
 		self.gender = kargs.get('gender')
 		self.city = kargs.get('city', None)
 		self.state_code = kargs.get('state_code', None)
@@ -154,7 +154,7 @@ class CalculeCURP(BaseGenerator):
 
 		self.partial_data = self.data_fiscal(
 			nombres=self.nombres, paterno=self.paterno,
-			materno=self.materno, fecha=self.fecha)
+			materno=self.materno, birth_date=self.birth_date)
 
 	def genera(self):
 		curp = self.partial_data
@@ -171,7 +171,7 @@ class CalculeCURP(BaseGenerator):
 		con_nombres = self.consonante_curp(self.nombres)
 		curp += con_nombres
 		# Agregar año al curp
-		anio = self.get_year(self.fecha)
+		anio = self.get_year(self.birth_date)
 		homoclave = self.homoclave_curp(anio)
 		# Agregar homoclave 
 		curp += homoclave

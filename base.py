@@ -27,11 +27,11 @@ class BaseGenerator(object):
 		self.paterno = util.remove_article(self.paterno)
 		self.paterno = util.remove_precisions(self.paterno)
 		
-	def data_fiscal(self, nombres, paterno, materno, fecha):
+	def data_fiscal(self, nombres, paterno, materno, birth_date):
 		initials = self.initials_name(nombres, paterno, materno)
 		data = self.verify_words(initials)
 		# Add date of birth.
-		data += self.parse_date(fecha)
+		data += self.parse_date(birth_date)
 		return data
 		
 	def initials_name(self, nombres, paterno, materno):
