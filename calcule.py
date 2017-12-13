@@ -135,21 +135,20 @@ class CalculeRFC(BaseGenerator):
 class CalculeCURP(BaseGenerator):
 
 	key_value = 'curp'
-	DATA_REQUIRED = ('nombres', 'paterno', 'materno', 'fecha', 'genero', 'estado')
+	DATA_REQUIRED = ('nombres', 'paterno', 'materno', 'fecha', 'genero', 'city')
 	partial_data = None
 
 	def __init__(self, **kargs):
-
 		self.nombres = kargs['nombres']
 		self.paterno = kargs['paterno']
 		self.materno = kargs['materno']
 		self.fecha = kargs['fecha']
 		self.genero = kargs['genero']
-		self.estado = kargs['estado']
+		self.city = kargs['city']
 
 		self.parse(
 			nombres=self.nombres, paterno=self.paterno, materno=self.materno,
-			estado=self.estado
+			city=self.city
 		)
 		
 		self.partial_data = self.data_fiscal(
@@ -162,7 +161,7 @@ class CalculeCURP(BaseGenerator):
 		# Agregar genero de la persona
 		curp += self.genero
 		# Agregar clave de la entidad
-		clave_estado = self.entidad_federativa(self.estado)
+		clave_estado = self.entidad_federativa(self.city)
 		curp += clave_estado
 		# Agrgar consonantes
 		con_paterno = self.consonante_curp(self.paterno)

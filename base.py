@@ -11,9 +11,9 @@ class BaseGenerator(object):
 	def generate(self):
 		raise NotImplementedError('No implement.')
 
-	def parse(self, nombres, paterno, materno=None, estado=None):
-		if estado is not None:
-			self.estado = util.upper(estado)
+	def parse(self, nombres, paterno, materno=None, city=None):
+		if city is not None:
+			self.city = util.upper(city)
 		if materno is not None:
 			self.materno = util.upper(materno)
 			self.materno = util.remove_article(self.materno)
@@ -77,7 +77,7 @@ class BaseGenerator(object):
 		return fecha_nac
 
 	def entidad_federativa(self, ent_fed):
-		data = None	
+		data = ''	
 		for key, value in ENT_FED.items():
 			if key == ent_fed:
 				data = value
