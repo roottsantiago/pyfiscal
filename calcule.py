@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from base import BaseGenerator
-
 import unicodedata
+from base import BaseGenerator
 
 
 class CalculeRFC(BaseGenerator):
@@ -153,10 +152,10 @@ class CalculeCURP(BaseGenerator):
 
 	def genera(self):
 		curp = self.partial_data
-		statecode = self.entidad_federativa(self.city)
-		lastname = self.consonante_curp(self.last_name)
-		mslastname = self.consonante_curp(self.mother_last_name)
-		name = self.consonante_curp(self.complete_name)
+		statecode = self.city_search(self.city)
+		lastname = self.get_consonante(self.last_name)
+		mslastname = self.get_consonante(self.mother_last_name)
+		name = self.get_consonante(self.complete_name)
 		year = self.get_year(self.birth_date)
 		hc = self.homoclave(year)
 
@@ -217,5 +216,5 @@ class CalculeGeneric(object):
 			gen = cls(**kargs)
 			gen.genera()
 			self._data[gen.key_value] = gen.data
-			
+
 		return self._data
