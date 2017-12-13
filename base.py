@@ -11,43 +11,43 @@ class BaseGenerator(object):
 	def generate(self):
 		raise NotImplementedError('No implement.')
 
-	def parse(self, nombres, paterno, materno=None, city=None, state_code=None):
+	def parse(self, complete_name, last_name, mother_last_name=None, city=None, state_code=None):
 		if city is not None:
 			self.city = util.upper(city)
 		if state_code is not None:
 			self.state_code = util.upper(state_code)
-		if materno is not None:
-			self.materno = util.upper(materno)
-			self.materno = util.remove_article(self.materno)
-			self.materno = util.remove_precisions(self.materno)
-		self.nombres = util.upper(nombres)
-		self.nombres = util.remove_names(self.nombres)
-		self.nombres = util.remove_precisions(self.nombres)
-		self.paterno = util.upper(paterno)
-		self.paterno = util.remove_article(self.paterno)
-		self.paterno = util.remove_precisions(self.paterno)
+		if mother_last_name is not None:
+			self.mother_last_name = util.upper(mother_last_name)
+			self.mother_last_name = util.remove_article(self.mother_last_name)
+			self.mother_last_name = util.remove_precisions(self.mother_last_name)
+		self.complete_name = util.upper(complete_name)
+		self.complete_name = util.remove_names(self.complete_name)
+		self.complete_name = util.remove_precisions(self.complete_name)
+		self.last_name = util.upper(last_name)
+		self.last_name = util.remove_article(self.last_name)
+		self.last_name = util.remove_precisions(self.last_name)
 		
-	def data_fiscal(self, nombres, paterno, materno, birth_date):
-		initials = self.initials_name(nombres, paterno, materno)
+	def data_fiscal(self, complete_name, last_name, mother_last_name, birth_date):
+		initials = self.initials_name(complete_name, last_name, mother_last_name)
 		data = self.verify_words(initials)
 		# Add date of birth.
 		data += self.parse_date(birth_date)
 		return data
 		
-	def initials_name(self, nombres, paterno, materno):
+	def initials_name(self, complete_name, last_name, mother_last_name):
 		iniciales = ''
 		# Inicial del apellido paterno
-		iniciales = paterno[0:1]
+		iniciales = last_name[0:1]
 		# Busca la primera vocal del apellido paterno
-		vocal = util.search_vowel(paterno)
+		vocal = util.search_vowel(last_name)
 		# Agrega vocal
 		iniciales += vocal 
-		# inicial del apellido materno y nombre
-		if materno is None:
+		# inicial del apellido mother_last_name y nombre
+		if mother_last_name is None:
 			iniciales += 'X'
 		else:
-			iniciales += materno[0:1]
-		iniciales += nombres[0:1]
+			iniciales += mother_last_name[0:1]
+		iniciales += complete_name[0:1]
 
 		return iniciales
 

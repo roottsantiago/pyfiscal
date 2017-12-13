@@ -6,33 +6,27 @@ import unicodedata
 
 class CalculeRFC(BaseGenerator):
 	key_value = 'rfc'
-	DATA_REQUIRED = ( 'nombres', 'paterno', 'materno', 'fecha')
+	DATA_REQUIRED = ('complete_name', 'last_name', 'mother_last_name', 'birth_date')
 	partial_data = None
 
-	def __init__(self, **kargs):
-		self.nombres = kargs['nombres']
-		self.paterno = kargs['paterno']
-		self.materno = kargs['materno']
-		self.fecha = kargs['fecha']
+	def __init__(self, **kwargs):
+		self.complete_name = kwargs.get('complete_name')
+		self.last_name = kwargs.get('last_name')
+		self.mother_last_name = kwargs.get('mother_last_name')
+		self.birth_date = kwargs.get('birth_date')
 
-		self.parse(
-			nombres=self.nombres,
-			paterno=self.paterno, 
-			materno=self.materno
-		)
+		self.parse(complete_name=self.complete_name, last_name=self.last_name, 
+				  mother_last_name=self.mother_last_name)
 		
 		self.partial_data = self.data_fiscal(
-			nombres=self.nombres,
-			paterno=self.paterno, 
-			materno=self.materno,
-			fecha=self.fecha
-		)
+			complete_name=self.complete_name, last_name=self.last_name, 
+			mother_last_name=self.mother_last_name, birth_date=self.birth_date)
 
 	def genera(self):
-		if self.materno is not None:
-			nombrecompleto = u"%s %s %s" % (self.paterno, self.materno, self.nombres)
+		if self.mother_last_name is not None:
+			nombrecompleto = u"%s %s %s" % (self.last_name, self.mother_last_name, self.complete_name)
 		else:
-			nombrecompleto = u"%s %s" % (self.paterno, self.nombres)
+			nombrecompleto = u"%s %s" % (self.last_name, self.complete_name)
 
 		# Cálcula y agrega homoclave al RFC
 		rfc = self.partial_data
@@ -137,24 +131,30 @@ class CalculeCURP(BaseGenerator):
 	key_value = 'curp'
 	partial_data = None
 	DATA_REQUIRED = (
-		'nombres', 'paterno', 'materno', 'birth_date', 'gender', 'city', 'state_code'
+		'complete_name',
+		'last_name',
+		'mother_last_name',
+		'birth_date',
+		'gender',
+		'city',
+		'state_code'
 	)
 	
-	def __init__(self, **kargs):
-		self.nombres = kargs.get('nombres')
-		self.paterno = kargs.get('paterno')
-		self.materno = kargs.get('materno', None)
-		self.birth_date = kargs.get('birth_date')
-		self.gender = kargs.get('gender')
-		self.city = kargs.get('city', None)
-		self.state_code = kargs.get('state_code', None)
+	def __init__(self, **kwargs):
+		self.complete_name = kwargs.get('complete_name')
+		self.last_name = kwargs.get('last_name')
+		self.mother_last_name = kwargs.get('mother_last_name', None)
+		self.birth_date = kwargs.get('birth_date')
+		self.gender = kwargs.get('gender')
+		self.city = kwargs.get('city', None)
+		self.state_code = kwargs.get('state_code', None)
 
-		self.parse(nombres=self.nombres, paterno=self.paterno, materno=self.materno,
+		self.parse(complete_name=self.complete_name, last_name=self.last_name, mother_last_name=self.mother_last_name,
 				   city=self.city, state_code=self.state_code)
 
 		self.partial_data = self.data_fiscal(
-			nombres=self.nombres, paterno=self.paterno,
-			materno=self.materno, birth_date=self.birth_date)
+			complete_name=self.complete_name, last_name=self.last_name,
+			mother_last_name=self.mother_last_name, birth_date=self.birth_date)
 
 	def genera(self):
 		curp = self.partial_data
@@ -164,11 +164,11 @@ class CalculeCURP(BaseGenerator):
 		clave_estado = self.entidad_federativa(self.city)
 		curp += clave_estado
 		# Agrgar consonantes
-		con_paterno = self.consonante_curp(self.paterno)
+		con_paterno = self.consonante_curp(self.last_name)
 		curp += con_paterno
-		con_materno = self.consonante_curp(self.materno)
+		con_materno = self.consonante_curp(self.mother_last_name)
 		curp += con_materno
-		con_nombres = self.consonante_curp(self.nombres)
+		con_nombres = self.consonante_curp(self.complete_name)
 		curp += con_nombres
 		# Agregar año al curp
 		anio = self.get_year(self.birth_date)
