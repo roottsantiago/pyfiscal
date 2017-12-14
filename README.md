@@ -27,30 +27,34 @@ El Registro Federal de Contribuyentes es una clave que se usa en México para di
 
 Esta homoclave la designará el SAT, revisando la petición a través de papel oficial ya designado.
 
-# Ejemplo
+# Example
+```python
+	from calcule import CalculeRFC, CalculeCURP, CalculeGeneric
+	
+	# Generate CURP
+	
+	kwargs  = {
+	'complete_name': '@param',
+	'last_name': '@param',
+	'mother_last_name': '@param',
+	'birth_date': '@param',
+	'gender': '@param',
+	'state_code': '@param',
+	'city': None
+	}
+	
+	curp = CalculeCURP(**kwargs).data
+	
+	# Generate RFC
 
-from calcule import CalculeRFC, CalculeCURP, CalculeGeneric
+	rfc = CalculeRFC(complete_name='@param', last_name='@param',
+					 mother_last_name='@param', birth_date='@param').data
+	
+	# Generation of curp and rfc
+	
+	class GenerateDataFiscal(CalculeGeneric):
+		generadores = (CalculeCURP, CalculeRFC)
 
-Cálcula RFC.
+	data = GenerateDataFiscal(**kwargs).data
 
-rfc = CalculeRFC(nombres='@param', paterno='@param', materno='@param', fecha='@param').data
-
-Cálcula CURP.
-
-kargs  = {
-	'fecha': '@param',
-	'nombres': '@param',
-	'paterno': '@param',
-	'materno': '@param',
-	'genero': '@param',
-	'estado': '@param'
-}
-
-curp = CalculeCURP(**kargs).data
- 
-Cálcula RFC y CURP.
-
-class GenerateDataFiscal(CalculeGeneric):
-	generadores = (CalculeCURP, CalculeRFC)
-
-data = GenerateDataFiscal(**kargs).data
+```
