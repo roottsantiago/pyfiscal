@@ -29,32 +29,29 @@ Esta homoclave la designará el SAT, revisando la petición a través de papel o
 
 # Example
 ```python
-	from calcule import CalculeRFC, CalculeCURP, CalculeGeneric
+from calcule import CalculeRFC, CalculeCURP, CalculeGeneric
 	
-	# Generate CURP
-	
-	kwargs  = {
-	'complete_name': '@param',
-	'last_name': '@param',
-	'mother_last_name': '@param',
-	'birth_date': '@param',
-	'gender': '@param',
-	'state_code': '@param',
-	'city': None
-	}
-	
-	curp = CalculeCURP(**kwargs).data
-	
-	# Generate RFC
+kwargs  = {
+'complete_name': '@param',
+'last_name': '@param',
+'mother_last_name': '@param',
+'birth_date': '@param',
+'gender': '@param',
+'state_code': '@param',
+'city': None
+}
 
-	rfc = CalculeRFC(complete_name='@param', last_name='@param',
-					 mother_last_name='@param', birth_date='@param').data
-	
-	# Generation of curp and rfc
-	
-	class GenerateDataFiscal(CalculeGeneric):
-		generadores = (CalculeCURP, CalculeRFC)
+# Generate CURP
+curp = CalculeCURP(**kwargs).data
 
-	data = GenerateDataFiscal(**kwargs).data
+# Generate RFC
+rfc = CalculeRFC(complete_name='@param', last_name='@param',
+				 mother_last_name='@param', birth_date='@param').data
+
+# Generation of CURP and RFC
+class GenerateDataFiscal(CalculeGeneric):
+	generadores = (CalculeCURP, CalculeRFC)
+
+data = GenerateDataFiscal(**kwargs).data
 
 ```
