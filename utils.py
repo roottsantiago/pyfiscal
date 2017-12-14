@@ -92,20 +92,21 @@ def search_vowel(last_name):
 	size = len(last_name) - 1
 	last_name = last_name[1:size]
 
-	for vocal in last_name:
-		if get_vocal(vocal=vocal):
-			data = vocal
+	vocal = ''
+	for v in last_name:
+		if get_vocal(vocal=v):
+			vocal = v
 			break
-	return data
+	return vocal
 
 def get_vocal(vocal):
 	"Get vocal."
 	vowels = ('A', 'E', 'I', 'O', 'U', 'Á', 'É', 'Í', 'Ó', 'Ú')
 
-	for item in vowels:
-		item = vocal
-		return True
-		break
+	for v in vowels:
+		if v == vocal:
+			return True
+			break
 	return False
 			
 def to_upper(text):
