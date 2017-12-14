@@ -141,8 +141,7 @@ class CalculeCURP(BaseGenerator):
 		self.birth_date = kwargs.get('birth_date')
 		self.gender = kwargs.get('gender')
 		self.city = kwargs.get('city', None)
-		self.state_code = kwargs.get('state_code', None)
-
+		self.state_code = kwargs.get('state_code')
 		self.parse(complete_name=self.complete_name, last_name=self.last_name,
 				   mother_last_name=self.mother_last_name, city=self.city, state_code=self.state_code)
 
@@ -152,7 +151,15 @@ class CalculeCURP(BaseGenerator):
 
 	def genera(self):
 		curp = self.partial_data
-		statecode = self.city_search(self.city)
+		statecode = self.state_code
+		
+		if self.city is not None:
+			statecode = self.city_search(self.city)
+		elif self.state_code is not None:
+			statecode = self.state_code
+		else: 
+			raise AttributeError("No such attribute: state_code")
+
 		lastname = self.get_consonante(self.last_name)
 		mslastname = self.get_consonante(self.mother_last_name)
 		name = self.get_consonante(self.complete_name)
