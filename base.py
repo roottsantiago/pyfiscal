@@ -91,3 +91,7 @@ class BaseGenerator(object):
 			return date.year
 		except Exception as exc:
 			raise str(exc)
+
+	def current_year(self):
+		return datetime.datetime.now().year
+		

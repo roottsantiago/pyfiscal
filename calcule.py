@@ -209,31 +209,47 @@ class CalculeCURP(BaseGenerator):
 		return self.genera()
 
 
-class CalculeNSS(object):
+class CalculeNSS(BaseGenerator):
 	"""
 	class for CalculeNSS
 
 	"""
-	_data = None
-
 	def __init__(self, nss):
 		self.nss = nss
-		self._data = self.calculate_luhn()
 
-	def is_valid(self): #example 4896889802135
+	def is_valid(self):
+		validated = len(self.nss)
+		if not validated is 11:  # 11 dígitos y subdelegación válida
+			return False
+
+		sub_deleg = int(self.nss[0:2])
+		year = self.current_year() % 100
+		high_date  = int(self.nss[2:4])
+		birth_date = int(self.nss[4:6])
+
+		if sub_deleg is not 97:
+			if high_date <= year:
+				high_date += 100
+			if birth_date <= year: 
+				birth_date += 100
+			if birth_date  >  high_date:
+				print('Error: Se dio de alta antes de nacer.')
+				return False
+		return self._is_luhn_valid()
+
+	def _is_luhn_valid(self): #example 4896889802135
 		""" Validate an entry with a check digit. """
 		num = map(int, str(self.nss))
 		return sum(num[::-2] + [sum(divmod(d * 2, 10)) for d in num[-2::-2]]) % 10 == 0
 
-	def calculate_luhn(self):
+	def _calculate_luhn(self):
 		""" Calculation of said digit. """
 		num = map(int, str(self.nss))
 		check_digit = 10 - sum(num[-2::-2] + [sum(divmod(d * 2, 10)) for d in num[::-2]]) % 10	
 		return 0 if check_digit == 10 else check_digit
 
-	@property
-	def data(self):
-		return self._data
+	def digit(self):
+		return self._calculate_luhn()
 
 
 class CalculeGeneric(object): 
