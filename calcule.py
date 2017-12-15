@@ -64,8 +64,8 @@ class CalculeRFC(BaseGenerator):
 
 			nombre_numero += self.rfc_set(str(rfc1[letra]),'00')
 		# La formula es:
-            # El caracter actual multiplicado por diez mas el valor del caracter
-            # siguiente y lo anterior multiplicado por el valor del caracter siguiente.
+			# El caracter actual multiplicado por diez mas el valor del caracter
+			# siguiente y lo anterior multiplicado por el valor del caracter siguiente.
 		for count in range(0,len(nombre_numero)-1):
 			count2 = count+1
 			summary += ((int(nombre_numero[count])*10) + int(nombre_numero[count2])) * int(nombre_numero[count2])
@@ -207,6 +207,33 @@ class CalculeCURP(BaseGenerator):
 	@property
 	def data(self):
 		return self.genera()
+
+
+class CalculeNSS(object):
+	"""
+	class for CalculeNSS
+
+	"""
+	_data = None
+
+	def __init__(self, nss):
+		self.nss = nss
+		self._data = self.calculate_luhn()
+
+	def is_valid(self): #example 4896889802135
+		""" Validate an entry with a check digit. """
+		num = map(int, str(self.nss))
+		return sum(num[::-2] + [sum(divmod(d * 2, 10)) for d in num[-2::-2]]) % 10 == 0
+
+	def calculate_luhn(self):
+		""" Calculation of said digit. """
+		num = map(int, str(self.nss))
+		check_digit = 10 - sum(num[-2::-2] + [sum(divmod(d * 2, 10)) for d in num[::-2]]) % 10	
+		return 0 if check_digit == 10 else check_digit
+
+	@property
+	def data(self):
+		return self._data
 
 
 class CalculeGeneric(object): 
