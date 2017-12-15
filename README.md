@@ -7,7 +7,6 @@ Features
 
 La Clave Única de Registro de Población (CURP) es un código alfanumérico único de identidad de 18 caracteres, tanto para residentes como para ciudadanos mexicanos.
 
-Formato:
 ![alt picture](https://github.com/thomgonzalez/pyfiscal/blob/master/img/CURP.jpg)
 
 
@@ -17,7 +16,6 @@ El Registro Federal de Contribuyentes es una clave que se usa en México para di
 
 1.- Para la Persona Física:
 
-Formato:
 ![alt picture](https://github.com/thomgonzalez/pyfiscal/blob/master/img/RFC.jpg)
 
 Esta homoclave la designará el SAT, revisando la petición a través de papel oficial ya designado.
@@ -26,8 +24,6 @@ Esta homoclave la designará el SAT, revisando la petición a través de papel o
 # NSS
 
 El Número de Seguridad Social (NSS) es único, permanente e intransferible y se asigna para llevar un registro de los trabajadores y asegurados.
-
-Formato:
 
 ![alt picture](https://github.com/thomgonzalez/pyfiscal/blob/master/img/NSS.png)
 
