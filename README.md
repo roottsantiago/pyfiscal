@@ -27,31 +27,47 @@ El Registro Federal de Contribuyentes es una clave que se usa en México para di
 
 Esta homoclave la designará el SAT, revisando la petición a través de papel oficial ya designado.
 
+
+# NSS
+
+El Número de Seguridad Social (NSS) es único, permanente e intransferible y se asigna para llevar un registro de los trabajadores y asegurados.
+
+1.- Validación Completa:
+* Sólo se validará que sean 11 dígitos.
+* Validación por el algoritmo de Luhn.
+* Cálcula el último dígito.
+
+
 # Example
 ```python
-from calcule import CalculeRFC, CalculeCURP, CalculeGeneric
-	
-kwargs  = {
-'complete_name': '@param',
-'last_name': '@param',
-'mother_last_name': '@param',
-'birth_date': '@param',
-'gender': '@param',
-'state_code': '@param',
-'city': None
-}
+from calcule import CalculeRFC, CalculeCURP, CalculeNSS, CalculeGeneric
 
-# Generate CURP
-curp = CalculeCURP(**kwargs).data
 
-# Generate RFC
-rfc = CalculeRFC(complete_name='@param', last_name='@param',
-				 mother_last_name='@param', birth_date='@param').data
-
-# Generation of CURP and RFC
 class GenerateDataFiscal(CalculeGeneric):
 	generadores = (CalculeCURP, CalculeRFC)
 
-data = GenerateDataFiscal(**kwargs).data
+
+kwargs = {
+	"complete_name": "Thom",
+	"last_name": "Gonzalez",
+	"mother_last_name": None,
+	"birth_date": "01-01-1990",
+	"gender": "H",
+	"city": 'Queretaro',
+	"state_code": None
+}
+
+rfc = CalculeRFC(**kwargs).data  # RFC
+curp = CalculeCURP(**kwargs).data  # CURP
+
+calc =  CalculeNSS(nss='2812890481') # Valid and calcule digit
+isvalid = calc.is_valid()
+digit = calc.digit()
+
+data = GenerateDataFiscal(**kwargs).data # Calcule RFC and CURP
 
 ```
+
+
+# References
+https://es.wikipedia.org/wiki/Algoritmo_de_Luhn
