@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from calcule import CalculeRFC, CalculeCURP, CalculeNSS, CalculeGeneric
+from generate import GenerateRFC, GenerateCURP, GenerateNSS, GenericGeneration
 
 
-class GenerateDataFiscal(CalculeGeneric):
-	generadores = (CalculeCURP, CalculeRFC)
+class GenerateDataFiscal(GenericGeneration):
+	generadores = (GenerateCURP, GenerateRFC)
 
 
 kwargs = {
@@ -16,17 +16,17 @@ kwargs = {
 	"state_code": None
 }
 
-rfc = CalculeRFC(**kwargs).data
-#print(rfc)
+rfc = GenerateRFC(**kwargs)
+print(rfc.data)
 
-curp = CalculeCURP(**kwargs).data
-#print(curp)
+curp = GenerateCURP(**kwargs)
+print(curp.data)
 
-calc =  CalculeNSS(nss='2812890481')
-#print(calc.is_valid())
+nss =  GenerateNSS(nss='2812890481')
+print(nss.is_valid())
 
-digit = calc.digit()
-#print(digit)
+data = nss.data
+print(data)
 
 data = GenerateDataFiscal(**kwargs).data
-#print(data)
+print(data)
