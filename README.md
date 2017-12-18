@@ -35,11 +35,11 @@ El Número de Seguridad Social (NSS) es único, permanente e intransferible y se
 
 # Example
 ```python
-from calcule import CalculeRFC, CalculeCURP, CalculeNSS, CalculeGeneric
+from generate import GenerateRFC, GenerateCURP, GenerateNSS, GenericGeneration
 
 
-class GenerateDataFiscal(CalculeGeneric):
-	generadores = (CalculeCURP, CalculeRFC)
+class GenerateDataFiscal(GenericGeneration):
+	generadores = (GenerateCURP, GenerateRFC)
 
 
 kwargs = {
@@ -52,14 +52,16 @@ kwargs = {
 	"state_code": None
 }
 
-rfc = CalculeRFC(**kwargs).data  # RFC
-curp = CalculeCURP(**kwargs).data  # CURP
+rfc = GenerateRFC(**kwargs)
+data = rfc.data
 
-calc =  CalculeNSS(nss='2812890481') # Valid and calcule digit
-isvalid = calc.is_valid()
-digit = calc.digit()
+curp = GenerateCURP(**kwargs)
+data = curp.data
 
-data = GenerateDataFiscal(**kwargs).data # Calcule RFC and CURP
+nss =  GenerateNSS(nss='2812890481')
+data = nss.data
+
+data = GenerateDataFiscal(**kwargs).data
 
 ```
 
