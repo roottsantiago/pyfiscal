@@ -3,7 +3,7 @@ import unicodedata
 from base import BaseGenerator
 
 
-class CalculeRFC(BaseGenerator):
+class GenerateRFC(BaseGenerator):
 	key_value = 'rfc'
 	DATA_REQUIRED = ('complete_name', 'last_name', 'mother_last_name', 'birth_date')
 	partial_data = None
@@ -21,7 +21,7 @@ class CalculeRFC(BaseGenerator):
 			complete_name=self.complete_name, last_name=self.last_name, 
 			mother_last_name=self.mother_last_name, birth_date=self.birth_date)
 
-	def genera(self):
+	def calculate(self):
 		if self.mother_last_name is not None:
 			complete_name = u"%s %s %s" % (self.last_name, self.mother_last_name, self.complete_name)
 		else:
@@ -117,11 +117,11 @@ class CalculeRFC(BaseGenerator):
 
 	@property
 	def data(self):
-		return self.genera()
+		return self.calculate()
 
 
-class CalculeCURP(BaseGenerator):
-	""" Calcule CURP"""
+class GenerateCURP(BaseGenerator):
+	""" Generate CURP"""
 	key_value = 'curp'
 	partial_data = None
 	DATA_REQUIRED = (
@@ -149,7 +149,7 @@ class CalculeCURP(BaseGenerator):
 			complete_name=self.complete_name, last_name=self.last_name,
 			mother_last_name=self.mother_last_name, birth_date=self.birth_date)
 
-	def genera(self):
+	def calculate(self):
 		curp = self.partial_data
 		statecode = self.state_code
 		
@@ -206,10 +206,10 @@ class CalculeCURP(BaseGenerator):
 
 	@property
 	def data(self):
-		return self.genera()
+		return self.calculate()
 
 
-class CalculeNSS(BaseGenerator):
+class GenerateNSS(BaseGenerator):
 	"""
 	class for CalculeNSS
 
@@ -248,11 +248,12 @@ class CalculeNSS(BaseGenerator):
 		check_digit = 10 - sum(num[-2::-2] + [sum(divmod(d * 2, 10)) for d in num[::-2]]) % 10	
 		return 0 if check_digit == 10 else check_digit
 
-	def digit(self):
+	@property
+	def data(self):
 		return self._calculate_luhn()
 
 
-class CalculeGeneric(object): 
+class GenericGeneration(object): 
 	_data = {}
 
 	def __init__(self, **kwargs):
@@ -264,7 +265,7 @@ class CalculeGeneric(object):
 			data = cls.DATA_REQUIRED
 			kargs = {key: self._datos[key] for key in data}
 			gen = cls(**kargs)
-			gen.genera()
+			gen.calculate()
 			self._data[gen.key_value] = gen.data
 
 		return self._data
