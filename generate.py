@@ -239,12 +239,12 @@ class GenerateNSS(BaseGenerator):
 
 	def _is_luhn_valid(self): #example 4896889802135
 		""" Validate an entry with a check digit. """
-		num = map(int, str(self.nss))
+		num = list(map(int, str(self.nss)))
 		return sum(num[::-2] + [sum(divmod(d * 2, 10)) for d in num[-2::-2]]) % 10 == 0
 
 	def _calculate_luhn(self):
 		""" Calculation of said digit. """
-		num = map(int, str(self.nss))
+		num = list(map(int, str(self.nss)))
 		check_digit = 10 - sum(num[-2::-2] + [sum(divmod(d * 2, 10)) for d in num[::-2]]) % 10	
 		return 0 if check_digit == 10 else check_digit
 
