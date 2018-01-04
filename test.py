@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from generate import GenerateRFC, GenerateCURP, GenerateNSS, GenericGeneration
+from pyfiscal.generate import GenerateRFC, GenerateCURP, GenerateNSS, GenericGeneration
 
 
 class GenerateDataFiscal(GenericGeneration):

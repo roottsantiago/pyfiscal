@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
-from utils import (
+from .utils import (
 	ENT_FED, WORDS, to_upper, remove_article, remove_precisions,
 	remove_names, search_vowel, search_consonant
 )

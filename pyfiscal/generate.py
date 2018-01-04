@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import unicodedata
-from base import BaseGenerator
+from .base import BaseGenerator
 
 
 class GenerateRFC(BaseGenerator):
