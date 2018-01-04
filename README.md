@@ -73,6 +73,13 @@ data = GenerateDataFiscal(**kwargs).data
 
 ```
 
+License
+-------
 
-# References
+See LICENSE for more details (The MIT License).
+
+
+References
+----------
+
 https://es.wikipedia.org/wiki/Algoritmo_de_Luhn
