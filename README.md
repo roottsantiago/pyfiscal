@@ -3,6 +3,14 @@
 Features
 [x] Support for Python 2.7-3.3.
 
+Installation
+------------
+
+Install pyfiscal.
+```python
+pip install pyfiscal
+```
+
 #  CURP
 
 La Clave Única de Registro de Población (CURP) es un código alfanumérico único de identidad de 18 caracteres, tanto para residentes como para ciudadanos mexicanos.
