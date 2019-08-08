@@ -75,7 +75,10 @@ class GenerateRFC(BaseGenerator):
 		div = (div-mod)/34
 		homoclave = ''
 		homoclave += self.rfc_set(rfc2[int(div)], 'Z')
-		homoclave += self.rfc_set(rfc2[int(mod)], 'Z')
+		if rfc2.get(int(mod)):
+			homoclave += self.rfc_set(rfc2[int(mod)], 'Z')
+		else:
+			homoclave += self.rfc_set(rfc2[0], 'Z')
 		return homoclave
 
 	def verification_number(self, rfc):
