@@ -56,14 +56,12 @@ def remove_precisions(word):
 	return word
 
 def search_consonant(word):
-	data = 'X'
+	data = None
 	consonant = ''
 	length = 0
 
 	if word:
-		length = len(word)
-		length = length-1
-		data = word[1:length]
+		data = word[1:len(word)]
 
 	for item in data:
 		if item == 'Ñ':
@@ -75,7 +73,9 @@ def search_consonant(word):
 	return consonant
 
 def get_consonant(consonant):
-	"Get consonant."
+	"""
+	Consonants.
+	"""
 	consonants = (
 		'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N',
 		'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'
