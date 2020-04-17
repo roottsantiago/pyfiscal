@@ -45,15 +45,6 @@ def remove_names(name):
 		data = name.replace(item, '')
 	return data
 
-def remove_precisions(word):
-	letters = word[0:2]
-	data = word[2:len(word)]
-	
-	if letters == 'CH':
-		word = 'C%s' % data
-	elif letters == 'LL':
-		word = 'L%s' % data
-	return word
 
 def search_consonant(word):
 	data = None
