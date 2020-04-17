@@ -7,7 +7,7 @@ from .utils import (
 
 
 class BaseGenerator(object):
-	"""class Base"""
+	"""class Base Generator"""
 	def generate(self):
 		raise NotImplementedError('No implement.')
 
@@ -35,15 +35,25 @@ class BaseGenerator(object):
 		return '%s%s' % (completename, birth_date)
 		
 	def initials_name(self, complete_name, last_name, mother_last_name):
-		ini_last_name = last_name[0:1] # Initial last name
-		last_name_vowel = search_vowel(last_name) # Find the first vowel of the last name
+		"""Rule 1 - The key is integrated with the following data:
+
+		1.- The first letter of the father's last name and the next first vowel of the same.
+		2.- The first letter of the mother's last name.
+		3.- The first letter of the name.
+		"""
+		ini_last_name = last_name[0:1] 
+		last_name_vowel = search_vowel(last_name)
 		if mother_last_name is None:
 			ini_mothlast_name = 'X'
 		else:
-			ini_mothlast_name = mother_last_name[0:1] # Initial mother's last name
-		ini_compl_name = complete_name[0:1] # Initial complete name
-		initials = '%s%s%s%s' % (ini_last_name, last_name_vowel, 
-								 ini_mothlast_name, ini_compl_name)
+			ini_mothlast_name = mother_last_name[0:1] 
+		ini_compl_name = complete_name[0:1]
+		initials = '%s%s%s%s' % (
+			ini_last_name, 
+			last_name_vowel, 
+			ini_mothlast_name, 
+			ini_compl_name
+		)
 		return initials
 
 	def verify_words(self, rfc):
@@ -53,21 +63,35 @@ class BaseGenerator(object):
 				break
 		return rfc
 
-	def parse_date(self, fecha):
+	def parse_date(self, birthdate):
+		"""Rule 2 - The taxpayer's date of birth will be noted below, in the following order:
+
+		1. Year: The last two figures will be taken, writing them in Arabic numerals.
+		2.- Month: The month of birth will be taken in its order number, in a calendar year,
+			writing it with Arabic numbers.
+		3.- Day: It will be written in Arabic numerals.
+
+		Args:
+			birthdate: The first parameter.
+
+		Returns:
+		As a result we will have the numerical expression: 070401
+		"""
 		try:
-			fecha_type = type(fecha)
-			if fecha is None:
-				fecha = datetime.datetime.today()
+			dtype = type(birthdate)
+			if birthdate is None:
+				birthdate = datetime.datetime.today()
 			else:
-				if not (fecha_type is datetime.datetime or fecha_type is datetime.date):
-					fecha = datetime.datetime.strptime(fecha, '%d-%m-%Y').date()
+				if not (dtype is datetime.datetime or dtype is datetime.date):
+					birthdate = datetime.datetime.strptime(birthdate, '%d-%m-%Y').date()
 			
-			year = str(fecha.year)
+			year = str(birthdate.year)
 			year = year[2:4]
-			month = str(fecha.month).zfill(2) # Fill with zeros to the left.
-			day = str(fecha.day).zfill(2)
-			birth_date = '%s%s%s' % (year, month, day) 
-			return birth_date
+			# When in the year, month or day, of the date of birth, only one figure appears,
+			# a ZERO will be put before it.
+			month = str(birthdate.month).zfill(2)
+			day = str(birthdate.day).zfill(2)
+			return '%s%s%s' % (year, month, day)
 		except Exception as exc:
 			raise str(exc)
 
