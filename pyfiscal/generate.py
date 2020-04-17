@@ -79,34 +79,67 @@ class GenerateRFC(BaseGenerator):
 		return homoclave
 
 	def verification_number(self, rfc):
+		"""
+		Anexo 3 - Tabla de valores para la generación del código verificador
+		del registro federal de contribuyentes. 
+		"""
 		suma_numero = 0 
 		suma_parcial = 0
 		digito = None 
 
-		rfc3 = {
-			'A':10, 'B':11, 'C':12, 'D':13, 'E':14, 'F':15, 'G':16, 'H':17, 'I':18,
-			'J':19, 'K':20, 'L':21, 'M':22, 'N':23, 'O':25, 'P':26, 'Q':27, 'R':28,
-			'S':29, 'T':30, 'U':31, 'V':32, 'W':33, 'X':34, 'Y':35, 'Z':36, '0':0,
-			'1':1, '2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, '':24,
-			' ':37,
-		}
+		rfc3 = (
+			('0', 0), ('D', 13), ('P', 26),
+			('1', 1), ('E', 14), ('Q', 27),
+			('2', 2), ('F', 15), ('R', 28),
+			('3', 3), ('G', 16), ('S', 29),
+			('4', 4), ('H', 17), ('T', 30),
+			('5', 5), ('I', 18), ('U', 31),
+			('6', 6), ('J', 19), ('V', 32),
+			('7', 7), ('K', 20), ('W', 33),
+			('8', 8), ('L', 21), ('X', 34),
+			('9', 9), ('M', 22), ('Y', 35),
+			('A', 10), ('N', 23), ('Z', 36),
+			('B', 11), ('&', 24), (' ',	37),
+			('C', 12), ('O', 25), ('Ñ', 38),
+		)
 
+		# rfc3 = {
+		# 	'A':10, 'B':11, 'C':12, 'D':13, 'E':14, 'F':15, 'G':16, 'H':17, 'I':18,
+		# 	'J':19, 'K':20, 'L':21, 'M':22, 'N':23, 'O':25, 'P':26, 'Q':27, 'R':28,
+		# 	'S':29, 'T':30, 'U':31, 'V':32, 'W':33, 'X':34, 'Y':35, 'Z':36, '0':0,
+		# 	'1':1, '2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, '':24,
+		# 	' ':37,
+		# }
+
+
+		# 2.- Una vez asignados los valores se aplicará la siguiente forma tomando como base el factor 13
+		# en orden descendente a cada letra y número del R.F.C. para su multiplicación,
+		# de acuerdo a la siguiente formula: (Vi * (Pi + 1)) + (Vi * (Pi + 1)) + ..............+ (Vi * (Pi + 1)) MOD 11 
+		rfc3 = dict((x, y) for x, y in rfc3)
+	
 		for count in range(0,len(rfc)):
 			letra = rfc[count]
-			if rfc3[letra]:
-				suma_numero = rfc3[letra]
+	
+			if rfc3.get(letra):
+				suma_numero = rfc3.get(letra)
 				suma_parcial += (suma_numero*(14-(count+1)))
 
-		modulo = suma_parcial % 11
-		digito_parcial = (11-modulo)
-		
-		if modulo == 0:
-			digito = '0'
-		if digito_parcial == 10:
-			digito = 'A'
-		else:
-			digito = str(digito_parcial)
+		# 3.- El resultado de la suma se divide entre el factor 11.
 
+		# Si el residuo es igual a cero, este será el valor que se le asignará al dígito verificador.
+		# Si el residuo es mayor a cero se restará este al factor 11: 11-3 =8
+		# Si el residuo es igual a 10 el dígito verificador será “ A”.
+		# Si el residuo es igual a cero el dígito verificador será cero. Por lo tanto “ 8 “
+		# es el dígito verificador de este ejemplo: GODE561231GR8.
+
+		residuo = suma_parcial % 11
+		
+		if residuo == 0:
+			digito = '0'
+		if residuo == 10:
+			digito = 'A'
+		if residuo > 0:
+			digito = str((11-residuo))
 		return  digito
 
 	def rfc_set(self, a, b):
