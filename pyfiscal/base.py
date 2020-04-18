@@ -27,14 +27,20 @@ class BaseGenerator(object):
 
 		first_name = self.remove_precisions(self.complete_name)
 		last_name = self.remove_precisions(self.last_name)
-		mother_last_name = self.remove_precisions(self.mother_last_name)
+
+		if mother_last_name is not None:
+			mother_last_name = self.remove_precisions(self.mother_last_name)
 
 		last_name = self.remove_articles(last_name)
 		#Rule 6
 		first_name = self.remove_names(first_name)
+		
+		
 
 		if len(last_name) is 1 or len(last_name) is 2:
 			initials = self.initials_name_comp(first_name, last_name, mother_last_name)
+		elif mother_last_name is None or mother_last_name is '': #Rule 7
+			initials = self.initials_single_last_name(first_name, last_name)
 		else:
 			initials = self.initials_name(first_name, last_name, mother_last_name)
 		print(initials)
@@ -71,6 +77,7 @@ class BaseGenerator(object):
 		)
 		return initials
 
+	
 	def remove_precisions(self, phrase):
 		""" Rule 3 - When the initial letter of any of the surnames or first names is composed,
 		only its initial will be noted. In Ch la C and in Ll la L.
@@ -103,6 +110,7 @@ class BaseGenerator(object):
 				last_name = last_name.replace(elem, '').strip()
 		return last_name 
 
+
 	def remove_names(self, first_name):
 		""" Rule 6 - When the name is composed, that is, it is made up of two or more words,
 		the initial letter of the first will be taken for the conformation, 
@@ -128,7 +136,7 @@ class BaseGenerator(object):
 	def get_ini_mothlast_name(self, mother_last_name):
 		"""	The first letter of the mother's last name.
 		"""
-		return 'X' if mother_last_name is None else mother_last_name[0:1]
+		return mother_last_name[0:1] if mother_last_name else ''
 
 
 	def initials_name_comp(self, first_name, last_name, mother_last_name):
@@ -147,6 +155,18 @@ class BaseGenerator(object):
 		ini_mthlast_name = self.get_ini_mothlast_name(mother_last_name)
 		data = "{}{}{}".format(ini_last_name, ini_mthlast_name, first_name[0:2])
 	 	return data  
+
+
+	def initials_single_last_name(self, first_name, last_name):
+		"""Rule 7 - In the cases in which the natural person has only one surname,
+		he will comply with the first and second letters of the paternal or maternal surname, 
+		as it appears on the birth certificate, plus the first and second letters of the name.
+
+		For example:
+		Juan Martínez MAJU-420116
+		Gerarda Zafra ZAGE-251115
+		"""
+		return '{}{}'.format(last_name[0:2], first_name[0:2], )
 
 
 	def verify_words(self, rfc):
