@@ -25,18 +25,6 @@ WORDS = [
 ]
 
 
-def remove_names(name):
-	"Remove defined names in the tuple."
-	names = (
-		'JOSE ', 'J ', 'MARIA ', 'MA. ', 'DE ', ' DE ', 'DEL ', ' DEL ', 'LA ', ' LA ',
-		'LAS ', ' LAS ', 'LOS ', ' LOS ', 'MC ', 'MC ', 'MAC ', 'VON ', 'VAN ', ' Y '
-	)
-	
-	for item in names:
-		data = name.replace(item, '')
-	return data
-
-
 def search_consonant(word):
 	data = None
 	consonant = ''

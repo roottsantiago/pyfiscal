@@ -2,7 +2,7 @@
 import datetime
 from .utils import (
 	ENT_FED, WORDS, to_upper,
-	remove_names, search_vowel, search_consonant
+	search_vowel, search_consonant
 )
 
 
@@ -20,7 +20,6 @@ class BaseGenerator(object):
 		if mother_last_name is not None:
 			self.mother_last_name = to_upper(mother_last_name)
 		self.complete_name = to_upper(complete_name)
-		self.complete_name = remove_names(self.complete_name)
 		self.last_name = to_upper(last_name)
 		
 	def data_fiscal(self, complete_name, last_name, mother_last_name, birth_date):
@@ -31,6 +30,9 @@ class BaseGenerator(object):
 		mother_last_name = self.remove_precisions(self.mother_last_name)
 
 		last_name = self.remove_articles(last_name)
+		#Rule 6
+		first_name = self.remove_names(first_name)
+
 		if len(last_name) is 1 or len(last_name) is 2:
 			initials = self.initials_name_comp(first_name, last_name, mother_last_name)
 		else:
@@ -90,17 +92,37 @@ class BaseGenerator(object):
 
 	def remove_articles(self, last_name):
 		"""
-		Replace all the occurrences of string in list by AA in the main list 
+		Replace all the occurrences of string in list.
 		"""
-		toBeReplaces = ['DE', 'DEL', 'LA','LOS', 'LAS', 'Y', 'MC', 'MAC', 'VON', 'VAN', 'DE LA']
+		to_replaces = ['DE', 'DEL', 'LA','LOS', 'LAS', 'Y', 'MC', 'MAC', 'VON', 'VAN', 'DE LA']
 		# Iterate over the strings to be replaced
-		for elem in toBeReplaces :
+		for elem in to_replaces :
 			# Check if string is in the main string
 			if elem in last_name :
 				# Replace the string
 				last_name = last_name.replace(elem, '').strip()
 		return last_name 
 
+	def remove_names(self, first_name):
+		""" Rule 6 - When the name is composed, that is, it is made up of two or more words,
+		the initial letter of the first will be taken for the conformation, 
+		provided it is not MARIA or JOSE given its frequent use, 
+		in which case the first letter will be taken of the second word.
+		
+		For example:
+			Luz María Fernández Juárez FEJL-200205
+			José Antonio Camargo Hernández CAHA-211218
+			María Luisa Ramírez Sánchez RASL-251112
+		"""
+		to_replaces = ['JOSE', 'MARIA']
+		
+		# Iterate over the strings to be replaced
+		for elem in to_replaces :
+			# Check if string is in the main string
+			if elem in first_name :
+				# Replace the string
+				first_name = first_name.replace(elem, '').strip()
+		return first_name 
 
 
 	def get_ini_mothlast_name(self, mother_last_name):
