@@ -30,13 +30,13 @@ class BaseGenerator(object):
 
 		if mother_last_name is not None:
 			mother_last_name = self.remove_precisions(self.mother_last_name)
+			mother_last_name = self.remove_articles(self.mother_last_name)
 
-		last_name = self.remove_articles(last_name)
 		#Rule 6
 		first_name = self.remove_names(first_name)
+		# Rule 8
+		last_name = self.remove_articles(last_name)
 		
-		
-
 		if len(last_name) is 1 or len(last_name) is 2:
 			initials = self.initials_name_comp(first_name, last_name, mother_last_name)
 		elif mother_last_name is None or mother_last_name is '': #Rule 7
@@ -97,18 +97,26 @@ class BaseGenerator(object):
 		return phrase
 
 
-	def remove_articles(self, last_name):
+	def remove_articles(self, phrase):
 		"""
 		Replace all the occurrences of string in list.
+
+		Rule 8 - When articles, prepositions, conjunctions or contractions appear
+		in the name of natural persons, they will not be taken as elements of integration of the code,
+		examples:
+			Carmen de la Peña Ramírez PERC-631201
+			Mario Sánchez de los Cobos SACM-701110
+			Roberto González and Durán GODR-600101
+			Juan del Valle Martínez VAMJ-691001
 		"""
-		to_replaces = ['DE', 'DEL', 'LA','LOS', 'LAS', 'Y', 'MC', 'MAC', 'VON', 'VAN', 'DE LA']
+		to_replaces = ['DE LA', 'DE LOS', 'DEL', 'DE', 'LAS', 'LA', 'LOS', 'Y', 'MC', 'MAC', 'VON', 'VAN']
 		# Iterate over the strings to be replaced
 		for elem in to_replaces :
 			# Check if string is in the main string
-			if elem in last_name :
+			if elem in phrase:
 				# Replace the string
-				last_name = last_name.replace(elem, '').strip()
-		return last_name 
+				phrase = phrase.replace(elem, '').strip()
+		return phrase 
 
 
 	def remove_names(self, first_name):
