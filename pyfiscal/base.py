@@ -41,7 +41,7 @@ class BaseGenerator(object):
 		
 		return '%s%s' % (completename, birth_date)
 		
-	def initials_name(self, complete_name, last_name, mother_last_name):
+	def initials_name(self, first_name, last_name, mother_last_name):
 		"""Rule 1 - The key is integrated with the following data:
 
 		1.- The first letter of the father's last name and the next first vowel of the same.
@@ -49,20 +49,23 @@ class BaseGenerator(object):
 		3.- The first letter of the name.
 		"""
 		
-		ini_last_name = last_name if len(last_name) is 1 or len(last_name) is  2 else last_name[0:1]
-
+		ini_last_name = last_name[0:1]
 		last_name_vowel = search_vowel(last_name)
-		if mother_last_name is None:
-			ini_mothlast_name = 'X'
-		else:
-			ini_mothlast_name = mother_last_name[0:1] 
-		ini_compl_name = complete_name[0:1]
+		ini_mothlast_name = self.get_ini_mothlast_name(mother_last_name)
+		ini_first_name = first_name[0:1]
+
+		# Rule 5
+		# When the paternal or maternal surname are composed, the first word that corresponds
+		# to any of them will be taken for the classification.
+		# Dolores San Martín Dávalos SADD-180812
+		# Mario Sánchez de la Barquera Gómez SAGM-190224
+		# Antonio Jiménez Ponce de León JIPA-170808
 
 		initials = '%s%s%s%s' % (
 			ini_last_name, 
 			last_name_vowel, 
 			ini_mothlast_name, 
-			ini_compl_name
+			ini_first_name
 		)
 		return initials
 
