@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 from .utils import (
-	ENT_FED, WORDS, to_upper, remove_article,
+	ENT_FED, WORDS, to_upper,
 	remove_names, search_vowel, search_consonant
 )
 
@@ -19,23 +19,26 @@ class BaseGenerator(object):
 			self.state_code = to_upper(state_code)
 		if mother_last_name is not None:
 			self.mother_last_name = to_upper(mother_last_name)
-			self.mother_last_name = remove_article(self.mother_last_name)
 		self.complete_name = to_upper(complete_name)
 		self.complete_name = remove_names(self.complete_name)
 		self.last_name = to_upper(last_name)
-		self.last_name = remove_article(self.last_name)
-		
 		
 	def data_fiscal(self, complete_name, last_name, mother_last_name, birth_date):
+		birth_date = self.parse_date(birth_date)
+
 		first_name = self.remove_precisions(self.complete_name)
 		last_name = self.remove_precisions(self.last_name)
 		mother_last_name = self.remove_precisions(self.mother_last_name)
 
-		initials = self.initials_name(first_name, last_name, mother_last_name)
+		last_name = self.remove_articles(last_name)
+		if len(last_name) is 1 or len(last_name) is 2:
+			initials = self.initials_name_comp(first_name, last_name, mother_last_name)
+		else:
+			initials = self.initials_name(first_name, last_name, mother_last_name)
 		print(initials)
 
 		completename = self.verify_words(initials)
-		birth_date = self.parse_date(birth_date)
+		
 		return '%s%s' % (completename, birth_date)
 		
 	def initials_name(self, complete_name, last_name, mother_last_name):
@@ -45,7 +48,9 @@ class BaseGenerator(object):
 		2.- The first letter of the mother's last name.
 		3.- The first letter of the name.
 		"""
-		ini_last_name = last_name[0:1] 
+		
+		ini_last_name = last_name if len(last_name) is 1 or len(last_name) is  2 else last_name[0:1]
+
 		last_name_vowel = search_vowel(last_name)
 		if mother_last_name is None:
 			ini_mothlast_name = 'X'
@@ -78,6 +83,45 @@ class BaseGenerator(object):
 		elif letters == 'LL':
 			phrase = 'L%s' % data
 		return phrase
+
+
+	def remove_articles(self, last_name):
+		"""
+		Replace all the occurrences of string in list by AA in the main list 
+		"""
+		toBeReplaces = ['DE', 'DEL', 'LA','LOS', 'LAS', 'Y', 'MC', 'MAC', 'VON', 'VAN', 'DE LA']
+		# Iterate over the strings to be replaced
+		for elem in toBeReplaces :
+			# Check if string is in the main string
+			if elem in last_name :
+				# Replace the string
+				last_name = last_name.replace(elem, '').strip()
+		return last_name 
+
+
+
+	def get_ini_mothlast_name(self, mother_last_name):
+		"""	The first letter of the mother's last name.
+		"""
+		return 'X' if mother_last_name is None else mother_last_name[0:1]
+
+
+	def initials_name_comp(self, first_name, last_name, mother_last_name):
+		"""Rule 4 - In cases where the paternal surname of the natural person
+			is made up of one or two letters, the password will be formed as follows:
+
+			1.- The first letter of the paternal surname.
+			2.- The first letter of the mother's last name.
+			3.- The first and second letters of the name.
+
+		For example:
+			Alvaro de la O Lozano 	OLAL-401201
+			Ernesto Ek Rivera 	ERER-071120
+		"""
+		ini_last_name = last_name[0:1]
+		ini_mthlast_name = self.get_ini_mothlast_name(mother_last_name)
+		data = "{}{}{}".format(ini_last_name, ini_mthlast_name, first_name[0:2])
+	 	return data  
 
 
 	def verify_words(self, rfc):

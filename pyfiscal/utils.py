@@ -24,15 +24,6 @@ WORDS = [
 	'VUEY', 'WUEI', 'WUEY'
 ]
 
-def remove_article(article):
-	"Remove article."
-	articles = (
-		'DE ', 'DEL ', 'LA ','LOS ', 'LAS ', 'Y ', 'MC ', 'MAC ', 'VON ', 'VAN '
-	)
-		
-	for item in articles:
-		data = article.replace(item, '')
-	return data
 
 def remove_names(name):
 	"Remove defined names in the tuple."
