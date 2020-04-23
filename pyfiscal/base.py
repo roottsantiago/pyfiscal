@@ -33,7 +33,7 @@ class BaseGenerator(object):
 		last_name = self.remove_accents(last_name)
 		self.last_name = to_upper(last_name)
 
-		self.full_name = "{} {} {}".format(self.complete_name, self.last_name, self.mother_last_name)
+		self.full_name = "{} {} {}".format(self.last_name, self.mother_last_name, self.complete_name)
 
 
 	def data_fiscal(self, complete_name, last_name, mother_last_name, birth_date):

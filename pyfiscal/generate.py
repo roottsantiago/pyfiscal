@@ -36,45 +36,79 @@ class GenerateRFC(BaseGenerator):
 		rfc += self.verification_number(rfc)
 		return rfc
 
-	def homoclave(self, rfc, complete_name):
-		nombre_numero = '0'
+	def homoclave(self, rfc, full_name):
+		num = '0'
 		summary = 0 
 		div = 0 
 		mod = 0
 
-		rfc1 = {
-			' ':00, '&':10, 'Ñ':10, 'A':11, 'B':12, 'C':13, 'D':14, 'E':15, 'F':16,
-			'G':17, 'H':18, 'I':19, 'J':21, 'K':22, 'L':23, 'M':24, 'N':25, 'O':26,
-			'P':27, 'Q':28, 'R':29, 'S':32, 'T':33, 'U':34, 'V':35, 'W':36, 'X':37,
-			'Y':38, 'Z':39, '0':0, '1':1, '2':2, '3':3, '4':4, '5':5, '6':6, '7':7,
-			'8':8,'9':9,
-		}
-		rfc2 = {
-			0:'1', 1:'2', 2:'3', 3:'4', 4:'5', 5:'6', 6:'7', 7:'8', 8:'9', 9:'A', 10:'B',
-			11:'C', 12:'D', 13:'E', 14:'F', 15:'G', 16:'H', 17:'I', 18:'J', 19:'K',
-			20:'L', 21:'M', 22:'N', 23:'P', 24:'Q', 25:'R', 26:'S', 27:'T', 28:'U',
-			29:'V', 30:'W', 31:'X', 32:'Y',
-		}
+		table1 = (
+			(' ', '00'), ('B', '12'), ('O', '26'),
+			('0', '00'), ('C', '13'), ('P', '27'),
+			('1', '01'), ('D', '14'), ('Q', '28'),
+			('2', '02'), ('E', '15'), ('R', '29'),
+			('3', '03'), ('F', '16'), ('S', '32'),
+			('4', '04'), ('G', '17'), ('T', '33'),
+			('5', '05'), ('H', '18'), ('U', '34'),
+			('6', '06'), ('I', '19'), ('V', '35'),
+			('7', '07'), ('J', '21'), ('W', '36'),
+			('8', '08'), ('K', '22'), ('X', '37'),
+			('9', '09'), ('L', '23'), ('Y', '38'),
+			('&', '10'), ('M', '24'), ('Z', '39'),
+			('A', '11'), ('N', '25'), ('Ñ', '40'),
+		)
 
-		# Recorrer el nombre y convertir las letras en su valor numérico.
-		for count in range(0, len(complete_name)):
-			letra = self.remove_accents(complete_name[count])
+		table2 = (
+			(0, '1'), (17, 'I'),
+			(1, '2'), (18, 'J'),
+			(2, '3'), (19, 'K'),
+			(3, '4'), (20, 'L'),
+			(4, '5'), (21, 'M'),
+			(5, '6'), (22, 'N'),
+			(6, '7'), (23, 'P'),
+			(7, '8'), (24, 'Q'),
+			(8, '9'), (25, 'R'),
+			(9, 'A'), (26, 'S'),
+			(10, 'B'), (27, 'T'),
+			(11, 'C'), (28, 'U'),
+			(12, 'D'), (29, 'V'),
+			(13, 'E'), (30, 'W'),
+			(14, 'F'), (31, 'X'),
+			(15, 'G'), (32, 'Y'),
+			(16, 'H'), (33, 'Z')
+		)
 
-			nombre_numero += self.rfc_set(str(rfc1[letra]),'00')
+		# 1.- Values will be assigned to the letters of the name or business name according to the table1
+		# 2.- The values are ordered as follows:
+		# G O M E Z D I A Z E M M A
+		# 017 26 24 15 39 00 14 19 11 39 00 15 24 24 11
+		# A zero is added to the value of the first letter to standardize the criteria
+		# of the numbers to be taken two by two.
+
+		for c in range(0, len(full_name)):
+			rfc1 = dict((x, y) for x, y in table1)
+			num += rfc1.get(full_name[c])
+		
+		# 3. The multiplications of the numbers taken two by two for the position of the couple will be carried out:
 		# La formula es:
 			# El caracter actual multiplicado por diez mas el valor del caracter
 			# siguiente y lo anterior multiplicado por el valor del caracter siguiente.
-		for count in range(0,len(nombre_numero)-1):
-			count2 = count+1
-			summary += ((int(nombre_numero[count])*10) + int(nombre_numero[count2])) * int(nombre_numero[count2])
-		
+		for i in range(0,len(num)-1):
+			count = i+1
+			summary += ((int(num[i])*10) + int(num[count])) * int(num[count])
+
+		# 4.- The result of the multiplications is added and the result obtained,
+		#the last three figures will be taken and these are divided by the factor 34.
 		div = summary % 1000
 		mod = div % 34
 		div = (div-mod)/34
-		homoclave = ''
-		homoclave += self.rfc_set(rfc2[int(div)], 'Z')
-		homoclave += self.rfc_set(rfc2[int(mod)], 'Z')
-		return homoclave
+
+		# 5. With the quotient and the remainder, the table 2 is consulted and the homonymy is assigned.
+		rfc2 = dict((x, y) for x, y in table2)
+		hom = ''
+		hom += rfc2.get(int(div))
+		hom += rfc2.get(int(mod))
+		return hom
 
 	def verification_number(self, rfc):
 		"""
@@ -139,12 +173,6 @@ class GenerateRFC(BaseGenerator):
 		if residuo > 0:
 			digito = str((11-residuo))
 		return  digito
-
-	def rfc_set(self, a, b):
-		if a == b:
-			return b
-		else:
-			return a
 
 	@property
 	def data(self):
