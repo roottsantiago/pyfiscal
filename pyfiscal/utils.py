@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 ENT_FED = { 
 	'': '', 'AGUASCALIENTES': 'AS', 'BAJA CALIFORNIA': 'BC', 'BAJA CALIFORNIA SUR': 'BS',
 	'CAMPECHE': 'CC', 'CHIAPAS': 'CS', 'CHIHUAHUA': 'CH', 'COAHUILA': 'CL', 'COLIMA': 'CM',
@@ -91,7 +92,5 @@ def get_vocal(vocal):
 	return False
 			
 def to_upper(text):
-	"Convert word to uppercase."
-	word = text.upper()
-	return word.strip()
-
+	"""Convert word to uppercase."""
+	return text.upper().strip()

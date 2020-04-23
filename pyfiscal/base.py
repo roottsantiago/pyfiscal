@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
+import unicodedata
+
 from .utils import (
 	ENT_FED, DISADVANTAGES_WORDS, to_upper,
 	search_vowel, search_consonant
@@ -8,6 +10,8 @@ from .utils import (
 
 class BaseGenerator(object):
 	"""class Base Generator"""
+	full_name = None
+
 	def generate(self):
 		raise NotImplementedError('No implement.')
 
@@ -15,22 +19,32 @@ class BaseGenerator(object):
 		state_code=None):
 		if city is not None:
 			self.city = to_upper(city)
+		
 		if state_code is not None:
 			self.state_code = to_upper(state_code)
+
 		if mother_last_name is not None:
+			mother_last_name = self.remove_accents(mother_last_name)
 			self.mother_last_name = to_upper(mother_last_name)
-		self.complete_name = to_upper(complete_name)
+
+		first_name = self.remove_accents(complete_name)
+		self.complete_name = to_upper(first_name)
+
+		last_name = self.remove_accents(last_name)
 		self.last_name = to_upper(last_name)
-		
+
+		self.full_name = "{} {} {}".format(self.complete_name, self.last_name, self.mother_last_name)
+
+
 	def data_fiscal(self, complete_name, last_name, mother_last_name, birth_date):
 		birth_date = self.parse_date(birth_date)
 
-		first_name = self.remove_precisions(self.complete_name)
-		last_name = self.remove_precisions(self.last_name)
+		first_name = self.remove_precisions(complete_name)
+		last_name = self.remove_precisions(last_name)
 
 		if mother_last_name is not None:
-			mother_last_name = self.remove_precisions(self.mother_last_name)
-			mother_last_name = self.remove_articles(self.mother_last_name)
+			mother_last_name = self.remove_precisions(mother_last_name)
+			mother_last_name = self.remove_articles(mother_last_name)
 
 		#Rule 6
 		first_name = self.remove_names(first_name)
@@ -48,6 +62,7 @@ class BaseGenerator(object):
 		
 		return '%s%s' % (completename, birth_date)
 		
+	
 	def initials_name(self, first_name, last_name, mother_last_name):
 		"""Rule 1 - The key is integrated with the following data:
 
@@ -184,6 +199,28 @@ class BaseGenerator(object):
 		words = dict((x, y) for x, y in DISADVANTAGES_WORDS)
 		data = words.get(initials) if words.get(initials) else initials
 		return data
+
+	def remove_accents(self, text):
+		""" Normalise (normalize) unicode data in Python to remove umlauts, accents etc.
+
+		Rule 10 - When special characters appear as part of the name, paternal surname and maternal surname,
+		they must be excluded for the calculation of the homonym and the verification digit. 
+		The characters will be interpreted, yes and only if, they are individually within the name,
+		paternal surname and maternal surname. Examples:
+			
+		Roberto O’farril Carballo OACR-661121
+		Rubén D’angelo Fargo DAFR-710108
+		Luz Ma. Fernández Juárez FEJL-830120
+		"""		 
+		#s_no_accents = ''.join((c for c in unicodedata.normalize('NFD', text) if unicodedata.category(c) != 'Mn'))
+		try:
+			text = unicode(text, 'utf-8')
+		except (TypeError, NameError): # unicode is a default on python 3 
+			pass
+		text = unicodedata.normalize('NFD', text)
+		text = text.encode('ascii', 'ignore')
+		text = text.decode("utf-8")
+		return str(text)
 
 
 	def parse_date(self, birthdate):

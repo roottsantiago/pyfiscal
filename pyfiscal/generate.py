@@ -14,29 +14,27 @@ class GenerateRFC(BaseGenerator):
 		self.mother_last_name = kwargs.get('mother_last_name')
 		self.birth_date = kwargs.get('birth_date')
 
-		self.parse(complete_name=self.complete_name, last_name=self.last_name, 
-				  mother_last_name=self.mother_last_name)
-		
+		self.parse(
+			complete_name=self.complete_name, 
+			last_name=self.last_name, 
+			mother_last_name=self.mother_last_name
+		)
+	
 		self.partial_data = self.data_fiscal(
-			complete_name=self.complete_name, last_name=self.last_name, 
-			mother_last_name=self.mother_last_name, birth_date=self.birth_date)
+			complete_name=self.complete_name,
+			last_name=self.last_name, 
+			mother_last_name=self.mother_last_name, 
+			birth_date=self.birth_date
+		)
 
 	def calculate(self):
-		if self.mother_last_name is not None:
-			complete_name = u"%s %s %s" % (self.last_name, self.mother_last_name, self.complete_name)
-		else:
-			complete_name = u"%s %s" % (self.last_name, self.complete_name)
-
+		full_name = self.full_name
 		rfc = self.partial_data
-		hc = self.homoclave(self.partial_data, complete_name)
+
+		hc = self.homoclave(self.partial_data, full_name)
 		rfc += '%s' % hc
 		rfc += self.verification_number(rfc)
 		return rfc
-
-	def remove_accents(self, s):
-		if type(s) is str:
-			s = u"%s" % s
-		return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
 
 	def homoclave(self, rfc, complete_name):
 		nombre_numero = '0'
