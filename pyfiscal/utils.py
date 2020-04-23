@@ -11,18 +11,29 @@ ENT_FED = {
 	'ZACATECAS': 'ZS', 'NACIDO EXTRANJERO': 'NE'
 }
 
-WORDS = [
-	'BUEI', 'BUEY', 'CACA', 'CACO', 'CAGA', 'CAGO', 'CAKA', 'CAKO',
-	'COGE', 'COGI', 'COJA', 'COJE', 'COJI', 'COJO', 'COLA', 'CULO',
-	'FALO', 'FETO', 'GETA', 'GUEI', 'GUEY', 'JETA', 'JOTO', 'KACA',
-	'KACO', 'KAGA', 'KAGO', 'KAKA', 'KAKO', 'KOGE', 'KOGI', 'KOJA',
-	'KOJE', 'KOJI', 'KOJO', 'KOLA', 'KULO', 'LILO', 'LOCA', 'LOCO',
-	'LOKA', 'LOKO', 'MAME', 'MAMO', 'MEAR', 'MEAS', 'MEON', 'MIAR',
-	'MION', 'MOCO', 'MOKO', 'MULA', 'MULO', 'NACA', 'NACO', 'PEDA',
-	'PEDO', 'PENE', 'PIPI', 'PITO', 'POPO', 'PUTA', 'PUTO', 'QULO',
-	'RATA', 'ROBA', 'ROBE', 'ROBO', 'RUIN', 'SENO', 'TETA', 'VUEI', 
-	'VUEY', 'WUEI', 'WUEY'
-]
+DISADVANTAGES_WORDS = (
+	('BUEI', 'BUEX'), ('BUEY', 'BUEX'),
+	('CACA', 'CACX'), ('CACO', 'CACX'),
+	('CAGA', 'CAGX'), ('CAGO', 'CAGX'),
+	('CAKA', 'CAKX'), ('CAKO', 'CAKX'),
+	('COGE', 'COGX'), ('COJA', 'COJX'),
+	('COJE', 'COJX'), ('COJI', 'COJX'),
+	('COJO', 'COJX'), ('CULO', 'CULX'),
+	('FETO', 'FETX'), ('GUEY', 'GUEX'),
+	('JOTO', 'JOTX'), ('KACA', 'KACX'),
+	('KACO', 'KACX'), ('KAGA', 'KAGX'),
+	('KAGO', 'KAGX'), ('KOGE', 'KOGX'),
+	('KOJO', 'KOJX'), ('KAKA', 'KAKX'),
+	('KULO', 'KULX'), ('MAME', 'MAMX'),
+	('MAMO', 'MAMX'), ('MEAR', 'MEAX'),
+	('MEAS', 'MEAX'), ('MEON', 'MEOX'),
+	('MION', 'MIOX'), ('MOCO', 'MOCX'),
+	('MULA', 'MULX'), ('PEDA', 'PEDX'),
+	('PEDO', 'PEDX'), ('PENE', 'PENX'),
+	('PUTA', 'PUTX'), ('PUTO', 'PUTX'),
+	('QULO', 'QULX'), ('RATA', 'RATX'),
+	('RUIN', 'RUIX')
+)
 
 
 def search_consonant(word):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 from .utils import (
-	ENT_FED, WORDS, to_upper,
+	ENT_FED, DISADVANTAGES_WORDS, to_upper,
 	search_vowel, search_consonant
 )
 
@@ -43,9 +43,8 @@ class BaseGenerator(object):
 			initials = self.initials_single_last_name(first_name, last_name)
 		else:
 			initials = self.initials_name(first_name, last_name, mother_last_name)
-		print(initials)
-
-		completename = self.verify_words(initials)
+		#Rule 9
+		completename = self.verify_initials(initials)
 		
 		return '%s%s' % (completename, birth_date)
 		
@@ -177,12 +176,15 @@ class BaseGenerator(object):
 		return '{}{}'.format(last_name[0:2], first_name[0:2], )
 
 
-	def verify_words(self, rfc):
-		for item in WORDS:
-			if item == rfc:
-				rfc = 'XXXX'
-				break
-		return rfc
+	def verify_initials(self, initials):
+		"""
+		Rule 9 - When an inconvenient word appears from the four letters that make up
+		the alphabetical expression, the last letter will be replaced by an "X".
+		"""
+		words = dict((x, y) for x, y in DISADVANTAGES_WORDS)
+		data = words.get(initials) if words.get(initials) else initials
+		return data
+
 
 	def parse_date(self, birthdate):
 		"""Rule 2 - The taxpayer's date of birth will be noted below, in the following order:
