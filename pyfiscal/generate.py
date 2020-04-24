@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unicodedata
 from .base import BaseGenerator
+from .constants import TABLE1, TABLE2, TABLE3
 
 
 class GenerateRFC(BaseGenerator):
@@ -8,75 +9,33 @@ class GenerateRFC(BaseGenerator):
 	DATA_REQUIRED = ('complete_name', 'last_name', 'mother_last_name', 'birth_date')
 	partial_data = None
 
+
 	def __init__(self, **kwargs):
 		self.complete_name = kwargs.get('complete_name')
 		self.last_name = kwargs.get('last_name')
 		self.mother_last_name = kwargs.get('mother_last_name')
 		self.birth_date = kwargs.get('birth_date')
 
-		self.parse(
-			complete_name=self.complete_name, 
-			last_name=self.last_name, 
-			mother_last_name=self.mother_last_name
-		)
+		self.parse(complete_name=self.complete_name, last_name=self.last_name, 
+				   mother_last_name=self.mother_last_name)
 	
 		self.partial_data = self.data_fiscal(
-			complete_name=self.complete_name,
-			last_name=self.last_name, 
-			mother_last_name=self.mother_last_name, 
-			birth_date=self.birth_date
-		)
+			complete_name=self.complete_name, last_name=self.last_name, 
+			mother_last_name=self.mother_last_name, birth_date=self.birth_date)
+
 
 	def calculate(self):
-		full_name = self.full_name
 		rfc = self.partial_data
-
-		hc = self.homoclave(self.partial_data, full_name)
-		rfc += '%s' % hc
+		rfc += self.homoclave(self.partial_data, self.full_name)
 		rfc += self.verification_number(rfc)
 		return rfc
+
 
 	def homoclave(self, rfc, full_name):
 		num = '0'
 		summary = 0 
 		div = 0 
 		mod = 0
-
-		table1 = (
-			(' ', '00'), ('B', '12'), ('O', '26'),
-			('0', '00'), ('C', '13'), ('P', '27'),
-			('1', '01'), ('D', '14'), ('Q', '28'),
-			('2', '02'), ('E', '15'), ('R', '29'),
-			('3', '03'), ('F', '16'), ('S', '32'),
-			('4', '04'), ('G', '17'), ('T', '33'),
-			('5', '05'), ('H', '18'), ('U', '34'),
-			('6', '06'), ('I', '19'), ('V', '35'),
-			('7', '07'), ('J', '21'), ('W', '36'),
-			('8', '08'), ('K', '22'), ('X', '37'),
-			('9', '09'), ('L', '23'), ('Y', '38'),
-			('&', '10'), ('M', '24'), ('Z', '39'),
-			('A', '11'), ('N', '25'), ('Ñ', '40'),
-		)
-
-		table2 = (
-			(0, '1'), (17, 'I'),
-			(1, '2'), (18, 'J'),
-			(2, '3'), (19, 'K'),
-			(3, '4'), (20, 'L'),
-			(4, '5'), (21, 'M'),
-			(5, '6'), (22, 'N'),
-			(6, '7'), (23, 'P'),
-			(7, '8'), (24, 'Q'),
-			(8, '9'), (25, 'R'),
-			(9, 'A'), (26, 'S'),
-			(10, 'B'), (27, 'T'),
-			(11, 'C'), (28, 'U'),
-			(12, 'D'), (29, 'V'),
-			(13, 'E'), (30, 'W'),
-			(14, 'F'), (31, 'X'),
-			(15, 'G'), (32, 'Y'),
-			(16, 'H'), (33, 'Z')
-		)
 
 		# 1.- Values will be assigned to the letters of the name or business name according to the table1
 		# 2.- The values are ordered as follows:
@@ -86,7 +45,7 @@ class GenerateRFC(BaseGenerator):
 		# of the numbers to be taken two by two.
 
 		for c in range(0, len(full_name)):
-			rfc1 = dict((x, y) for x, y in table1)
+			rfc1 = dict((x, y) for x, y in TABLE1)
 			num += rfc1.get(full_name[c])
 		
 		# 3. The multiplications of the numbers taken two by two for the position of the couple will be carried out:
@@ -104,11 +63,12 @@ class GenerateRFC(BaseGenerator):
 		div = (div-mod)/34
 
 		# 5. With the quotient and the remainder, the table 2 is consulted and the homonymy is assigned.
-		rfc2 = dict((x, y) for x, y in table2)
+		rfc2 = dict((x, y) for x, y in TABLE2)
 		hom = ''
 		hom += rfc2.get(int(div))
 		hom += rfc2.get(int(mod))
 		return hom
+
 
 	def verification_number(self, rfc):
 		"""
@@ -119,26 +79,10 @@ class GenerateRFC(BaseGenerator):
 		sumparcial = 0
 		digito = None 
 
-		rfc3 = (
-			('0', '00'), ('D', '13'), ('P', '26'),
-			('1', '01'), ('E', '14'), ('Q', '27'),
-			('2', '02'), ('F', '15'), ('R', '28'),
-			('3', '03'), ('G', '16'), ('S', '29'),
-			('4', '04'), ('H', '17'), ('T', '30'),
-			('5', '05'), ('I', '18'), ('U', '31'),
-			('6', '06'), ('J', '19'), ('V', '32'),
-			('7', '07'), ('K', '20'), ('W', '33'),
-			('8', '08'), ('L', '21'), ('X', '34'),
-			('9', '09'), ('M', '22'), ('Y', '35'),
-			('A', '10'), ('N', '23'), ('Z', '36'),
-			('B', '11'), ('&', '24'), (' ',	'37'),
-			('C', '12'), ('O', '25'), ('Ñ', '38'),
-		)
-
 		# 2.- Una vez asignados los valores se aplicará la siguiente forma tomando como base el factor 13
 		# en orden descendente a cada letra y número del R.F.C. para su multiplicación,
 		# de acuerdo a la siguiente formula: (Vi * (Pi + 1)) + (Vi * (Pi + 1)) + ..............+ (Vi * (Pi + 1)) MOD 11 
-		rfc3 = dict((x, y) for x, y in rfc3)
+		rfc3 = dict((x, y) for x, y in TABLE3)
 	
 		for count in range(0,len(rfc)):
 			letra = rfc[count]
@@ -165,6 +109,7 @@ class GenerateRFC(BaseGenerator):
 			digito = 'A'
 
 		return  digito
+
 
 	@property
 	def data(self):
@@ -193,8 +138,10 @@ class GenerateCURP(BaseGenerator):
 		self.gender = kwargs.get('gender')
 		self.city = kwargs.get('city', None)
 		self.state_code = kwargs.get('state_code')
+
 		self.parse(complete_name=self.complete_name, last_name=self.last_name,
-				   mother_last_name=self.mother_last_name, city=self.city, state_code=self.state_code)
+				   mother_last_name=self.mother_last_name, city=self.city,
+				   state_code=self.state_code)
 
 		self.partial_data = self.data_fiscal(
 			complete_name=self.complete_name, last_name=self.last_name,
@@ -202,13 +149,9 @@ class GenerateCURP(BaseGenerator):
 
 	def calculate(self):
 		curp = self.partial_data
-		statecode = self.state_code
-		
-		if self.city is not None:
-			statecode = self.city_search(self.city)
-		elif self.state_code is not None:
-			statecode = self.state_code
-		else: 
+
+		state_code = self.city_search(self.city) if self.city else self.state_code
+		if not state_code:
 			raise AttributeError("No such attribute: state_code")
 
 		lastname = self.get_consonante(self.last_name)
@@ -217,7 +160,7 @@ class GenerateCURP(BaseGenerator):
 		year = self.get_year(self.birth_date)
 		hc = self.homoclave(year)
 
-		curp += '%s%s%s%s%s%s' % (self.gender, statecode, lastname,
+		curp += '%s%s%s%s%s%s' % (self.gender, state_code, lastname,
 			mslastname, name, hc)
 		curp += self.check_digit(curp)
 		return curp

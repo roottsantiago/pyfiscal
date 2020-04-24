@@ -3,34 +3,40 @@ import datetime
 import unicodedata
 
 from .utils import (
-	ENT_FED, DISADVANTAGES_WORDS, to_upper,
-	search_vowel, search_consonant
+	to_upper, search_vowel, search_consonant
 )
+from .constants import ENTITIES, DISADVANTAGES_WORDS
 
 
 class BaseGenerator(object):
 	"""class Base Generator"""
 	full_name = None
 
+
 	def generate(self):
 		raise NotImplementedError('No implement.')
 
-	def parse(self, complete_name, last_name, mother_last_name=None, city=None,
-		state_code=None):
-		if city is not None:
-			self.city = to_upper(city)
-		
-		if state_code is not None:
-			self.state_code = to_upper(state_code)
 
-		if mother_last_name is not None:
+	def parse(self, complete_name, last_name, mother_last_name=None, city=None,
+			  state_code=None):
+
+		self.city = to_upper(city) if city else None
+		self.state_code = to_upper(state_code) if state_code else None
+
+		if mother_last_name:
 			mother_last_name = self.remove_accents(mother_last_name)
+			mother_last_name = self.remove_precisions(mother_last_name)
+			mother_last_name = self.remove_articles(mother_last_name)
 			self.mother_last_name = to_upper(mother_last_name)
 
-		first_name = self.remove_accents(complete_name)
+		first_name = self.remove_names(complete_name)
+		first_name = self.remove_accents(first_name)
+		first_name = self.remove_precisions(first_name)
 		self.complete_name = to_upper(first_name)
 
 		last_name = self.remove_accents(last_name)
+		last_name = self.remove_precisions(last_name)
+		last_name = self.remove_articles(last_name)
 		self.last_name = to_upper(last_name)
 
 		self.full_name = "{} {} {}".format(self.last_name, self.mother_last_name, self.complete_name)
@@ -39,27 +45,14 @@ class BaseGenerator(object):
 	def data_fiscal(self, complete_name, last_name, mother_last_name, birth_date):
 		birth_date = self.parse_date(birth_date)
 
-		first_name = self.remove_precisions(complete_name)
-		last_name = self.remove_precisions(last_name)
-
-		if mother_last_name is not None:
-			mother_last_name = self.remove_precisions(mother_last_name)
-			mother_last_name = self.remove_articles(mother_last_name)
-
-		#Rule 6
-		first_name = self.remove_names(first_name)
-		# Rule 8
-		last_name = self.remove_articles(last_name)
-		
 		if len(last_name) is 1 or len(last_name) is 2:
-			initials = self.initials_name_comp(first_name, last_name, mother_last_name)
+			initials = self.initials_name_comp(complete_name, last_name, mother_last_name)
 		elif mother_last_name is None or mother_last_name is '': #Rule 7
-			initials = self.initials_single_last_name(first_name, last_name)
+			initials = self.initials_single_last_name(complete_name, last_name)
 		else:
-			initials = self.initials_name(first_name, last_name, mother_last_name)
+			initials = self.initials_name(complete_name, last_name, mother_last_name)
 		#Rule 9
 		completename = self.verify_initials(initials)
-		
 		return '%s%s' % (completename, birth_date)
 		
 	
@@ -200,6 +193,7 @@ class BaseGenerator(object):
 		data = words.get(initials) if words.get(initials) else initials
 		return data
 
+
 	def remove_accents(self, text):
 		""" Normalise (normalize) unicode data in Python to remove umlauts, accents etc.
 
@@ -255,15 +249,18 @@ class BaseGenerator(object):
 		except Exception as exc:
 			raise str(exc)
 
+
 	def city_search(self, name_city):
 		data = ''	
-		for key, value in ENT_FED.items():
+		for key, value in ENTITIES.items():
 			if key == name_city:
 				data = value
 		return data
 
+
 	def get_consonante(self, word):
 		return search_consonant(word)
+
 
 	def get_year(self, str_date):
 		"""Get year of birth date."""
@@ -275,6 +272,7 @@ class BaseGenerator(object):
 			return date.year
 		except Exception as exc:
 			raise str(exc)
+
 
 	def current_year(self):
 		return datetime.datetime.now().year
