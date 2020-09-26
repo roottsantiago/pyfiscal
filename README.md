@@ -1,7 +1,7 @@
 # Cálculo de Datos Fiscales
 
 Features
-[x] Support for Python 2.7-3.3.
+[x] Support for Python 2.7-3.5.
 
 Installation
 ------------
@@ -43,7 +43,7 @@ El Número de Seguridad Social (NSS) es único, permanente e intransferible y se
 
 # Example
 ```python
-from generate import GenerateRFC, GenerateCURP, GenerateNSS, GenericGeneration
+from pyfiscal.generate import GenerateRFC, GenerateCURP, GenerateNSS, GenericGeneration
 
 
 class GenerateDataFiscal(GenericGeneration):
@@ -51,13 +51,13 @@ class GenerateDataFiscal(GenericGeneration):
 
 
 kwargs = {
-	"complete_name": "Thom",
-	"last_name": "Gonzalez",
-	"mother_last_name": None,
-	"birth_date": "01-01-1990",
-	"gender": "H",
-	"city": 'Queretaro',
-	"state_code": None
+	"complete_name": "",
+	"last_name": "",
+	"mother_last_name": "",
+	"birth_date": "",
+	"gender": "",
+	"city": "",
+	"state_code": ""
 }
 
 rfc = GenerateRFC(**kwargs)
@@ -66,7 +66,7 @@ data = rfc.data
 curp = GenerateCURP(**kwargs)
 data = curp.data
 
-nss =  GenerateNSS(nss='2812890481')
+nss =  GenerateNSS(nss="")
 data = nss.data
 
 data = GenerateDataFiscal(**kwargs).data
