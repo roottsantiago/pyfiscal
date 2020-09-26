@@ -169,7 +169,7 @@ class BaseGenerator(object):
 		ini_last_name = last_name[0:1]
 		ini_mthlast_name = self.get_ini_mothlast_name(mother_last_name)
 		data = "{}{}{}".format(ini_last_name, ini_mthlast_name, first_name[0:2])
-	 	return data  
+		return data  
 
 
 	def initials_single_last_name(self, first_name, last_name):
