@@ -4,7 +4,7 @@ from setuptools import setup
 setup(
 	name = 'pyfiscal',
 	packages = ['pyfiscal'],
-	version = '1.2.0',
+	version = '1.2.1',
 	description = 'Pyfiscal 2.7-3.5 generate data fiscal.',
 	author='Tomas Gonzalez',
 	author_email = 'thom.sgonzalez@gmail.com',
