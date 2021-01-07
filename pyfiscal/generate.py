@@ -103,12 +103,17 @@ class GenerateRFC(BaseGenerator):
 
 		if residuo == 0:
 			digito = '0'
-		elif residuo > 0:
-			digito = str((11-residuo))
-		elif residuo == 10:
-			digito = 'A'
+			return digito
 
-		return  digito
+		if residuo == 10:
+			digito = 'A'
+			return digito
+
+		if residuo > 0:
+			digito = str((11 - residuo))
+			return digito
+
+		return digito
 
 
 	@property
