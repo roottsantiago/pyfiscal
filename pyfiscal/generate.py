@@ -105,12 +105,13 @@ class GenerateRFC(BaseGenerator):
 			digito = '0'
 			return digito
 
-		if residuo == 10:
-			digito = 'A'
-			return digito
-
 		if residuo > 0:
 			digito = str((11 - residuo))
+
+			if digito == '10':
+				digito = 'A'
+				return digito
+
 			return digito
 
 		return digito
