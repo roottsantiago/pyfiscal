@@ -5,12 +5,13 @@ from .constants import (
 
 
 def search_consonant(word):
+	"""
+	consonant word search
+	"""
 	data = None
 	consonant = ''
 
-	if word:
-		data = word[1:len(word)]
-
+	data = word[1:len(word)] if word else None
 	for item in data:
 		if item == 'Ñ':
 			consonant = 'X'
