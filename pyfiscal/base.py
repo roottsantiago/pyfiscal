@@ -11,11 +11,12 @@ from .constants import ENTITIES, DISADVANTAGES_WORDS
 class BaseGenerator(object):
 	"""class Base Generator"""
 	full_name = None
-
+	first_name_master = None
+	last_name_master = None
+	mothers_last_name_master = None
 
 	def generate(self):
 		raise NotImplementedError('No implement.')
-
 
 	def parse(self, complete_name, last_name, mother_last_name=None, city=None,
 			  state_code=None):
@@ -24,22 +25,27 @@ class BaseGenerator(object):
 		self.state_code = to_upper(state_code) if state_code else None
 
 		if mother_last_name:
-			mother_last_name = self.remove_accents(mother_last_name)
-			mother_last_name = self.remove_precisions(mother_last_name)
+			mother_last_name = self.remove_accents(to_upper(mother_last_name))
+			self.mothers_last_name_master = mother_last_name
 			mother_last_name = self.remove_articles(mother_last_name)
-			self.mother_last_name = to_upper(mother_last_name)
+			mother_last_name = self.remove_precisions(mother_last_name)
+			self.mother_last_name = mother_last_name
 
-		first_name = self.remove_names(complete_name)
-		first_name = self.remove_accents(first_name)
+		first_name = self.remove_accents(to_upper(complete_name))
+		self.first_name_master = first_name
+		first_name = self.remove_names(first_name)
+		first_name = self.remove_articles(first_name)
 		first_name = self.remove_precisions(first_name)
-		self.complete_name = to_upper(first_name)
+		self.complete_name = first_name
 
-		last_name = self.remove_accents(last_name)
-		last_name = self.remove_precisions(last_name)
+		last_name = self.remove_accents(to_upper(last_name))
+		self.last_name_master = last_name
 		last_name = self.remove_articles(last_name)
-		self.last_name = to_upper(last_name)
+		last_name = self.remove_precisions(last_name)
+		self.last_name = last_name
 
-		self.full_name = "{} {} {}".format(self.last_name, self.mother_last_name, self.complete_name)
+		self.full_name = "{} {} {}".format(self.last_name_master, 
+										   self.mothers_last_name_master, self.first_name_master)
 
 
 	def data_fiscal(self, complete_name, last_name, mother_last_name, birth_date):
@@ -52,8 +58,8 @@ class BaseGenerator(object):
 		else:
 			initials = self.initials_name(complete_name, last_name, mother_last_name)
 		#Rule 9
-		completename = self.verify_initials(initials)
-		return '%s%s' % (completename, birth_date)
+		full_name_initials = self.verify_initials(initials)
+		return '%s%s' % (full_name_initials, birth_date)
 		
 	
 	def initials_name(self, first_name, last_name, mother_last_name):
@@ -116,9 +122,21 @@ class BaseGenerator(object):
 			Roberto González and Durán GODR-600101
 			Juan del Valle Martínez VAMJ-691001
 		"""
-		to_replaces = ['DE LA', 'DE LOS', 'DEL', 'DE', 'LAS', 'LA', 'LOS', 'Y', 'MC', 'MAC', 'VON', 'VAN']
+		data = [
+			'DE LA ', 
+			'DE LOS ', 
+			'DEL ', 'DE ', 
+			'LAS ', 
+			'LA ', 
+			'LOS ', 
+			'Y ', 
+			'MC ', 
+			'MAC ', 
+			'VON ', 
+			'VAN '
+		]
 		# Iterate over the strings to be replaced
-		for elem in to_replaces :
+		for elem in data:
 			# Check if string is in the main string
 			if elem in phrase:
 				# Replace the string
@@ -137,10 +155,10 @@ class BaseGenerator(object):
 			José Antonio Camargo Hernández CAHA-211218
 			María Luisa Ramírez Sánchez RASL-251112
 		"""
-		to_replaces = ['JOSE', 'MARIA']
+		data = ['JOSE ', 'MARIA ']
 		
 		# Iterate over the strings to be replaced
-		for elem in to_replaces :
+		for elem in data :
 			# Check if string is in the main string
 			if elem in first_name :
 				# Replace the string
