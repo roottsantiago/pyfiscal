@@ -26,12 +26,12 @@ class GenerateRFC(BaseGenerator):
 
 	def calculate(self):
 		rfc = self.partial_data
-		rfc += self.homoclave(self.partial_data, self.full_name)
+		rfc += self.homoclave(self.full_name)
 		rfc += self.verification_number(rfc)
 		return rfc
 
 
-	def homoclave(self, rfc, full_name):
+	def homoclave(self, full_name):
 		num = '0'
 		summary = 0 
 		div = 0 
@@ -233,7 +233,7 @@ class GenerateNSS(BaseGenerator):
 			if birth_date <= year: 
 				birth_date += 100
 			if birth_date  >  high_date:
-				print('Error: Se dio de alta antes de nacer.')
+				raise Exception("Error: He was discharged before he was born.")
 				return False
 		return self._is_luhn_valid()
 
