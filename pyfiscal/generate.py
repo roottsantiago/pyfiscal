@@ -59,9 +59,10 @@ class GenerateRFC(BaseGenerator):
 		# 4.- The result of the multiplications is added and the result obtained,
 		#the last three figures will be taken and these are divided by the factor 34.
 		div = summary % 1000
-		mod = div % 34
-		div = (div-mod)/34
 
+		#mod = div % 34
+		#div = (div-mod)/34
+		div, mod = divmod(div, 34)	
 		# 5. With the quotient and the remainder, the table 2 is consulted and the homonymy is assigned.
 		rfc2 = dict((x, y) for x, y in TABLE2)
 		hom = ''
