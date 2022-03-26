@@ -4,12 +4,11 @@ from setuptools import setup
 setup(
 	name = 'pyfiscal',
 	packages = ['pyfiscal'],
-	version = '1.2.1',
+	version = '2.0',
 	description = 'Pyfiscal 2.7-3.8 tax data calculation.',
 	author='Tomás Gonzalez',
 	author_email = 'thom.sgonzalez@gmail.com',
 	url = 'https://github.com/thomgonzalez/pyfiscal',
-	download_url = 'https://github.com/thomgonzalez/pyfiscal/archive/v.1.1.0.tar.gz',
 	keywords = ['RFC', 'CURP', 'NSS', 'fiscal'],
 	classifiers = [
 		'Programming Language :: Python',
@@ -20,3 +19,9 @@ setup(
     	'Programming Language :: Python :: 3.8',
 	],
 )
+
+''''
+nombre / versión: Pyfiscal 2.0
+descripción: calculation tax data .
+url: https://github.com/thomgonzalez/pyfiscal
+'''
