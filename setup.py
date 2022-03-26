@@ -5,8 +5,8 @@ setup(
 	name = 'pyfiscal',
 	packages = ['pyfiscal'],
 	version = '1.2.1',
-	description = 'Pyfiscal 2.7-3.5 generate data fiscal.',
-	author='Tomas Gonzalez',
+	description = 'Pyfiscal 2.7-3.8 tax data calculation.',
+	author='Tomás Gonzalez',
 	author_email = 'thom.sgonzalez@gmail.com',
 	url = 'https://github.com/thomgonzalez/pyfiscal',
 	download_url = 'https://github.com/thomgonzalez/pyfiscal/archive/v.1.1.0.tar.gz',
@@ -16,5 +16,7 @@ setup(
    		'Programming Language :: Python :: 2.7',  
         'Programming Language :: Python :: 3',
 		'Programming Language :: Python :: 3.5',
+  		'Programming Language :: Python :: 3.6',
+    	'Programming Language :: Python :: 3.8',
 	],
 )
