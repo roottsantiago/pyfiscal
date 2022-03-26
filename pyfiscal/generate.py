@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import unicodedata
 from .base import BaseGenerator
-from .constants import TABLE1, TABLE2, TABLE3
 
 
 class GenerateRFC(BaseGenerator):
@@ -32,6 +31,42 @@ class GenerateRFC(BaseGenerator):
 
 
 	def homoclave(self, full_name):
+		table1 = (
+			(' ', '00'), ('B', '12'), ('O', '26'),
+			('0', '00'), ('C', '13'), ('P', '27'),
+			('1', '01'), ('D', '14'), ('Q', '28'),
+			('2', '02'), ('E', '15'), ('R', '29'),
+			('3', '03'), ('F', '16'), ('S', '32'),
+			('4', '04'), ('G', '17'), ('T', '33'),
+			('5', '05'), ('H', '18'), ('U', '34'),
+			('6', '06'), ('I', '19'), ('V', '35'),
+			('7', '07'), ('J', '21'), ('W', '36'),
+			('8', '08'), ('K', '22'), ('X', '37'),
+			('9', '09'), ('L', '23'), ('Y', '38'),
+			('&', '10'), ('M', '24'), ('Z', '39'),
+			('A', '11'), ('N', '25'), ('Ñ', '40'),
+		)
+  
+		table2 = (
+			(0, '1'), (17, 'I'),
+			(1, '2'), (18, 'J'),
+			(2, '3'), (19, 'K'),
+			(3, '4'), (20, 'L'),
+			(4, '5'), (21, 'M'),
+			(5, '6'), (22, 'N'),
+			(6, '7'), (23, 'P'),
+			(7, '8'), (24, 'Q'),
+			(8, '9'), (25, 'R'),
+			(9, 'A'), (26, 'S'),
+			(10, 'B'), (27, 'T'),
+			(11, 'C'), (28, 'U'),
+			(12, 'D'), (29, 'V'),
+			(13, 'E'), (30, 'W'),
+			(14, 'F'), (31, 'X'),
+			(15, 'G'), (32, 'Y'),
+			(16, 'H'), (33, 'Z')
+		)
+  
 		num = '0'
 		summary = 0 
 		div = 0 
@@ -45,7 +80,7 @@ class GenerateRFC(BaseGenerator):
 		# of the numbers to be taken two by two.
 
 		for c in range(0, len(full_name)):
-			rfc1 = dict((x, y) for x, y in TABLE1)
+			rfc1 = dict((x, y) for x, y in table1)
 			num += rfc1.get(full_name[c])
 		
 		# 3. The multiplications of the numbers taken two by two for the position of the couple will be carried out:
@@ -64,7 +99,7 @@ class GenerateRFC(BaseGenerator):
 		#div = (div-mod)/34
 		div, mod = divmod(div, 34)	
 		# 5. With the quotient and the remainder, the table 2 is consulted and the homonymy is assigned.
-		rfc2 = dict((x, y) for x, y in TABLE2)
+		rfc2 = dict((x, y) for x, y in table2)
 		hom = ''
 		hom += rfc2.get(int(div))
 		hom += rfc2.get(int(mod))
@@ -76,6 +111,21 @@ class GenerateRFC(BaseGenerator):
 		Anexo 3 - Tabla de valores para la generación del código verificador
 		del registro federal de contribuyentes. 
 		"""
+		table3 = (
+			('0', '00'), ('D', '13'), ('P', '26'),
+			('1', '01'), ('E', '14'), ('Q', '27'),
+			('2', '02'), ('F', '15'), ('R', '28'),
+			('3', '03'), ('G', '16'), ('S', '29'),
+			('4', '04'), ('H', '17'), ('T', '30'),
+			('5', '05'), ('I', '18'), ('U', '31'),
+			('6', '06'), ('J', '19'), ('V', '32'),
+			('7', '07'), ('K', '20'), ('W', '33'),
+			('8', '08'), ('L', '21'), ('X', '34'),
+			('9', '09'), ('M', '22'), ('Y', '35'),
+			('A', '10'), ('N', '23'), ('Z', '36'),
+			('B', '11'), ('&', '24'), (' ',	'37'),
+			('C', '12'), ('O', '25'), ('Ñ', '38'),
+		)
 		num = 0 
 		sumparcial = 0
 		digito = None 
@@ -83,7 +133,7 @@ class GenerateRFC(BaseGenerator):
 		# 2.- Una vez asignados los valores se aplicará la siguiente forma tomando como base el factor 13
 		# en orden descendente a cada letra y número del R.F.C. para su multiplicación,
 		# de acuerdo a la siguiente formula: (Vi * (Pi + 1)) + (Vi * (Pi + 1)) + ..............+ (Vi * (Pi + 1)) MOD 11 
-		rfc3 = dict((x, y) for x, y in TABLE3)
+		rfc3 = dict((x, y) for x, y in table3)
 	
 		for count in range(0,len(rfc)):
 			letra = rfc[count]
@@ -167,8 +217,8 @@ class GenerateCURP(BaseGenerator):
 		year = self.get_year(self.birth_date)
 		hc = self.homoclave(year)
 
-		curp += '%s%s%s%s%s%s' % (self.gender, state_code, lastname,
-			mslastname, name, hc)
+		curp += "{0}{1}{2}{3}{4}{5}".format(self.gender, state_code, lastname,
+											mslastname, name, hc)
 		curp += self.check_digit(curp)
 		return curp
 	
@@ -220,7 +270,7 @@ class GenerateNSS(BaseGenerator):
 
 	def is_valid(self):
 		validated = len(self.nss)
-		if not validated is 11:  # 11 dígitos y subdelegación válida
+		if not validated == 11:  # 11 dígitos y subdelegación válida
 			return False
 
 		sub_deleg = int(self.nss[0:2])
@@ -228,14 +278,14 @@ class GenerateNSS(BaseGenerator):
 		high_date  = int(self.nss[2:4])
 		birth_date = int(self.nss[4:6])
 
-		if sub_deleg is not 97:
+		if sub_deleg != 97:
 			if high_date <= year:
 				high_date += 100
 			if birth_date <= year: 
 				birth_date += 100
 			if birth_date  >  high_date:
 				raise Exception("Error: He was discharged before he was born.")
-				return False
+
 		return self._is_luhn_valid()
 
 	def _is_luhn_valid(self): #example 4896889802135

@@ -5,7 +5,6 @@ import unicodedata
 from .utils import (
 	to_upper, search_vowel, search_consonant
 )
-from .constants import ENTITIES, DISADVANTAGES_WORDS
 
 
 class BaseGenerator(object):
@@ -51,15 +50,15 @@ class BaseGenerator(object):
 	def data_fiscal(self, complete_name, last_name, mother_last_name, birth_date):
 		birth_date = self.parse_date(birth_date)
 
-		if len(last_name) is 1 or len(last_name) is 2:
+		if len(last_name) == 1 or len(last_name) == 2:
 			initials = self.initials_name_comp(complete_name, last_name, mother_last_name)
-		elif mother_last_name is None or mother_last_name is '': #Rule 7
+		elif mother_last_name == None or mother_last_name == '': #Rule 7
 			initials = self.initials_single_last_name(complete_name, last_name)
 		else:
 			initials = self.initials_name(complete_name, last_name, mother_last_name)
 		#Rule 9
 		full_name_initials = self.verify_initials(initials)
-		return '%s%s' % (full_name_initials, birth_date)
+		return "{0}{1}".format(full_name_initials, birth_date)
 		
 	
 	def initials_name(self, first_name, last_name, mother_last_name):
@@ -82,12 +81,8 @@ class BaseGenerator(object):
 		# Mario Sánchez de la Barquera Gómez SAGM-190224
 		# Antonio Jiménez Ponce de León JIPA-170808
 
-		initials = '%s%s%s%s' % (
-			ini_last_name, 
-			last_name_vowel, 
-			ini_mothlast_name, 
-			ini_first_name
-		)
+		initials = "{0}{1}{2}{3}".format(ini_last_name, last_name_vowel, 
+										 ini_mothlast_name, ini_first_name)
 		return initials
 
 	
@@ -104,9 +99,9 @@ class BaseGenerator(object):
 		data = phrase[2:len(phrase)]
 		
 		if letters == 'CH':
-			phrase = 'C%s' % data
+			phrase = "C{}".format(data)
 		elif letters == 'LL':
-			phrase = 'L%s' % data
+			phrase = "L{}".format(data)
 		return phrase
 
 
@@ -123,16 +118,17 @@ class BaseGenerator(object):
 			Juan del Valle Martínez VAMJ-691001
 		"""
 		data = [
-			'DE LA ', 
-			'DE LOS ', 
-			'DEL ', 'DE ', 
-			'LAS ', 
-			'LA ', 
-			'LOS ', 
-			'Y ', 
-			'MC ', 
-			'MAC ', 
-			'VON ', 
+			'DE LA ',
+			'DE LOS ',
+			'DEL ',
+   			'DE ',
+			'LAS ',
+			'LA ',
+			'LOS ',
+			'Y ',
+			'MC ',
+			'MAC ',
+			'VON ',
 			'VAN '
 		]
 		# Iterate over the strings to be replaced
@@ -207,9 +203,25 @@ class BaseGenerator(object):
 		Rule 9 - When an inconvenient word appears from the four letters that make up
 		the alphabetical expression, the last letter will be replaced by an "X".
 		"""
-		words = dict((x, y) for x, y in DISADVANTAGES_WORDS)
-		data = words.get(initials) if words.get(initials) else initials
-		return data
+		data = (
+			('BUEI', 'BUEX'), ('BUEY', 'BUEX'), ('CACA', 'CACX'),
+   			('CACO', 'CACX'), ('CAGA', 'CAGX'), ('CAGO', 'CAGX'),
+			('CAKA', 'CAKX'), ('CAKO', 'CAKX'), ('COGE', 'COGX'),
+			('COJA', 'COJX'), ('COJE', 'COJX'), ('COJI', 'COJX'),
+			('COJO', 'COJX'), ('CULO', 'CULX'), ('FETO', 'FETX'),
+			('GUEY', 'GUEX'), ('JOTO', 'JOTX'), ('KACA', 'KACX'),
+			('KACO', 'KACX'), ('KAGA', 'KAGX'), ('KAGO', 'KAGX'),
+			('KOGE', 'KOGX'), ('KOJO', 'KOJX'), ('KAKA', 'KAKX'),
+			('KULO', 'KULX'), ('MAME', 'MAMX'), ('MAMO', 'MAMX'),
+   			('MEAR', 'MEAX'), ('MEAS', 'MEAX'), ('MEON', 'MEOX'),
+			('MION', 'MIOX'), ('MOCO', 'MOCX'), ('MULA', 'MULX'),
+   			('PEDA', 'PEDX'), ('PEDO', 'PEDX'), ('PENE', 'PENX'),
+			('PUTA', 'PUTX'), ('PUTO', 'PUTX'), ('QULO', 'QULX'),
+			('RATA', 'RATX'), ('RUIN', 'RUIX'),
+		)
+		words = dict((x, y) for x, y in data)
+		result = words.get(initials) if words.get(initials) else initials
+		return result
 
 
 	def remove_accents(self, text):
@@ -263,16 +275,53 @@ class BaseGenerator(object):
 			# a ZERO will be put before it.
 			month = str(birthdate.month).zfill(2)
 			day = str(birthdate.day).zfill(2)
-			return '%s%s%s' % (year, month, day)
+			return "{0}{1}{2}".format(year, month, day)
 		except Exception as exc:
 			raise str(exc)
 
 
 	def city_search(self, name_city):
+		entities = { 
+			'': '',
+			'AGUASCALIENTES': 'AS',
+			'BAJA CALIFORNIA': 'BC',
+			'BAJA CALIFORNIA SUR': 'BS',
+			'CAMPECHE': 'CC',
+			'CHIAPAS': 'CS',
+			'CHIHUAHUA': 'CH',
+			'COAHUILA': 'CL',
+			'COLIMA': 'CM',
+			'DISTRITO FEDERAL': 'DF',
+			'DURANGO': 'DG',
+			'GUANAJUATO': 'GT',
+			'GUERRERO': 'GR',
+			'HIDALGO': 'HG',
+			'JALISCO': 'JC',
+			'MEXICO': 'MC',
+			'MICHOACAN': 'MN',
+			'MORELOS': 'MS',
+			'NAYARIT': 'NT',
+			'NUEVO LEON':'NL',
+			'OAXACA': 'OC',
+			'PUEBLA': 'PL', 
+			'QUERETARO': 'QT',
+			'QUINTANA ROO': 'QR',
+			'SAN LUIS POTOSI': 'SP',
+			'SINALOA': 'SL',
+			'SONORA': 'SR',
+			'TABASCO': 'TC',
+			'TAMAULIPAS': 'TS',
+			'TLAXCALA': 'TL',
+			'VERACRUZ': 'VZ',
+			'YUCATÁN': 'YN',
+			'ZACATECAS': 'ZS',
+			'NACIDO EXTRANJERO': 'NE'
+		}
 		data = ''	
-		for key, value in ENTITIES.items():
+		for key, value in entities.items():
 			if key == name_city:
 				data = value
+				break
 		return data
 
 
