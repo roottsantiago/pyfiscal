@@ -1,0 +1,33 @@
+repos:
+  - repo: https://github.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+      - id: flake8
+        args:
+          - --config=.code_quality/.flake8
+          - --ignore=W503
+  - repo: https://github.com/pycqa/pylint
+    rev: v2.12.2
+    hooks:
+      - id: pylint
+        args:
+          - --rcfile=.code_quality/.pylintrc
+        exclude: (trikare/manage.py|trikare/trikare/|migrations)
+  - repo: https://github.com/ambv/black
+    rev: 22.1.0
+    hooks:
+      - id: black
+        language_version: python3
+        additional_dependencies: [ 'click==8.0.4' ] # lock click (breaks black in his latest versions)
+        args:
+          - --config
+          - .code_quality/pyproject_black.toml
+          - --diff  # show format suggestions
+          - --line-length=80
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.1
+    hooks:
+      - id: bandit
+        args:
+          - -c
+          - .code_quality/bandit.yaml
