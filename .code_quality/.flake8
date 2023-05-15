@@ -1,0 +1,8 @@
+[flake8]
+max-line-length = 80
+ignore = E203
+exclude = .git,_pycache_,old,build,dist,venv,env,.env,.venv,*migrations*
+per-file-ignores =
+    # Module level import not at top of file. This is due newrelic initialization.
+    manage.py: E402
+    trikare/*: E402
