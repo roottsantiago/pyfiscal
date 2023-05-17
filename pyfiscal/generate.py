@@ -3,7 +3,8 @@
 Base file in the generation and calculation of fiscal data.
 """
 from .base import BaseGenerator
-from .constants import TABLE1, TABLE2, TABLE3
+from .constants import TABLE1, TABLE2, TABLE3, CHECKERS
+from .utils import GenderEnum
 
 
 # pylint: disable=W0223
@@ -11,23 +12,30 @@ class GenerateRFC(BaseGenerator):
     """
     Base class that generate RFC
     """
-    key_value = 'rfc'
-    DATA_REQUIRED = ('complete_name', 'last_name',
-                     'mother_last_name', 'birth_date')
     partial_data = None
+    key_value = 'rfc'
+    DATA_REQUIRED = (
+        'name',
+        'last_name',
+        'mother_last_name',
+        'birth_date'
+    )
 
     def __init__(self, **kwargs):
-        self.complete_name = kwargs.get('complete_name')
+        self.name = kwargs.get('name')
         self.last_name = kwargs.get('last_name')
         self.mother_last_name = kwargs.get('mother_last_name')
         self.birth_date = kwargs.get('birth_date')
 
-        self.parse(complete_name=self.complete_name, last_name=self.last_name,
+        self.parse(name=self.name, last_name=self.last_name,
                    mother_last_name=self.mother_last_name)
 
         self.partial_data = self.data_fiscal(
-            complete_name=self.complete_name, last_name=self.last_name,
-            mother_last_name=self.mother_last_name, birth_date=self.birth_date)
+            name=self.name,
+            last_name=self.last_name,
+            mother_last_name=self.mother_last_name,
+            birth_date=self.birth_date
+        )
 
     def calculate(self):
         """
@@ -96,7 +104,7 @@ class GenerateRFC(BaseGenerator):
         """
         num = 0
         sumparcial = 0
-        digito = None
+        digit = None
 
         # 2.- Una vez asignados los valores se aplicará la siguiente forma
         # tomando como base el factor 13
@@ -124,22 +132,13 @@ class GenerateRFC(BaseGenerator):
         # Por lo tanto “8“
         # es el dígito verificador de este ejemplo: GODE561231GR8.
 
-        residuo = sumparcial % 11
+        residue = sumparcial % 11
+        digit = '0' if residue == 0 else residue
 
-        if residuo == 0:
-            digito = '0'
-            return digito
-
-        if residuo > 0:
-            digito = str((11 - residuo))
-
-            if digito == '10':
-                digito = 'A'
-                return digito
-
-            return digito
-
-        return digito
+        if int(digit) > 0:
+            digit = 11 - residue
+            digit = 'A' if digit == 10 else digit
+        return str(digit)
 
     @property
     def data(self):
@@ -151,56 +150,74 @@ class GenerateRFC(BaseGenerator):
 
 # pylint: disable=W0223
 class GenerateCURP(BaseGenerator):
-    """ Generate CURP"""
-    key_value = 'curp'
+    """
+    Generate CURP
+    """
     partial_data = None
+    key_value = 'curp'
     DATA_REQUIRED = (
-        'complete_name',
+        'name',
         'last_name',
         'mother_last_name',
         'birth_date',
         'gender',
-        'city',
-        'state_code'
+        'state'
     )
 
     def __init__(self, **kwargs):
-        self.complete_name = kwargs.get('complete_name')
+        self.name = kwargs.get('name')
         self.last_name = kwargs.get('last_name')
         self.mother_last_name = kwargs.get('mother_last_name', None)
         self.birth_date = kwargs.get('birth_date')
         self.gender = kwargs.get('gender')
-        self.city = kwargs.get('city', None)
-        self.state_code = kwargs.get('state_code')
+        self.state = kwargs.get('state')
 
-        self.parse(complete_name=self.complete_name, last_name=self.last_name,
-                   mother_last_name=self.mother_last_name, city=self.city,
-                   state_code=self.state_code)
+        self.parse(name=self.name, last_name=self.last_name,
+                   mother_last_name=self.mother_last_name,state=self.state)
 
         self.partial_data = self.data_fiscal(
-            complete_name=self.complete_name, last_name=self.last_name,
-            mother_last_name=self.mother_last_name, birth_date=self.birth_date)
+            name=self.name,
+            last_name=self.last_name,
+            mother_last_name=self.mother_last_name,
+            birth_date=self.birth_date
+        )
 
     def calculate(self):
         """
-        Method that calculate the RFC
+        Method that calculate the CURP
         """
+        if not self.state:
+            raise AttributeError("No such attribute: state")
+
+        if not self.gender:
+            raise AttributeError("No such attribute: gender")
+
+        gender = self.get_gender(self.gender)
+        state_code = (self.get_federative_entity(self.state)
+                      if self.state else None)
+        last_name = self.get_consonant(self.last_name)
+        mother_last_name = self.get_consonant(self.mother_last_name)
+        name = self.get_consonant(self.complete_name)
+        homoclave = self.homoclave(self.get_year(self.birth_date))
+
         curp = self.partial_data
-
-        state_code = (self.city_search(self.city)
-                      if self.city else self.state_code)
-        if not state_code:
-            raise AttributeError("No such attribute: state_code")
-
-        lastname = self.get_consonante(self.last_name)
-        mslastname = self.get_consonante(self.mother_last_name)
-        name = self.get_consonante(self.complete_name)
-        year = self.get_year(self.birth_date)
-        hcv = self.homoclave(year)
-
-        curp += f'{self.gender}{state_code}{lastname}{mslastname}{name}{hcv}'
+        curp += f'{gender}{state_code}{last_name}{mother_last_name}'\
+            f'{name}{homoclave}'
         curp += self.check_digit(curp)
         return curp
+
+    @staticmethod
+    def get_gender(gender: str):
+        """
+        Get gender of enum
+        """
+        value = None
+        try:
+            gender = gender.upper()
+            value = GenderEnum[gender].value
+        except KeyError as exc:
+            print('Value not found in gender enum', exc)
+        return value
 
     @staticmethod
     def homoclave(year):
@@ -221,24 +238,15 @@ class GenerateCURP(BaseGenerator):
         """
         value = 0
         summary = 0
-        checkers = {
-            '0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,
-            '8': 8, '9': 9, 'A': 10, 'B': 11, 'C': 12, 'D': 13, 'E': 14,
-            'F': 15, 'G': 16, 'H': 17, 'I': 18, 'J': 19, 'K': 20, 'L': 21,
-            'M': 22, 'N': 23, 'Ñ': 24, 'O': 25, 'P': 26, 'Q': 27, 'R': 28,
-            'S': 29, 'T': 30, 'U': 31, 'V': 32, 'W': 33, 'X': 34, 'Y': 35,
-            'Z': 36
-        }
+        count = 18
+        len_curp = len(curp)
 
-        count2 = 18
-        lencurp = len(curp)
-
-        for index in range(lencurp):
+        for index in range(len_curp):
             posicion = curp[index]
-            for k, v in checkers.items():
+            for k, v in CHECKERS.items():
                 if posicion == k:
-                    value = (v * count2)
-            count2 = count2 - 1
+                    value = (v * count)
+            count = count - 1
             summary = summary + value
         # Residue
         num_ver = summary % 10
@@ -258,16 +266,16 @@ class GenerateCURP(BaseGenerator):
 # pylint: disable=W0223
 class GenerateNSS(BaseGenerator):
     """
-    Class that calculates the NNS
+    Base class that calculates the social security number
     """
     def __init__(self, nss):
         self.nss = nss
 
     def is_valid(self):
+        """Validation method
+
+        11 digits and valid subdelegation
         """
-        Validation method
-        """
-        # 11 dígitos y subdelegación válida
         if not len(self.nss) == 11:
             return False
 
@@ -307,7 +315,7 @@ class GenerateNSS(BaseGenerator):
     @property
     def data(self):
         """
-        Property data
+        Property method
         """
         return self._calculate_luhn()
 
@@ -320,17 +328,17 @@ class GenericGeneration:
     generators = ()
 
     def __init__(self, **kwargs):
-        self._datos = kwargs
+        self._kwargs = kwargs
 
     @property
     def data(self):
         """
-        Property data
+        Property method
         """
         for cls in self.generators:
             data = cls.DATA_REQUIRED
-            kargs = {key: self._datos[key] for key in data}
-            gen = cls(**kargs)
+            kwargs = {key: self._kwargs[key] for key in data}
+            gen = cls(**kwargs)
             gen.calculate()
             self._data[gen.key_value] = gen.data
 

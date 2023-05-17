@@ -6,7 +6,9 @@ import datetime
 import unicodedata
 
 from .utils import (
-    to_upper, search_vowel, search_consonant
+    to_upper,
+    search_vowel,
+    search_consonant
 )
 from .constants import ENTITIES, DISADVANTAGES_WORDS
 
@@ -19,25 +21,23 @@ class BaseGenerator:
     first_name_master = None
     last_name_master = None
     mothers_last_name_master = None
-    city = None
-    state_code = None
+    state = None
     last_name = None
     mother_last_name = None
     complete_name = None
 
     def generate(self):
         """
-        Generation class
+        Generation method
         """
         raise NotImplementedError('No implement.')
 
-    def parse(self, complete_name, last_name, mother_last_name=None, city=None,
-              state_code=None):
+    def parse(self, name, last_name,
+              mother_last_name=None, state=None):
         """
-        Data parsing
+        Method in charge of parsing data.
         """
-        self.city = to_upper(city) if city else None
-        self.state_code = to_upper(state_code) if state_code else None
+        self.state = to_upper(state) if state else None
 
         if mother_last_name:
             mother_last_name = self.remove_accents(to_upper(mother_last_name))
@@ -46,7 +46,7 @@ class BaseGenerator:
             mother_last_name = self.remove_precisions(mother_last_name)
             self.mother_last_name = mother_last_name
 
-        first_name = self.remove_accents(to_upper(complete_name))
+        first_name = self.remove_accents(to_upper(name))
         self.first_name_master = first_name
         first_name = self.remove_names(first_name)
         first_name = self.remove_articles(first_name)
@@ -62,7 +62,7 @@ class BaseGenerator:
         self.full_name = f'{self.last_name_master} '\
             f'{self.mothers_last_name_master} {self.first_name_master}'
 
-    def data_fiscal(self, complete_name, last_name,
+    def data_fiscal(self, name, last_name,
                     mother_last_name, birth_date):
         """
         method tax data
@@ -70,12 +70,13 @@ class BaseGenerator:
         birth_date = self.parse_date(birth_date)
 
         if len(last_name) == 1 or len(last_name) == 2:
-            initials = self.initials_name_comp(complete_name, last_name,
+            initials = self.initials_name_comp(name, last_name,
                                                mother_last_name)
-        elif mother_last_name is None or mother_last_name == '':  # Rule 7
-            initials = self.initials_single_last_name(complete_name, last_name)
+        elif mother_last_name is None or mother_last_name == '':
+            # Rule 7
+            initials = self.initials_single_last_name(name, last_name)
         else:
-            initials = self.initials_name(complete_name,
+            initials = self.initials_name(name,
                                           last_name, mother_last_name)
         # Rule 9
         full_name_initials = self.verify_initials(initials)
@@ -301,33 +302,29 @@ class BaseGenerator:
             raise Exception(exc)
 
     @staticmethod
-    def city_search(name_city):
+    def get_federative_entity(state: str):
         """
         Method get states
         """
-        data = ''
-        for key, value in ENTITIES.items():
-            if key == name_city:
-                data = value
-        return data
+        data = [value for key, value in ENTITIES.items() if key == state]
+        status_code = data[0] if data else ''
+        return status_code
 
     @staticmethod
-    def get_consonante(word):
+    def get_consonant(word: str):
         """
         Method get consonant
         """
         return search_consonant(word)
 
     @staticmethod
-    def get_year(str_date):
+    def get_year(str_date: str):
         """
         Get year of birth date.
         """
         try:
-            if str_date is None:
-                date = datetime.datetime.today()
-            else:
-                date = datetime.datetime.strptime(str_date, '%d-%m-%Y').date()
+            date = (datetime.datetime.strptime(str_date, '%d-%m-%Y').date()
+                    if str_date else datetime.datetime.today())
             return date.year
         except Exception as exc:
             raise Exception(exc)
