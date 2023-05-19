@@ -2,16 +2,15 @@
 """
 File manage utilities
 """
-from .constants import (
-    VOWELS, CONSONANTS
-)
+from enum import Enum
+
+from .constants import VOWELS, CONSONANTS
 
 
-def search_consonant(word):
+def search_consonant(word: str) -> str:
     """
-    consonant word search
+    Search and get consonant
     """
-    data = None
     consonant = ''
     data = word[1:len(word)] if word else None
     for item in data:
@@ -23,35 +22,49 @@ def search_consonant(word):
     return consonant
 
 
-def get_consonant(consonant):
-    """Get consonants."""
-    for i in CONSONANTS:
-        if i == consonant:
-            return True
-    return False
+def get_consonant(param: str) -> bool:
+    """
+    Iterate list and get consonant.
+    """
+    exist = [True for cons in CONSONANTS if cons == param]
+    data = exist[0] if exist else False
+    return data
 
 
-def search_vowel(last_name):
-    """Search for paternal surname vowel."""
+def search_vowel(last_name: str) -> str:
+    """
+    Search for paternal surname vowel.
+    """
     size = len(last_name) - 1
     last_name = last_name[1:size]
-    vocal = ''
+    vowel = ''
 
-    for v in last_name:
-        if get_vocal(v):
-            vocal = v
+    for vow in last_name:
+        if get_vocal(vow):
+            vowel = vow
             break
-    return vocal
+    return vowel
 
 
-def get_vocal(v):
-    """Get vocal."""
-    for i in VOWELS:
-        if i == v:
-            return True
-    return False
+def get_vocal(param: str) -> bool:
+    """
+    Iterate list and get vowel
+    """
+    exist = [True for vowel in VOWELS if vowel == param]
+    data = exist[0] if exist else False
+    return data
 
 
-def to_upper(text):
-    """Convert word to uppercase."""
-    return text.upper().strip()
+def to_upper(data: str) -> str:
+    """
+    Convert text to uppercase.
+    """
+    return data.upper().strip()
+
+
+class GenderEnum(Enum):
+    """
+    Gender Enum
+    """
+    HOMBRE = 'H'
+    MUJER = 'M'
