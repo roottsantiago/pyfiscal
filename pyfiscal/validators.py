@@ -15,9 +15,9 @@ def validate_curp(value):
     """
     CURP validator method
     """
-    PATTERN_CURP = r"^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d" \
-        r"|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|" \
-        r"Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$"
+    PATTERN_CURP = "^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d" \
+        "|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|" \
+        "Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$"
     message = 'Does not match the format of a CURP'
     regex = re.compile(PATTERN_CURP)
 
@@ -31,7 +31,7 @@ def validate_nss(value):
     """
     Social security number (NSS) validator
     """
-    PATTERN_NSS = r"^(\d{2})(\d{2})(\d{2})\d{5}$"
+    PATTERN_NSS = "^(\d{2})(\d{2})(\d{2})\d{5}$"
     message = 'Does not match the format of a NSS'
     regex = re.compile(PATTERN_NSS)
 
