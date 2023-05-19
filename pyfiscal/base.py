@@ -328,10 +328,3 @@ class BaseGenerator:
             return date.year
         except Exception as exc:
             raise Exception(exc)
-
-    @staticmethod
-    def current_year():
-        """
-        Get current year.
-        """
-        return datetime.datetime.now().year
