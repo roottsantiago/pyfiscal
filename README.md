@@ -1,4 +1,4 @@
-# Cálculo de Datos Fiscales
+# Calculation of tax data in México
 
 Features
 [x] Support for Python 2.7-3.5.
@@ -13,32 +13,32 @@ pip install pyfiscal
 
 #  CURP
 
-La Clave Única de Registro de Población (CURP) es un código alfanumérico único de identidad de 18 caracteres, tanto para residentes como para ciudadanos mexicanos.
+The Clave Única de Registro de Población (CURP) is a unique 18 character alphanumeric identity code for both Mexican residents and citizens.
 
 ![alt picture](https://github.com/thomgonzalez/pyfiscal/blob/master/img/CURP.jpg)
 
 
 # RFC
 
-El Registro Federal de Contribuyentes es una clave que se usa en México para distinguir a cada individuo o empresa obligado a pagar impuestos. A las personas u organizaciones que cuentan con su RFC se les llama contribuyentes.
+The Federal Taxpayer Registry is a code used in Mexico to distinguish each individual or company required to pay taxes. The people or organizations that have their RFC are called contributors.
 
 1.- Para la Persona Física:
 
 ![alt picture](https://github.com/thomgonzalez/pyfiscal/blob/master/img/RFC.jpg)
 
-Esta homoclave la designará el SAT, revisando la petición a través de papel oficial ya designado.
+This homoclave will be designated by the SAT, reviewing the request through already designated official paper.
 
 
 # NSS
 
-El Número de Seguridad Social (NSS) es único, permanente e intransferible y se asigna para llevar un registro de los trabajadores y asegurados.
+The Social Security Number (NSS) is unique, permanent and nontransferable and is assigned to keep a record of workers and insured.
 
 ![alt picture](https://github.com/thomgonzalez/pyfiscal/blob/master/img/NSS.png)
 
-1.- Validación Completa:
-* Sólo se validará que sean 11 dígitos.
-* Validación por el algoritmo de Luhn.
-* Cálcula el último dígito.
+Validation:
+* Only 11 digits will be validated.
+* Validation by the Luhn algorithm.
+* Calculate the last digit.
 
 
 # Example
