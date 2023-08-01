@@ -41,35 +41,12 @@ Validation:
 * Calculate the last digit.
 
 
-# Example
+# Unit Tests
 ```python
-from pyfiscal.generate import GenerateRFC, GenerateCURP, GenerateNSS, GenericGeneration
 
+python -m unittest tests/data_fiscal_test.py
 
-class GenerateDataFiscal(GenericGeneration):
-	generadores = (GenerateCURP, GenerateRFC)
-
-
-kwargs = {
-	"complete_name": "",
-	"last_name": "",
-	"mother_last_name": "",
-	"birth_date": "",
-	"gender": "",
-	"city": "",
-	"state_code": ""
-}
-
-rfc = GenerateRFC(**kwargs)
-data = rfc.data
-
-curp = GenerateCURP(**kwargs)
-data = curp.data
-
-nss =  GenerateNSS(nss="")
-data = nss.data
-
-data = GenerateDataFiscal(**kwargs).data
+python -m unittest tests/validator_test.py 
 
 ```
 
