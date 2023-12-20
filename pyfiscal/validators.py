@@ -2,6 +2,7 @@
 Script manages tax data validators
 """
 import re
+from datetime import datetime
 
 
 class ValidationError(Exception):
@@ -59,3 +60,19 @@ def validate_rfc(value):
         raise ValidationError(message)
 
     return True
+
+
+def validate_date(value: str):
+    """
+    Try to parse a date using several formats, warn about
+    problematic value if the possible_date does not match
+    any of the formats tried
+    """
+    FORMATS_DATE_FIELD = ('%Y-%m-%d', '%d-%m-%Y', '%d/%m/%Y', '%Y/%m/%d')
+    for fmt in FORMATS_DATE_FIELD:
+        try:
+            return datetime.strptime(value, fmt).date()
+        except ValueError:
+            pass
+    mesage = f"Non-valid date format found: '{value}'"
+    raise ValidationError(mesage)
