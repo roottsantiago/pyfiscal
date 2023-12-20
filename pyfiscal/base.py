@@ -2,9 +2,9 @@
 """
 Script manages base classes for calculating fiscal data.
 """
-import datetime
+from datetime import date
 import unicodedata
-
+from .validators import validate_date
 from .utils import (
     to_upper,
     search_vowel,
@@ -264,7 +264,7 @@ class BaseGenerator:
         return str(text)
 
     @staticmethod
-    def parse_date(birthdate):
+    def parse_date(birthdate: str):
         """Rule 2 - The taxpayer's date of birth will be noted below,
             in the following order:
 
@@ -280,26 +280,17 @@ class BaseGenerator:
         Returns:
         As a result we will have the numerical expression: 070401
         """
-        try:
-            dtype = type(birthdate) if birthdate else None
-            if dtype:
-                if not (dtype is datetime.datetime or dtype is datetime.date):
-                    birthdate = datetime.datetime.strptime(
-                        birthdate,
-                        '%d-%m-%Y'
-                    ).date()
-            else:
-                birthdate = datetime.datetime.today()
 
-            year = str(birthdate.year)
-            year = year[2:4]
+        try:
+            _date = (validate_date(birthdate) if birthdate else date.today())
+            year = str(_date.year)[2:4]
+            month = str(_date.month).zfill(2)
+            day = str(_date.day).zfill(2)
             # When in the year, month or day, of the date of birth,
             # only one figure appears, a ZERO will be put before it.
-            month = str(birthdate.month).zfill(2)
-            day = str(birthdate.day).zfill(2)
-            return f'{year}{month}{day}'
-        except Exception as exc:
-            raise Exception(exc)
+            return f"{year}{month}{day}"
+        except ValueError:
+            raise Exception("Incorrect date format")
 
     @staticmethod
     def get_federative_entity(state: str):
@@ -318,13 +309,13 @@ class BaseGenerator:
         return search_consonant(word)
 
     @staticmethod
-    def get_year(str_date: str):
+    def get_year(date_str: str):
         """
         Get year of birth date.
         """
         try:
-            date = (datetime.datetime.strptime(str_date, '%d-%m-%Y').date()
-                    if str_date else datetime.datetime.today())
-            return date.year
-        except Exception as exc:
-            raise Exception(exc)
+            # formatting the date using strptime() function
+            _date = validate_date(date_str) if date_str else date.today()
+            return _date.year
+        except ValueError:
+            raise Exception("Incorrect date format")
