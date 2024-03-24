@@ -1,0 +1,11 @@
+version: "3.5"
+
+services:
+  back:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pyfiscal
+    volumes:
+      - .:/code
+    tty: true
