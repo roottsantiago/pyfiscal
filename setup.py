@@ -10,7 +10,7 @@ DESCRIPTION = 'Pyfiscal calculation of tax data.'
 PACKAGE_NAME = 'pyfiscal'
 AUTHOR = 'Tomás Santiago'
 EMAIL = 'thom.sgonzalez@gmail.com'
-GITHUB_URL = 'https://github.com/sutsantiago/pyfiscal'
+GITHUB_URL = 'https://github.com/roottsantiago/pyfiscal'
 
 
 setup(

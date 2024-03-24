@@ -7,7 +7,6 @@ from enum import Enum
 from .constants import VOWELS, CONSONANTS
 
 
-@staticmethod
 def get_current_year():
     """
     Get current year.
