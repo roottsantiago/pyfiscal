@@ -50,7 +50,7 @@ git clone https://github.com/roottsantiago/pyfiscal.git
 cd pyfiscal
 ```
 
-## Usage
+### Usage
 There are several ways to use the project because there are those using `docker-compose.yml` and `Dockerfile`. Here's how to use it:
 
 > This is for the install part with docker-compose
@@ -63,13 +63,14 @@ docker-compose up -d
 
 ## Unit Tests
 ```python
-
 python -m unittest tests/data_fiscal_test.py
-
-python -m unittest tests/validator_test.py 
-
+python -m unittest tests/validator_test.py
 ```
-
+> Testing with docker
+```python
+docker exec pyfiscal python -m unittest tests/data_fiscal_test.py
+docker exec pyfiscal python -m unittest tests/validator_test.py
+```
 ## License
 
 See LICENSE for more details (The MIT License).
