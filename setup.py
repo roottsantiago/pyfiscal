@@ -5,7 +5,7 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
 
-VERSION = '2.1'
+VERSION = '2.1.2'
 DESCRIPTION = 'Pyfiscal calculation of tax data.'
 PACKAGE_NAME = 'pyfiscal'
 AUTHOR = 'Tomás Santiago'
@@ -36,11 +36,8 @@ setup(
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
     ],
+    python_requires='>=3.9',
 )
+
